@@ -1,0 +1,29 @@
+
+{
+  "Major": {
+    "No extension": {},
+    "7": {
+      "chord": [0, 4, 7, 11],
+      "scale": [0, 2, 4, 5, 7, 9, 11, 12],
+      "extensions": [
+        {
+          "name": "Basic 7 extension",
+          "degrees": [7, 12]
+        },
+        {
+          "name": "7 with 9 extension",
+          "degrees": [7, 11, 14]
+        }
+      ]
+    },
+    "7+11": {},
+    "9": {},
+    "13": {},
+    "b2": {},
+    "6": {},
+    "69": {}
+  },
+  "Minor": {},
+  "Diminished": {},
+  "Augmented": {}
+}
