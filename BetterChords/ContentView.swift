@@ -1,135 +1,274 @@
+
 import SwiftUI
 
+struct ChordFormulaFile: Decodable {
+    let Roots: [String: String]
+}
+
 struct ContentView: View {
-    let lessonTitle = "Bb13"
-
-    @State private var selectedImageType: ChordImageType = .rhExtension
-
+    
+    let totalNotes = 60
+    
+    // C# D# F# G# A#
+    let blackKeyPositions: Set<Int> = [1, 3, 6, 8, 10]
+    
+    @State private var roots: [String] = []
+    @State private var selectedRoot = 0
+    
     var body: some View {
-        ZStack {
-            Color.black
-                .ignoresSafeArea()
-
-            VStack(spacing: 20) {
-                Text(lessonTitle)
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
-                    .foregroundStyle(.orange)
-                    .padding(.top, 20)
-
-                VideoPlaceholderView()
-                    .frame(height: 220)
-                    .padding(.horizontal, 20)
-
-                Picker("Chord View", selection: $selectedImageType) {
-                    ForEach(ChordImageType.allCases) { imageType in
-                        Text(imageType.displayName)
-                            .tag(imageType)
+        
+        GeometryReader { geometry in
+            
+            let keyboardWidth = geometry.size.width * 0.95
+            let keyboardHeight = geometry.size.height * 0.40
+            
+            let whiteKeyCount = countWhiteKeys()
+            let whiteKeyWidth = keyboardWidth / CGFloat(whiteKeyCount)
+            
+            let blackKeyWidth = whiteKeyWidth * 0.65
+            let blackKeyHeight = keyboardHeight * 0.62
+            
+            ZStack {
+                
+                Color.black
+                    .ignoresSafeArea()
+                
+                VStack(spacing: 20) {
+                    
+                    // MARK: - Root Picker
+                    
+                    if !roots.isEmpty {
+                        
+                        Menu {
+                            ForEach(0..<roots.count, id: \.self) { index in
+                                
+                                Button(roots[index]) {
+                                    selectedRoot = index
+                                }
+                            }
+                        } label: {
+                            HStack {
+                                Text(roots[selectedRoot])
+                                    .font(.system(size: 32, weight: .bold))
+                                    .foregroundStyle(.blue)
+                                
+                                
+                            }
+                            .foregroundStyle(.white)
+                        }
+                        
                     }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal, 20)
-
-                ChordImageView(imageURL: selectedImageType.imageURL)
-                    .padding(.horizontal, 20)
-
-                Spacer()
-            }
-        }
-    }
-}
-
-enum ChordImageType: String, CaseIterable, Identifiable {
-    case rhExtension
-    case rhScale
-
-    var id: String {
-        rawValue
-    }
-
-    var displayName: String {
-        switch self {
-        case .rhExtension:
-            return "RH extension"
-        case .rhScale:
-            return "RH scale"
-        }
-    }
-
-    var imageURL: URL {
-        switch self {
-        case .rhExtension:
-            return URL(string: "https://firebasestorage.googleapis.com/v0/b/betterchords.firebasestorage.app/o/LH%20Chords%2F13%20with%20extension%2FBb13%20extension.png?alt=media&token=b2868268-8f4d-442f-bd2d-4c08e4565f83")!
-
-        case .rhScale:
-            return URL(string: "https://firebasestorage.googleapis.com/v0/b/betterchords.firebasestorage.app/o/LH%20Chords%2F13%20with%20scale%2FBb13%20with%20scale.png?alt=media&token=ab69f724-6b21-4371-9bc7-4e4546efce0e")!
-        }
-    }
-}
-
-struct VideoPlaceholderView: View {
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 18)
-                .fill(Color.white.opacity(0.08))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 18)
-                        .stroke(Color.orange.opacity(0.7), lineWidth: 2)
-                )
-
-            VStack(spacing: 10) {
-                Image(systemName: "play.rectangle.fill")
-                    .font(.system(size: 48))
-                    .foregroundStyle(.orange)
-
-                Text("Video goes here")
-                    .font(.headline)
-                    .foregroundStyle(.white.opacity(0.75))
-            }
-        }
-    }
-}
-
-struct ChordImageView: View {
-    let imageURL: URL
-
-    var body: some View {
-        AsyncImage(url: imageURL) { phase in
-            switch phase {
-            case .empty:
-                ProgressView()
-                    .tint(.orange)
-                    .frame(maxWidth: .infinity, minHeight: 220)
-
-            case .success(let image):
-                image
-                    .resizable()
-                    .scaledToFit()
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(Color.orange.opacity(0.6), lineWidth: 2)
+                    
+                    
+                    // MARK: - Keyboard
+                    
+                    ZStack(alignment: .topLeading) {
+                        
+                        // =========================
+                        // WHITE KEYS
+                        // =========================
+                        
+                        HStack(spacing: 0) {
+                            
+                            ForEach(0..<totalNotes, id: \.self) { note in
+                                
+                                if !isBlackKey(note) {
+                                    
+                                    let isSelected =
+                                        note == selectedRoot
+                                    
+                                    ZStack(alignment: .bottom) {
+                                        
+                                        Rectangle()
+                                            .fill(
+                                                isSelected
+                                                ? Color.blue
+                                                : Color.white
+                                            )
+                                        
+                                        if isSelected && !roots.isEmpty {
+                                            
+                                            Text(roots[selectedRoot])
+                                                .font(.caption)
+                                                .fontWeight(.bold)
+                                                .foregroundStyle(.white)
+                                                .padding(.bottom, 8)
+                                        }
+                                    }
+                                    .frame(
+                                        width: whiteKeyWidth,
+                                        height: keyboardHeight
+                                    )
+                                    .overlay {
+                                        
+                                        Rectangle()
+                                            .stroke(
+                                                Color.black,
+                                                lineWidth: 1
+                                            )
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
+                        // =========================
+                        // BLACK KEYS
+                        // =========================
+                        
+                        ForEach(0..<totalNotes, id: \.self) { note in
+                            
+                            if isBlackKey(note) {
+                                
+                                let whiteKeysBefore =
+                                    numberOfWhiteKeysBefore(note)
+                                
+                                let isSelected =
+                                    note == selectedRoot
+                                
+                                ZStack(alignment: .bottom) {
+                                    
+                                    Rectangle()
+                                        .fill(
+                                            isSelected
+                                            ? Color.blue
+                                            : Color.black
+                                        )
+                                    
+                                    if isSelected && !roots.isEmpty {
+                                        
+                                        Text(roots[selectedRoot])
+                                            .font(.caption2)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(.white)
+                                            .padding(.bottom, 8)
+                                    }
+                                }
+                                .frame(
+                                    width: blackKeyWidth,
+                                    height: blackKeyHeight
+                                )
+                                .offset(
+                                    x:
+                                        CGFloat(whiteKeysBefore)
+                                        * whiteKeyWidth
+                                        - blackKeyWidth / 2
+                                )
+                            }
+                        }
+                        
+                        
+                        // =========================
+                        // MIDDLE C LABEL
+                        // =========================
+                        
+                        let middleCNote = 24
+                        
+                        let middleCWhiteKeyPosition =
+                            numberOfWhiteKeysBefore(middleCNote)
+                        
+                        VStack(spacing: 1) {
+                            
+                            Image(systemName: "arrow.up")
+                                .font(.system(size: 10))
+                            
+                            Text("Middle C")
+                                .font(.system(size: 10))
+                        }
+                        .foregroundStyle(.white)
+                        .frame(width: whiteKeyWidth * 3)
+                        .position(
+                            x:
+                                CGFloat(middleCWhiteKeyPosition)
+                                * whiteKeyWidth
+                                + whiteKeyWidth / 2,
+                            
+                            y:
+                                keyboardHeight + 18
+                        )
+                    }
+                    .frame(
+                        width: keyboardWidth,
+                        height: keyboardHeight + 40,
+                        alignment: .top
                     )
-
-            case .failure:
-                VStack(spacing: 12) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.system(size: 36))
-                        .foregroundStyle(.orange)
-
-                    Text("Could not load chord image")
-                        .foregroundStyle(.white.opacity(0.8))
                 }
-                .frame(maxWidth: .infinity, minHeight: 220)
-                .background(Color.white.opacity(0.08))
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-
-            @unknown default:
-                EmptyView()
+                .frame(
+                    width: geometry.size.width,
+                    height: geometry.size.height
+                )
             }
         }
+        .onAppear {
+            loadRoots()
+        }
+    }
+    
+    
+    // MARK: - Load ChordFormulas.json
+    
+    func loadRoots() {
+        
+        guard let url = Bundle.main.url(
+            forResource: "ChordFormulas",
+            withExtension: "json"
+        ) else {
+            print("Could not find ChordFormulas.json")
+            return
+        }
+        
+        do {
+            
+            let data = try Data(contentsOf: url)
+            
+            let decoded =
+                try JSONDecoder().decode(
+                    ChordFormulaFile.self,
+                    from: data
+                )
+            
+            roots = (0..<12).compactMap { index in
+                decoded.Roots[String(index)]
+            }
+            
+            print("Loaded roots:")
+            print(roots)
+            
+        } catch {
+            print("Error loading ChordFormulas.json:")
+            print(error)
+        }
+    }
+    
+    
+    // MARK: - Piano Functions
+    
+    func isBlackKey(_ note: Int) -> Bool {
+        
+        let positionInOctave = note % 12
+        
+        return blackKeyPositions.contains(
+            positionInOctave
+        )
+    }
+    
+    
+    func countWhiteKeys() -> Int {
+        
+        (0..<totalNotes)
+            .filter { !isBlackKey($0) }
+            .count
+    }
+    
+    
+    func numberOfWhiteKeysBefore(_ note: Int) -> Int {
+        
+        (0..<note)
+            .filter { !isBlackKey($0) }
+            .count
     }
 }
+
 
 #Preview {
     ContentView()
