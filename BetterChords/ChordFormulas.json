@@ -1,25 +1,23 @@
-
 {
   "Major": {
     "No extension": {},
     "7": {
-      "chord": [0, 4, 7, 11],
-      "scale": [0, 2, 4, 5, 7, 9, 11, 12],
-      "extensions": [
-        {
-          "name": "Basic 7 extension",
-          "degrees": [7, 12]
-        },
-        {
-          "name": "7 with 9 extension",
-          "degrees": [7, 11, 14]
-        }
-      ]
+      "9": {
+        "LH Chord": [16, 22, 26],
+        "RH Scale": [12, 14, 16, 17, 19, 21, 22, 24],
+        "RH Extension": [22, 26],
+        "LH Add 13": [16, 21, 22, 26]
+      },
+      "13": {
+        "LH Chord": [10, 16, 21],
+        "RH Dominant Scale": [24, 26, 28, 29, 31, 33, 34, 36],
+        "RH Extension": [26, 31, 36],
+        "LH Add 9": [10, 14,16, 21]
+      },
+      "b9 (diminished)": {}
+    
     },
-    "7+11": {},
-    "9": {},
-    "13": {},
-    "b2": {},
+    "Maj7": {},
     "6": {},
     "69": {}
   },
