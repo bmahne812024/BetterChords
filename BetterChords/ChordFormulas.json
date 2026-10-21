@@ -12,5 +12,92 @@
     "9": "A",
     "10": "Bb",
     "11": "B"
+  },
+  "Chords": {
+    "Triads": [
+      {
+        "name": "maj",
+        "LHIntervals": [0, 4, 7]
+      },
+      {
+        "name": "min",
+        "LHIntervals": [0, 3, 7]
+      },
+      {
+        "name": "dim",
+        "LHIntervals": [0, 3, 6]
+      },
+      {
+        "name": "aug",
+        "LHIntervals": [0, 4, 8]
+      },
+      {
+        "name": "sus2",
+        "LHIntervals": [0, 2, 7]
+      },
+      {
+        "name": "sus4",
+        "LHIntervals": [0, 5, 7]
+      }
+    ],
+    "SeventhChords": [
+      {
+        "name": "6",
+        "LHIntervals": [0, 4, 7, 9]
+      },
+      {
+        "name": "min6",
+        "LHIntervals": [0, 3, 7, 9]
+      },
+      {
+        "name": "7",
+        "LHIntervals": [0, 4, 7, 10]
+      },
+      {
+        "name": "maj7",
+        "LHIntervals": [0, 4, 7, 11]
+      },
+      {
+        "name": "min7",
+        "LHIntervals": [0, 3, 7, 10]
+      },
+      {
+        "name": "min7b5",
+        "LHIntervals": [0, 3, 6, 10]
+      },
+      {
+        "name": "dim7",
+        "LHIntervals": [0, 3, 6, 9]
+      }
+    ],
+    "Extensions": [
+      {
+        "name": "9",
+        "LHIntervals": [4, 10, 14],
+        "RHExtension": [19, 24],
+        "Scales": [
+          {
+            "name": "dominant",
+            "intervals": [12, 14, 16, 17, 19, 21, 22, 24]
+          },
+          {
+            "name": "Lydian dominant",
+            "intervals": [12, 14, 16, 18, 19, 21, 22, 24]
+          }
+        ]
+      },
+      {
+        "name": "13",
+        "LHIntervals": [10, 16, 21]
+      },
+      {
+        "name": "maj9",
+        "LHIntervals": [4, 7, 11, 14]
+      },
+      {
+        "name": "min9",
+        "LHIntervals": [3, 7, 10, 14]
+      }
+    ]
   }
 }
