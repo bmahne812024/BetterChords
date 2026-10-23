@@ -1,5 +1,6 @@
 
 import SwiftUI
+import AVFoundation
 
 struct ChordFormulaFile: Decodable {
     let Roots: [String: String]
@@ -13,6 +14,13 @@ struct ChordGroup: Decodable {
     let chords: [String]
 }
 
+struct ChordStackFormula: Decodable {
+    let kind: String
+    let upperInterval: Int
+    let upperDegree: String
+    let upperQuality: String?
+}
+
 struct ChordCategories: Decodable {
     let Triads: [ChordFormula]
     let SeventhChords: [ChordFormula]
@@ -21,6 +29,14 @@ struct ChordCategories: Decodable {
     var allChords: [ChordFormula] {
         Triads + SeventhChords + Extensions
     }
+}
+
+struct HandVoicingFormula: Decodable {
+    let name: String
+    let LHIntervals: [Int]
+    let LHDegrees: [String]
+    let RHIntervals: [Int]
+    let RHDegrees: [String]
 }
 
 struct ChordFormula: Decodable {
@@ -32,6 +48,10 @@ struct ChordFormula: Decodable {
     let LHScaleIntervals: [Int]?
     let LHScaleDegrees: [String]?
     let RHExtension: [Int]?
+    let RHChordIntervals: [Int]?
+    let RHChordDegrees: [String]?
+    let Stack: ChordStackFormula?
+    let HandVoicings: [HandVoicingFormula]?
     let RHDegrees: [String]?
     let Scales: [ScaleFormula]?
 }
@@ -80,7 +100,10 @@ struct ContentView: View {
     let blackKeyPositions: Set<Int> = [1, 3, 6, 8, 10]
     
     @State private var roots: [String] = []
+    @StateObject private var chordAudio = ChordAudioPlayer()
+    @Environment(\.scenePhase) private var scenePhase
     @State private var selectedRoot = 0
+    @State private var rootEnabled = true
     @State private var selectedChord = "maj"
     @State private var selectedInversion = 0
     @State private var selectedScale = ""
@@ -132,14 +155,25 @@ struct ContentView: View {
     @State private var extensionNames: Set<String> = []
 
     private var usesMajorSixSubstitution: Bool {
-        selectedChord == "maj7" && selectedInversion == 1
+        selectedChord == "maj7" && selectedInversion == 1 && selectedHandFormula == nil
     }
 
     private var usesMinorSixSubstitution: Bool {
-        selectedChord == "minmaj7" && selectedInversion == 1
+        selectedChord == "minmaj7" && selectedInversion == 1 && selectedHandFormula == nil
+    }
+
+    private var stackedChordNames: (upper: String, lower: String)? {
+        guard let stack = formulas[selectedChord]?.Stack, roots.indices.contains(selectedRoot) else { return nil }
+        let root = roots[selectedRoot]
+        return (NoteSpelling.name(root: root, interval: stack.upperInterval, degree: stack.upperDegree) + (stack.upperQuality == "minor" ? "m" : ""),
+                root.replacingOccurrences(of: "b", with: "♭"))
     }
 
     private var chordSymbol: String {
+        if let names = stackedChordNames {
+            return formulas[selectedChord]?.Stack?.kind == "polychord"
+                ? "\(names.upper) over \(names.lower)" : "\(names.upper)/\(names.lower)"
+        }
         guard roots.indices.contains(selectedRoot) else { return "" }
         let root = roots[selectedRoot].replacingOccurrences(of: "b", with: "♭")
         let suffix = selectedChord == "maj" ? "" : selectedChord
@@ -165,7 +199,22 @@ struct ContentView: View {
 
     @ViewBuilder
     private var chordSymbolView: some View {
-        if selectedChord == "minmaj7" || selectedChord == "minmaj9" {
+        if let names = stackedChordNames {
+            if formulas[selectedChord]?.Stack?.kind == "polychord" {
+                VStack(spacing: 1) {
+                    Text(names.upper)
+                    Rectangle().frame(height: 2)
+                    Text(names.lower)
+                }
+                .font(.system(size: 32, weight: .bold))
+                .frame(width: 76)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(chordSymbol)
+            } else {
+                Text(chordSymbol)
+                    .font(.system(size: 48, weight: .bold))
+            }
+        } else if selectedChord == "minmaj7" || selectedChord == "minmaj9" {
             HStack(spacing: 5) {
                 Text(roots.indices.contains(selectedRoot)
                      ? roots[selectedRoot].replacingOccurrences(of: "b", with: "♭") : "")
@@ -237,7 +286,7 @@ struct ContentView: View {
         }.sorted()
 
         // Keep triads low, with their bass in the second octave.
-        if triadNames.contains(selectedChord) {
+        if triadNames.contains(selectedChord) || formulas[selectedChord]?.Stack?.kind == "polychord" {
             while notes.first! >= 24 { notes = notes.map { $0 - 12 } }
             while notes.first! < 12 { notes = notes.map { $0 + 12 } }
             return notes
@@ -329,17 +378,65 @@ struct ContentView: View {
         selectedScale == "LH Shell" ? shellVoicing(inversion: selectedInversion) : nil
     }
 
+    private var selectedHandFormula: HandVoicingFormula? {
+        formulas[selectedChord]?.HandVoicings?.first { $0.name == selectedScale }
+    }
+
+    private func handVoicing(_ formula: HandVoicingFormula) -> (left: Set<Int>, right: Set<Int>)? {
+        var anchor = 12 + selectedRoot
+        var left = formula.LHIntervals.map { anchor + $0 }
+        while left.max()! > 33 { anchor -= 12; left = formula.LHIntervals.map { anchor + $0 } }
+        while left.min()! < 14 { anchor += 12; left = formula.LHIntervals.map { anchor + $0 } }
+        guard left.allSatisfy({ (14...33).contains($0) }) else { return nil }
+        var right = formula.RHIntervals.map { anchor + $0 }
+        while right.min()! <= left.max()! { right = right.map { $0 + 12 } }
+        guard right.allSatisfy({ (0..<totalNotes).contains($0) }) else { return nil }
+        return (Set(left), Set(right))
+    }
+
+    private var selectedHandVoicing: (left: Set<Int>, right: Set<Int>)? {
+        guard let formula = selectedHandFormula else { return nil }
+        return handVoicing(formula)
+    }
+
     private var leftHandNotes: Set<Int> {
+        if let selectedHandVoicing { return selectedHandVoicing.left }
         if let selectedShell { return selectedShell.left }
         if let dropVoicing { return dropVoicing.left }
         return Set(voicedChordNotes(inversion: selectedInversion) ?? [])
     }
 
     private var selectedChordNotes: Set<Int> {
-        leftHandNotes.union([selectedRoot])
+        rootEnabled ? leftHandNotes.union([selectedRoot]) : leftHandNotes.subtracting([selectedRoot])
+    }
+
+    private var chordPlaybackNotes: Set<Int> {
+        let isScale = (chordScales[selectedChord] ?? []).contains { $0.name == selectedScale }
+        return selectedChordNotes.union(isScale ? [] : rightHandNotes)
+    }
+
+    private func coreRightHandNotes(inversion: Int) -> Set<Int> {
+        guard let formula = formulas[selectedChord],
+              let intervals = formula.RHChordIntervals, !intervals.isEmpty,
+              let left = voicedChordNotes(inversion: inversion, scale: ""),
+              let bass = left.first, let highest = left.last else { return [] }
+        let bassInterval = formula.LHVoicings?[inversion].first ?? formula.LHIntervals[inversion]
+        let voicedRoot = bass - bassInterval
+        var notes = intervals.map { voicedRoot + $0 }
+        while notes.min()! <= highest { notes = notes.map { $0 + 12 } }
+        guard notes.allSatisfy({ (0..<totalNotes).contains($0) }) else { return [] }
+        return Set(notes)
     }
 
     private var rightHandNotes: Set<Int> {
+        if let selectedHandVoicing { return selectedHandVoicing.right }
+        if (chordScales[selectedChord] ?? []).contains(where: { $0.name == selectedScale }) {
+            return scaleNotes
+        }
+        return additionalRightHandNotes.union(coreRightHandNotes(inversion: selectedInversion))
+    }
+
+    private var additionalRightHandNotes: Set<Int> {
         if selectedScale == "Double" {
             return Set((voicedChordNotes(inversion: selectedInversion) ?? []).map { $0 + 12 })
         }
@@ -394,17 +491,26 @@ struct ContentView: View {
         return ""
     }
 
+    private var emptyRightHandLabel: String {
+        (formulas[selectedChord]?.RHChordIntervals ?? []).isEmpty ? "RH" : "Upper chord"
+    }
+
     private var rightHandLabel: String {
-        if selectedScale.isEmpty { return "RH" }
-        // Keep long scale names readable in the single-row controls.
-        switch selectedScale {
-        case "Whole-Half Diminished": return "Whole–Half Dim."
-        case "half-whole diminished": return "Half–Whole Dim."
-        case "Locrian Natural 2": return "Locrian ♮2"
-        case "Locrian Natural 6": return "Locrian ♮6"
-        case "Melodic Minor Bebop": return "Melodic Min. Bebop"
-        default: return selectedScale
+        if selectedScale.isEmpty { return emptyRightHandLabel }
+        guard (chordScales[selectedChord] ?? []).contains(where: { $0.name == selectedScale }) else {
+            return selectedScale
         }
+        // Keep long scale names readable in the single-row controls.
+        let name: String
+        switch selectedScale {
+        case "Whole-Half Diminished": name = "Whole–Half Dim."
+        case "half-whole diminished": name = "Half–Whole Dim."
+        case "Locrian Natural 2": name = "Locrian ♮2"
+        case "Locrian Natural 6": name = "Locrian ♮6"
+        case "Melodic Minor Bebop": name = "Melodic Min. Bebop"
+        default: name = selectedScale
+        }
+        return "Scale: " + name
     }
 
     private func highlightedColor(_ note: Int) -> Color {
@@ -456,17 +562,25 @@ struct ContentView: View {
             }
         } label: {
             HStack(spacing: 8) {
-                Text(inversionLabel(selectedInversion))
+                Text(selectedHandFormula == nil ? inversionLabel(selectedInversion) : "Fixed voicing")
                     .font(.system(size: 22, weight: .bold))
                 Image(systemName: "chevron.down")
                     .font(.system(size: 12, weight: .semibold))
             }
         }
+        .disabled(selectedHandFormula != nil)
         .accessibilityLabel("Inversion")
     }
 
     private func noteName(_ note: Int) -> String {
         let root = roots[selectedRoot]
+        if let formula = selectedHandFormula, let hands = selectedHandVoicing {
+            let intervals = hands.left.contains(note) ? formula.LHIntervals : formula.RHIntervals
+            let degrees = hands.left.contains(note) ? formula.LHDegrees : formula.RHDegrees
+            if let index = intervals.firstIndex(where: { $0 % 12 == (note - selectedRoot + 12) % 12 }) {
+                return NoteSpelling.name(root: root, interval: intervals[index], degree: degrees[index])
+            }
+        }
         if note == selectedRoot { return NoteSpelling.name(root: root, interval: 0, degree: "1") }
         if selectedScale == "LH Shell", selectedShell?.left.contains(note) == true {
             let pitch = (note - selectedRoot + 12) % 12
@@ -481,6 +595,9 @@ struct ContentView: View {
             return NoteSpelling.name(root: root, interval: intervals[index], degree: degrees[index])
         }
         if rightHandNotes.contains(note) {
+            if let formula = formulas[selectedChord],
+               !(chordScales[selectedChord] ?? []).contains(where: { $0.name == selectedScale }),
+               let name = spell(formula.RHChordIntervals ?? [], formula.RHChordDegrees ?? []) { return name }
             if let scale = chordScales[selectedChord]?.first(where: { $0.name == selectedScale }),
                let name = spell(scale.intervals, scale.degrees) { return name }
             if selectedScale == "Right hand extension", let formula = formulas[selectedChord],
@@ -494,6 +611,105 @@ struct ContentView: View {
             if let name = spell(intervals, degrees) { return name }
         }
         return roots[note % 12]
+    }
+
+    private var rightHandMenu: some View {
+        Menu {
+            Button {
+                selectedScale = ""
+            } label: {
+                if selectedScale.isEmpty {
+                    Label(emptyRightHandLabel, systemImage: "checkmark")
+                } else {
+                    Text(emptyRightHandLabel)
+                }
+            }
+            Section("Voicings") {
+                ForEach(formulas[selectedChord]?.HandVoicings ?? [], id: \.name) { option in
+                    Button {
+                        selectedScale = option.name
+                    } label: {
+                        if selectedScale == option.name {
+                            Label(option.name, systemImage: "checkmark")
+                        } else {
+                            Text(option.name)
+                        }
+                    }
+                    .disabled(handVoicing(option) == nil)
+                }
+                Button {
+                    selectedScale = "Double"
+                } label: {
+                    if selectedScale == "Double" {
+                        Label("Double", systemImage: "checkmark")
+                    } else {
+                        Text("Double")
+                    }
+                }
+                Button {
+                    selectedScale = "LH Shell"
+                } label: {
+                    if selectedScale == "LH Shell" {
+                        Label("LH Shell", systemImage: "checkmark")
+                    } else {
+                        Text("LH Shell")
+                    }
+                }
+                .disabled(shellVoicing(inversion: selectedInversion) == nil)
+                ForEach(dropOptions, id: \.self) { option in
+                    Button {
+                        selectedScale = option
+                    } label: {
+                        if selectedScale == option {
+                            Label(option, systemImage: "checkmark")
+                        } else {
+                            Text(option)
+                        }
+                    }
+                }
+            }
+            if !(rightHandExtensions[selectedChord] ?? []).isEmpty {
+                Section("Extensions") {
+                    Button {
+                        selectedScale = "Right hand extension"
+                    } label: {
+                        if selectedScale == "Right hand extension" {
+                            Label("Right hand extension", systemImage: "checkmark")
+                        } else {
+                            Text("Right hand extension")
+                        }
+                    }
+                }
+            }
+            if !(chordScales[selectedChord] ?? []).isEmpty {
+                Section("Scales") {
+                    ForEach(chordScales[selectedChord] ?? [], id: \.name) { scale in
+                        let isAvailable = hasValidVoicing(chord: selectedChord, root: selectedRoot, scale: scale.name)
+                        Button {
+                            guard isAvailable else { return }
+                            selectedScale = scale.name
+                        } label: {
+                            if selectedScale == scale.name {
+                                Label(scale.name, systemImage: "checkmark")
+                            } else {
+                                Text(scale.name)
+                            }
+                        }
+                        .disabled(!isAvailable)
+                    }
+                }
+            }
+        } label: {
+            HStack(spacing: 8) {
+                Text(rightHandLabel)
+                    .font(.system(size: 22, weight: .bold))
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 12, weight: .semibold))
+            }
+        }
+        .tint(.purple)
+        .accessibilityLabel("Right hand")
+        .accessibilityValue((chordScales[selectedChord] ?? []).contains(where: { $0.name == selectedScale }) ? "Scale: " + selectedScale : (selectedScale.isEmpty ? emptyRightHandLabel : selectedScale))
     }
 
     var body: some View {
@@ -600,82 +816,7 @@ struct ContentView: View {
                         }
 
                         if extensionNames.contains(selectedChord) || !(chordScales[selectedChord] ?? []).isEmpty {
-                            Menu {
-                                Button {
-                                    selectedScale = ""
-                                } label: {
-                                    if selectedScale.isEmpty {
-                                        Label("RH", systemImage: "checkmark")
-                                    } else {
-                                        Text("RH")
-                                    }
-                                }
-                                Button {
-                                    selectedScale = "LH Shell"
-                                } label: {
-                                    if selectedScale == "LH Shell" {
-                                        Label("LH Shell", systemImage: "checkmark")
-                                    } else {
-                                        Text("LH Shell")
-                                    }
-                                }
-                                .disabled(shellVoicing(inversion: selectedInversion) == nil)
-                                Button {
-                                    selectedScale = "Double"
-                                } label: {
-                                    if selectedScale == "Double" {
-                                        Label("Double", systemImage: "checkmark")
-                                    } else {
-                                        Text("Double")
-                                    }
-                                }
-                                ForEach(dropOptions, id: \.self) { option in
-                                    Button {
-                                        selectedScale = option
-                                    } label: {
-                                        if selectedScale == option {
-                                            Label(option, systemImage: "checkmark")
-                                        } else {
-                                            Text(option)
-                                        }
-                                    }
-                                }
-                                if !(rightHandExtensions[selectedChord] ?? []).isEmpty {
-                                    Button {
-                                        selectedScale = "Right hand extension"
-                                    } label: {
-                                        if selectedScale == "Right hand extension" {
-                                            Label("Right hand extension", systemImage: "checkmark")
-                                        } else {
-                                            Text("Right hand extension")
-                                        }
-                                    }
-                                }
-                                ForEach(chordScales[selectedChord] ?? [], id: \.name) { scale in
-                                    let isAvailable = hasValidVoicing(chord: selectedChord, root: selectedRoot, scale: scale.name)
-                                    Button {
-                                        guard isAvailable else { return }
-                                        selectedScale = scale.name
-                                    } label: {
-                                        if selectedScale == scale.name {
-                                            Label(scale.name, systemImage: "checkmark")
-                                        } else {
-                                            Text(scale.name)
-                                        }
-                                    }
-                                    .disabled(!isAvailable)
-                                }
-                            } label: {
-                                HStack(spacing: 8) {
-                                    Text(rightHandLabel)
-                                        .font(.system(size: 22, weight: .bold))
-                                    Image(systemName: "chevron.down")
-                                        .font(.system(size: 12, weight: .semibold))
-                                }
-                            }
-                            .tint(.purple)
-                            .accessibilityLabel("Right hand")
-                            .accessibilityValue(selectedScale.isEmpty ? "RH, no right-hand notes" : selectedScale)
+                            rightHandMenu
                         }
                     }
                     .font(.system(size: 22, weight: .bold))
@@ -845,22 +986,79 @@ struct ContentView: View {
             }
             .padding(.bottom, 12)
         }
+        .overlay(alignment: .bottomTrailing) {
+            Button {
+                chordAudio.play(keyIndices: chordPlaybackNotes)
+            } label: {
+                Image(systemName: "play.fill")
+                    .font(.system(size: 24, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 56, height: 56)
+                    .background(chordAudio.isPlaying ? Color.blue : Color.blue.opacity(0.8), in: Circle())
+            }
+            .buttonStyle(.plain)
+            .disabled(formulas[selectedChord] == nil)
+            .accessibilityLabel("Play chord")
+            .accessibilityHint("Plays the bass and chord voicing, without scale notes")
+            .padding(.trailing, 18)
+            .padding(.bottom, 12)
+        }
+        .overlay(alignment: .bottomLeading) {
+            Toggle("Root", isOn: $rootEnabled)
+                .toggleStyle(.switch)
+                .tint(.green)
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(.white)
+                .fixedSize()
+                .accessibilityHint("Shows and plays the bass root when enabled")
+                .padding(.leading, 18)
+                .padding(.bottom, 24)
+        }
+        .alert("Playback unavailable", isPresented: Binding(
+            get: { chordAudio.errorMessage != nil },
+            set: { if !$0 { chordAudio.errorMessage = nil } }
+        )) {
+            Button("OK", role: .cancel) { chordAudio.errorMessage = nil }
+        } message: {
+            Text(chordAudio.errorMessage ?? "")
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase != .active { chordAudio.suspend() }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)) { _ in
+            chordAudio.suspend()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: AVAudioSession.routeChangeNotification)) { notification in
+            if let value = notification.userInfo?[AVAudioSessionRouteChangeReasonKey] as? UInt,
+               AVAudioSession.RouteChangeReason(rawValue: value) == .oldDeviceUnavailable {
+                chordAudio.suspend()
+            }
+        }
+        .onDisappear { chordAudio.suspend() }
         .onAppear {
             loadChordFormulas()
         }
         .onChange(of: selectedChord) { _, _ in
+            chordAudio.stop()
             selectedScale = defaultScale(for: selectedChord)
             selectValidInversion()
         }
         .onChange(of: selectedRoot) { _, _ in
+            chordAudio.stop()
+            if let formula = selectedHandFormula, handVoicing(formula) == nil { selectedScale = "" }
             selectValidInversion()
         }
+        .onChange(of: rootEnabled) { _, _ in
+            chordAudio.stop()
+        }
         .onChange(of: selectedInversion) { _, _ in
+            chordAudio.stop()
             if selectedScale == "LH Shell" && shellVoicing(inversion: selectedInversion) == nil {
                 selectedScale = ""
             }
         }
         .onChange(of: selectedScale) { _, _ in
+            chordAudio.stop()
             if voicedChordNotes(inversion: selectedInversion) == nil {
                 selectValidInversion()
             }

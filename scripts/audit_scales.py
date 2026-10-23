@@ -46,7 +46,7 @@ def validate_data():
     }
     for chord in chords:
         pairs = [(chord['LHIntervals'], chord['LHDegrees'])]
-        for ints, degrees in [('LHScaleIntervals', 'LHScaleDegrees'), ('RHExtension', 'RHDegrees')]:
+        for ints, degrees in [('LHScaleIntervals', 'LHScaleDegrees'), ('RHExtension', 'RHDegrees'), ('RHChordIntervals', 'RHChordDegrees')]:
             if ints in chord:
                 pairs.append((chord[ints], chord[degrees]))
         if 'LHVoicings' in chord:
@@ -56,6 +56,13 @@ def validate_data():
                 assert {i % 12 for i in voicing} == base_pitches, chord['name']
             if 'LHVoicingLabels' in chord:
                 assert len(chord['LHVoicingLabels']) == len(chord['LHVoicings'])
+        for option in chord.get('HandVoicings', []):
+            pairs += [(option['LHIntervals'], option['LHDegrees']), (option['RHIntervals'], option['RHDegrees'])]
+            assert option['LHIntervals'] and option['RHIntervals']
+            if option['name'].startswith('UST '):
+                voiced = {i % 12 for i in option['LHIntervals'] + option['RHIntervals']}
+                assert {i % 12 for i in chord['LHIntervals']} - {0, 7} <= voiced
+                assert any(voiced | {0} <= {i % 12 for i in scale['intervals']} for scale in chord['Scales'])
         names = []
         assert chord.get('Scales'), f'No scales for {chord["name"]}'
         for scale in chord['Scales']:
@@ -68,7 +75,7 @@ def validate_data():
             identity = (normalized, tuple(scale['degrees']))
             assert patterns.setdefault(scale['name'], identity) == identity, f'Conflicting formula: {scale["name"]}'
             lh = chord.get('LHScaleIntervals', chord['LHIntervals'])
-            missing = {i % 12 for i in lh} - {i % 12 for i in intervals}
+            missing = {i % 12 for i in lh + chord.get('RHChordIntervals', [])} - {i % 12 for i in intervals}
             assert missing == implied_tones.get((chord['name'], scale['name']), set()), (chord['name'], scale['name'], missing)
             pairs.append((intervals, scale['degrees']))
         assert len(names) == len(set(names)), f'Duplicate scale in {chord["name"]}'
@@ -169,11 +176,12 @@ for chord in decoded.Chords.allChords {
             for inversion in a.availableInversions {
                 a.selectedInversion = inversion
                 guard let lh = a.voicedChordNotes(inversion:inversion) else { disabled += 1; continue }
-                if a.triadNames.contains(chord.name) {
+                if a.triadNames.contains(chord.name) || chord.Stack?.kind == "polychord" {
                     precondition((12..<24).contains(lh.first!))
                 } else {
                     precondition(lh.allSatisfy { (14...33).contains($0) })
                 }
+                precondition(a.chordPlaybackNotes == Set(lh).union([root]), "Scale leaked into chord playback")
                 let notes = a.scaleNotes.sorted()
                 let description = "\\(root) \\(chord.name) inversion \\(inversion) \\(scale.name)"
                 precondition(notes.count == scale.intervals.count, "Clipped scale: \\(description)")
@@ -206,9 +214,10 @@ for chord in decoded.Chords.allChords {
             a.selectedInversion = inversion
             a.selectedScale = ""
             guard let close = a.voicedChordNotes(inversion: inversion) else { continue }
-            precondition(a.rightHandNotes.isEmpty)
+            precondition(a.rightHandNotes == a.coreRightHandNotes(inversion: inversion))
+            precondition(a.chordPlaybackNotes == Set(close).union([root]).union(a.rightHandNotes))
             a.selectedScale = "Double"
-            precondition(a.rightHandNotes == Set(close.map { $0 + 12 }))
+            precondition(a.rightHandNotes == Set(close.map { $0 + 12 }).union(a.coreRightHandNotes(inversion: inversion)))
             precondition(a.selectedChordNotes == Set(close).union([root]))
             precondition(a.rightHandNotes.allSatisfy { (0..<60).contains($0) })
             precondition(a.dropOptions.contains("Drop 2 & 3") == !a.triadNames.contains(chord.name))
@@ -221,6 +230,7 @@ for chord in decoded.Chords.allChords {
                 precondition(drop.left.count == a.dropPositions.count)
                 precondition(drop.left.count + drop.right.count == close.count)
                 precondition(a.selectedChordNotes.contains(root))
+                precondition(a.chordPlaybackNotes == drop.left.union(drop.right).union([root]).union(a.coreRightHandNotes(inversion: inversion)))
                 for note in drop.left.union(drop.right) {
                     precondition(pitchClass(of: a.noteName(note)) == note % 12)
                 }
@@ -289,6 +299,7 @@ for chord in decoded.Chords.allChords where !(chord.RHExtension ?? []).isEmpty {
             a.selectedInversion = inversion
             guard let lh = a.voicedChordNotes(inversion: inversion) else { continue }
             let rh = a.rightHandNotes
+            precondition(a.chordPlaybackNotes == Set(lh).union(rh).union([root]))
             precondition(rh.count == chord.RHExtension!.count)
             precondition(rh.min()! > lh.max()!)
             precondition(rh.allSatisfy { (0..<60).contains($0) })
@@ -329,12 +340,71 @@ for chord in decoded.Chords.allChords {
         for inversion in a.availableInversions {
             guard let notes = a.voicedChordNotes(inversion:inversion) else { continue }
             precondition((notes.first!-root+12)%12 == voicings[inversion].first!%12)
-            precondition(notes.allSatisfy { (14...33).contains($0) })
+            if chord.Stack?.kind == "polychord" {
+                precondition((12..<24).contains(notes.first!))
+                a.selectedInversion = inversion
+                let upper = a.coreRightHandNotes(inversion: inversion)
+                precondition(upper.count == 3 && upper.min()! > notes.last!)
+                precondition(upper.allSatisfy { (0..<60).contains($0) })
+                for note in upper { precondition(pitchClass(of:a.noteName(note)) == note%12) }
+            } else {
+                precondition(notes.allSatisfy { (14...33).contains($0) })
+            }
             explicitChecked += 1
         }
     }
 }
 print("PASS: \(explicitChecked) explicit voicings: bass, D–A range, and valid default in every root")
+// Full upper chords remain present in the default mode, unlike slash bass chords.
+a.selectedRoot=0; a.selectedScale=""; a.selectedInversion=0
+a.selectedChord="V over I"
+precondition(a.voicedChordNotes(inversion:0) == [12,16,19])
+precondition(a.rightHandNotes == Set([31,35,38]))
+a.selectedChord="II over I"
+precondition(a.voicedChordNotes(inversion:0) == [12,16,19])
+precondition(a.rightHandNotes == Set([26,30,33]))
+a.selectedChord="V/I"
+precondition(a.rightHandNotes.isEmpty)
+precondition(NoteSpelling.name(root:"Db", interval:7, degree:"5") == "A♭")
+precondition(NoteSpelling.name(root:"B", interval:2, degree:"2") == "C♯")
+var handChecks = 0
+for chord in decoded.Chords.allChords {
+    a.selectedChord = chord.name
+    for option in chord.HandVoicings ?? [] {
+        a.selectedScale = option.name
+        for root in 0..<12 {
+            a.selectedRoot = root
+            guard let hands = a.handVoicing(option) else { fatalError("Hand option out of range") }
+            precondition(hands.left.allSatisfy { (14...33).contains($0) })
+            precondition(hands.right.min()! > hands.left.max()!)
+            precondition(hands.right.allSatisfy { (0..<60).contains($0) })
+            precondition(hands.left.count == option.LHIntervals.count)
+            precondition(hands.right.count == option.RHIntervals.count)
+            precondition(a.leftHandNotes == hands.left && a.rightHandNotes == hands.right)
+            precondition(a.chordPlaybackNotes == hands.left.union(hands.right).union([root]))
+            for note in hands.left.union(hands.right).union([root]) {
+                precondition(pitchClass(of:a.noteName(note)) == note%12)
+            }
+            handChecks += 1
+        }
+    }
+}
+a.selectedRoot=0; a.selectedChord="min7"; a.selectedScale="So What"
+precondition(a.leftHandNotes == Set([24,29]))
+precondition(a.rightHandNotes == Set([34,39,43]))
+print("PASS: \(handChecks) upper-structure / So What hand splits across all roots")
+// Open worship shapes preserve their defining tones and keep the bass separate.
+a.selectedRoot=0; a.selectedScale="Open"; a.selectedInversion=0
+for (name, right) in [("maj", [24,28]), ("min", [24,27]), ("add9", [26,28,36]), ("sus2", [24,26]), ("sus4", [24,29]), ("sus4(add9)", [26,29,36])] {
+    a.selectedChord=name
+    precondition(a.leftHandNotes == Set([19]))
+    precondition(a.rightHandNotes == Set(right))
+    precondition(a.chordPlaybackNotes == Set(right).union([0,19]))
+}
+precondition(a.formulas["IV/I"]!.LHIntervals == [5,9,12])
+precondition(a.formulas["ii/I"]!.LHIntervals == [2,5,9])
+precondition(a.formulas["ii/I"]!.Stack!.upperQuality == "minor")
+precondition(NoteSpelling.name(root:"C", interval:2, degree:"2") + "m/C" == "Dm/C")
 // The original, explicitly requested substitutions still apply.
 a.selectedChord="maj7"; a.selectedRoot=0; a.selectedScale="Major"
 precondition(a.voicedChordNotes(inversion:1) == [16,19,21,24])

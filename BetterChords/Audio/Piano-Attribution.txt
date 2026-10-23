@@ -1,0 +1,10 @@
+BetterChords Piano is a piano-only extraction (bank 0, program 0) from
+GeneralUser GS v2.0.3, by S. Christian Collins.
+https://www.schristiancollins.com/generaluser
+https://github.com/mrbumpy409/GeneralUser-GS
+
+Modified for BetterChords by retaining only Grand Piano and its referenced samples,
+including stereo links, loop data, generators, and modulators. Other instruments
+and their sample data were removed; the retained piano samples are unchanged.
+See GeneralUser-GS-LICENSE.txt for the original license.
+Reproduce with scripts/extract_piano_soundfont.py and the upstream SoundFont.

@@ -43,7 +43,21 @@
         "13(#11)",
         "7(b9, #5)",
         "7(#9, #11)",
-        "13(b9)"
+        "13(b9)",
+        "V/I",
+        "II/I",
+        "V over I",
+        "II over I",
+        "bVI/I",
+        "bVII/I",
+        "bIII/I",
+        "7(#5)",
+        "7(b5)",
+        "7alt",
+        "7(b13)",
+        "9(b13)",
+        "IV/I",
+        "ii/I"
       ]
     },
     {
@@ -61,7 +75,8 @@
         "min11",
         "min13",
         "min9b5",
-        "min11b5"
+        "min11b5",
+        "min(add9)"
       ]
     },
     {
@@ -92,6 +107,7 @@
       "triad": "sus4",
       "chords": [
         "sus4",
+        "sus4(add9)",
         "7sus4",
         "9sus4",
         "13sus4"
@@ -245,6 +261,25 @@
               "5",
               "6",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "Open",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "5"
+            ],
+            "RHIntervals": [
+              12,
+              16
+            ],
+            "RHDegrees": [
+              "8",
+              "10"
             ]
           }
         ]
@@ -438,6 +473,46 @@
               "6",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "Open",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "5"
+            ],
+            "RHIntervals": [
+              12,
+              15
+            ],
+            "RHDegrees": [
+              "8",
+              "b10"
+            ]
+          },
+          {
+            "name": "So What",
+            "LHIntervals": [
+              0,
+              5
+            ],
+            "LHDegrees": [
+              "1",
+              "4"
+            ],
+            "RHIntervals": [
+              10,
+              15,
+              19
+            ],
+            "RHDegrees": [
+              "b7",
+              "b10",
+              "12"
             ]
           }
         ]
@@ -728,6 +803,25 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "Open",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "5"
+            ],
+            "RHIntervals": [
+              12,
+              14
+            ],
+            "RHDegrees": [
+              "8",
+              "9"
+            ]
+          }
         ]
       },
       {
@@ -829,6 +923,25 @@
               "b6",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "Open",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "5"
+            ],
+            "RHIntervals": [
+              12,
+              17
+            ],
+            "RHDegrees": [
+              "8",
+              "11"
             ]
           }
         ]
@@ -1225,6 +1338,92 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST VI",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              9,
+              13,
+              16
+            ],
+            "RHDegrees": [
+              "6",
+              "#8",
+              "10"
+            ]
+          },
+          {
+            "name": "UST \u266fIV",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              10,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "#6",
+              "#8"
+            ]
+          },
+          {
+            "name": "UST \u266dIII",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              3,
+              7,
+              10
+            ],
+            "RHDegrees": [
+              "b3",
+              "5",
+              "b7"
+            ]
+          }
         ]
       },
       {
@@ -1330,6 +1529,71 @@
               "5",
               "6",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST V",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              7,
+              11,
+              14
+            ],
+            "RHDegrees": [
+              "5",
+              "7",
+              "9"
+            ]
+          },
+          {
+            "name": "UST VIm",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              9,
+              12,
+              16
+            ],
+            "RHDegrees": [
+              "6",
+              "8",
+              "10"
             ]
           }
         ]
@@ -1506,6 +1770,134 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST \u266dVI",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              8,
+              12,
+              15
+            ],
+            "RHDegrees": [
+              "b6",
+              "8",
+              "b10"
+            ]
+          },
+          {
+            "name": "UST \u266dVII",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              10,
+              14,
+              17
+            ],
+            "RHDegrees": [
+              "b7",
+              "9",
+              "11"
+            ]
+          },
+          {
+            "name": "UST \u266dII",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              1,
+              5,
+              8
+            ],
+            "RHDegrees": [
+              "b2",
+              "4",
+              "b6"
+            ]
+          },
+          {
+            "name": "UST IV",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              5,
+              9,
+              12
+            ],
+            "RHDegrees": [
+              "4",
+              "6",
+              "8"
+            ]
+          },
+          {
+            "name": "So What",
+            "LHIntervals": [
+              0,
+              5
+            ],
+            "LHDegrees": [
+              "1",
+              "4"
+            ],
+            "RHIntervals": [
+              10,
+              15,
+              19
+            ],
+            "RHDegrees": [
+              "b7",
+              "b10",
+              "12"
+            ]
+          }
         ]
       },
       {
@@ -1569,6 +1961,71 @@
               "6",
               "7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST V",
+            "LHIntervals": [
+              3,
+              11
+            ],
+            "LHDegrees": [
+              "b3",
+              "7"
+            ],
+            "RHIntervals": [
+              7,
+              11,
+              14
+            ],
+            "RHDegrees": [
+              "5",
+              "7",
+              "9"
+            ]
+          },
+          {
+            "name": "UST IV",
+            "LHIntervals": [
+              3,
+              11
+            ],
+            "LHDegrees": [
+              "b3",
+              "7"
+            ],
+            "RHIntervals": [
+              5,
+              9,
+              12
+            ],
+            "RHDegrees": [
+              "4",
+              "6",
+              "8"
+            ]
+          },
+          {
+            "name": "UST IIm",
+            "LHIntervals": [
+              3,
+              11
+            ],
+            "LHDegrees": [
+              "b3",
+              "7"
+            ],
+            "RHIntervals": [
+              2,
+              5,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "4",
+              "6"
             ]
           }
         ]
@@ -1655,6 +2112,71 @@
               "6",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST \u266fIV",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              10,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "#6",
+              "#8"
+            ]
+          },
+          {
+            "name": "UST \u266fIVm",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              9,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "6",
+              "#8"
+            ]
+          },
+          {
+            "name": "UST \u266dIIIm",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              3,
+              6,
+              10
+            ],
+            "RHDegrees": [
+              "b3",
+              "b5",
+              "b7"
             ]
           }
         ]
@@ -1858,6 +2380,50 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST Vm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              7,
+              10,
+              14
+            ],
+            "RHDegrees": [
+              "5",
+              "b7",
+              "9"
+            ]
+          }
         ]
       },
       {
@@ -1943,6 +2509,92 @@
               "#5",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST \u266dVI",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              8,
+              12,
+              15
+            ],
+            "RHDegrees": [
+              "b6",
+              "8",
+              "b10"
+            ]
+          },
+          {
+            "name": "UST \u266dIII",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              3,
+              7,
+              10
+            ],
+            "RHDegrees": [
+              "b3",
+              "5",
+              "b7"
+            ]
+          },
+          {
+            "name": "UST \u266dIIIm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              3,
+              6,
+              10
+            ],
+            "RHDegrees": [
+              "b3",
+              "b5",
+              "b7"
+            ]
+          },
+          {
+            "name": "UST Im",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              0,
+              3,
+              7
+            ],
+            "RHDegrees": [
+              "1",
+              "b3",
+              "5"
             ]
           }
         ]
@@ -2055,6 +2707,92 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST VI",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              9,
+              13,
+              16
+            ],
+            "RHDegrees": [
+              "6",
+              "#8",
+              "10"
+            ]
+          },
+          {
+            "name": "UST \u266fIV",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              10,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "#6",
+              "#8"
+            ]
+          },
+          {
+            "name": "UST \u266fIVm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              9,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "6",
+              "#8"
+            ]
+          },
+          {
+            "name": "UST \u266dIIm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              1,
+              4,
+              8
+            ],
+            "RHDegrees": [
+              "b2",
+              "b4",
+              "b6"
+            ]
+          }
         ]
       },
       {
@@ -2119,6 +2857,29 @@
               "#5",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST \u266dVI",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              8,
+              12,
+              15
+            ],
+            "RHDegrees": [
+              "b6",
+              "8",
+              "b10"
             ]
           }
         ]
@@ -2210,6 +2971,50 @@
               "#5",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST \u266fIV",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              10,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "#6",
+              "#8"
+            ]
+          },
+          {
+            "name": "UST \u266fIVm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              9,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "6",
+              "#8"
             ]
           }
         ]
@@ -2333,6 +3138,92 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST VI",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              9,
+              13,
+              16
+            ],
+            "RHDegrees": [
+              "6",
+              "#8",
+              "10"
+            ]
+          },
+          {
+            "name": "UST VIm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              9,
+              12,
+              16
+            ],
+            "RHDegrees": [
+              "6",
+              "8",
+              "10"
+            ]
+          },
+          {
+            "name": "UST \u266fIVm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              9,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "6",
+              "#8"
+            ]
+          }
         ]
       },
       {
@@ -2429,6 +3320,29 @@
               "b7",
               "7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
             ]
           }
         ]
@@ -2644,6 +3558,29 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          }
         ]
       },
       {
@@ -2749,6 +3686,71 @@
               "5",
               "6",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST V",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              7,
+              11,
+              14
+            ],
+            "RHDegrees": [
+              "5",
+              "7",
+              "9"
+            ]
+          },
+          {
+            "name": "UST VIIm",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              11,
+              14,
+              18
+            ],
+            "RHDegrees": [
+              "7",
+              "9",
+              "#11"
             ]
           }
         ]
@@ -2964,6 +3966,50 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST V",
+            "LHIntervals": [
+              3,
+              11
+            ],
+            "LHDegrees": [
+              "b3",
+              "7"
+            ],
+            "RHIntervals": [
+              7,
+              11,
+              14
+            ],
+            "RHDegrees": [
+              "5",
+              "7",
+              "9"
+            ]
+          },
+          {
+            "name": "UST IIm",
+            "LHIntervals": [
+              3,
+              11
+            ],
+            "LHDegrees": [
+              "b3",
+              "7"
+            ],
+            "RHIntervals": [
+              2,
+              5,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "4",
+              "6"
+            ]
+          }
         ]
       },
       {
@@ -3113,6 +4159,92 @@
               "6",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST \u266dVII",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              10,
+              14,
+              17
+            ],
+            "RHDegrees": [
+              "b7",
+              "9",
+              "11"
+            ]
+          },
+          {
+            "name": "UST IIm",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              5,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST Vm",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              7,
+              10,
+              14
+            ],
+            "RHDegrees": [
+              "5",
+              "b7",
+              "9"
             ]
           }
         ]
@@ -3375,6 +4507,27 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "Open",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "5"
+            ],
+            "RHIntervals": [
+              14,
+              16,
+              24
+            ],
+            "RHDegrees": [
+              "9",
+              "10",
+              "15"
+            ]
+          }
         ]
       },
       {
@@ -3489,6 +4642,29 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          }
         ]
       },
       {
@@ -3549,6 +4725,50 @@
               "6",
               "7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST VIIm",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              11,
+              14,
+              18
+            ],
+            "RHDegrees": [
+              "7",
+              "9",
+              "#11"
             ]
           }
         ]
@@ -3615,6 +4835,50 @@
               "6",
               "7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST VIIm",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              11,
+              14,
+              18
+            ],
+            "RHDegrees": [
+              "7",
+              "9",
+              "#11"
             ]
           }
         ]
@@ -3731,6 +4995,71 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST \u266dVII",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              10,
+              14,
+              17
+            ],
+            "RHDegrees": [
+              "b7",
+              "9",
+              "11"
+            ]
+          },
+          {
+            "name": "UST IIm",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              5,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "4",
+              "6"
+            ]
+          },
+          {
+            "name": "So What",
+            "LHIntervals": [
+              0,
+              5
+            ],
+            "LHDegrees": [
+              "1",
+              "4"
+            ],
+            "RHIntervals": [
+              10,
+              15,
+              19
+            ],
+            "RHDegrees": [
+              "b7",
+              "b10",
+              "12"
+            ]
+          }
         ]
       },
       {
@@ -3843,6 +5172,50 @@
               "6",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST IIm",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              5,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "4",
+              "6"
             ]
           }
         ]
@@ -3974,6 +5347,27 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "Open",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "5"
+            ],
+            "RHIntervals": [
+              12,
+              17,
+              22
+            ],
+            "RHDegrees": [
+              "8",
+              "11",
+              "b14"
+            ]
+          }
         ]
       },
       {
@@ -4103,6 +5497,29 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "Open",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "5"
+            ],
+            "RHIntervals": [
+              12,
+              17,
+              22,
+              26
+            ],
+            "RHDegrees": [
+              "8",
+              "11",
+              "b14",
+              "16"
+            ]
+          }
         ]
       },
       {
@@ -4215,6 +5632,31 @@
               "6",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "Open",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "5"
+            ],
+            "RHIntervals": [
+              12,
+              17,
+              22,
+              26,
+              33
+            ],
+            "RHDegrees": [
+              "8",
+              "11",
+              "b14",
+              "16",
+              "20"
             ]
           }
         ]
@@ -4348,6 +5790,92 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST \u266fIV",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              10,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "#6",
+              "#8"
+            ]
+          },
+          {
+            "name": "UST \u266fIVm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              9,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "6",
+              "#8"
+            ]
+          },
+          {
+            "name": "UST \u266dIIIm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              3,
+              6,
+              10
+            ],
+            "RHDegrees": [
+              "b3",
+              "b5",
+              "b7"
+            ]
+          }
         ]
       },
       {
@@ -4433,6 +5961,29 @@
               "#5",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
             ]
           }
         ]
@@ -4528,6 +6079,50 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST \u266fIVm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              9,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "6",
+              "#8"
+            ]
+          }
         ]
       },
       {
@@ -4615,6 +6210,29 @@
               "b6",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST \u266dIIm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              1,
+              4,
+              8
+            ],
+            "RHDegrees": [
+              "b2",
+              "b4",
+              "b6"
             ]
           }
         ]
@@ -4708,6 +6326,29 @@
               "8"
             ]
           }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST \u266dIIIm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              3,
+              6,
+              10
+            ],
+            "RHDegrees": [
+              "b3",
+              "b5",
+              "b7"
+            ]
+          }
         ]
       },
       {
@@ -4774,6 +6415,50 @@
               "6",
               "b7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST VI",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              9,
+              13,
+              16
+            ],
+            "RHDegrees": [
+              "6",
+              "#8",
+              "10"
+            ]
+          },
+          {
+            "name": "UST \u266fIVm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              9,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "6",
+              "#8"
             ]
           }
         ]
@@ -4993,6 +6678,1940 @@
               "#5",
               "7",
               "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST \u266dVI",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              8,
+              12,
+              15
+            ],
+            "RHDegrees": [
+              "b6",
+              "8",
+              "b10"
+            ]
+          },
+          {
+            "name": "UST III",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              4,
+              8,
+              11
+            ],
+            "RHDegrees": [
+              "3",
+              "#5",
+              "7"
+            ]
+          },
+          {
+            "name": "UST \u266dVIm",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [
+              8,
+              11,
+              15
+            ],
+            "RHDegrees": [
+              "b6",
+              "b8",
+              "b10"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "V/I",
+        "LHIntervals": [
+          7,
+          11,
+          14
+        ],
+        "LHDegrees": [
+          "5",
+          "7",
+          "9"
+        ],
+        "LHVoicings": [
+          [
+            7,
+            11,
+            14
+          ],
+          [
+            11,
+            14,
+            19
+          ],
+          [
+            14,
+            19,
+            23
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Upper root position",
+          "Upper first inversion",
+          "Upper second inversion"
+        ],
+        "Stack": {
+          "kind": "slash",
+          "upperInterval": 7,
+          "upperDegree": "5"
+        },
+        "RHExtension": [
+          19,
+          23,
+          26
+        ],
+        "RHDegrees": [
+          "12",
+          "14",
+          "16"
+        ],
+        "Scales": [
+          {
+            "name": "Major",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          {
+            "name": "Lydian",
+            "intervals": [
+              24,
+              26,
+              28,
+              30,
+              31,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "#4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          {
+            "name": "Major Bebop",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              32,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "b6",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          {
+            "name": "Harmonic Major",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              32,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "b6",
+              "7",
+              "8"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "V over I",
+        "LHIntervals": [
+          0,
+          4,
+          7
+        ],
+        "LHDegrees": [
+          "1",
+          "3",
+          "5"
+        ],
+        "LHVoicings": [
+          [
+            0,
+            4,
+            7
+          ],
+          [
+            4,
+            7,
+            12
+          ],
+          [
+            7,
+            12,
+            16
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Lower root position",
+          "Lower first inversion",
+          "Lower second inversion"
+        ],
+        "Stack": {
+          "kind": "polychord",
+          "upperInterval": 7,
+          "upperDegree": "5"
+        },
+        "RHChordIntervals": [
+          19,
+          23,
+          26
+        ],
+        "RHChordDegrees": [
+          "12",
+          "14",
+          "16"
+        ],
+        "Scales": [
+          {
+            "name": "Major",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          {
+            "name": "Lydian",
+            "intervals": [
+              24,
+              26,
+              28,
+              30,
+              31,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "#4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          {
+            "name": "Major Bebop",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              32,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "b6",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          {
+            "name": "Harmonic Major",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              32,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "b6",
+              "7",
+              "8"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "II/I",
+        "LHIntervals": [
+          2,
+          6,
+          9
+        ],
+        "LHDegrees": [
+          "2",
+          "#4",
+          "6"
+        ],
+        "LHVoicings": [
+          [
+            2,
+            6,
+            9
+          ],
+          [
+            6,
+            9,
+            14
+          ],
+          [
+            9,
+            14,
+            18
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Upper root position",
+          "Upper first inversion",
+          "Upper second inversion"
+        ],
+        "Stack": {
+          "kind": "slash",
+          "upperInterval": 2,
+          "upperDegree": "2"
+        },
+        "RHExtension": [
+          14,
+          18,
+          21
+        ],
+        "RHDegrees": [
+          "9",
+          "#11",
+          "13"
+        ],
+        "Scales": [
+          {
+            "name": "Lydian",
+            "intervals": [
+              24,
+              26,
+              28,
+              30,
+              31,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "#4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          {
+            "name": "Lydian dominant",
+            "intervals": [
+              24,
+              26,
+              28,
+              30,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "#4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "II over I",
+        "LHIntervals": [
+          0,
+          4,
+          7
+        ],
+        "LHDegrees": [
+          "1",
+          "3",
+          "5"
+        ],
+        "LHVoicings": [
+          [
+            0,
+            4,
+            7
+          ],
+          [
+            4,
+            7,
+            12
+          ],
+          [
+            7,
+            12,
+            16
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Lower root position",
+          "Lower first inversion",
+          "Lower second inversion"
+        ],
+        "Stack": {
+          "kind": "polychord",
+          "upperInterval": 2,
+          "upperDegree": "2"
+        },
+        "RHChordIntervals": [
+          14,
+          18,
+          21
+        ],
+        "RHChordDegrees": [
+          "9",
+          "#11",
+          "13"
+        ],
+        "Scales": [
+          {
+            "name": "Lydian",
+            "intervals": [
+              24,
+              26,
+              28,
+              30,
+              31,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "#4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          {
+            "name": "Lydian dominant",
+            "intervals": [
+              24,
+              26,
+              28,
+              30,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "#4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "bVI/I",
+        "LHIntervals": [
+          8,
+          12,
+          15
+        ],
+        "LHDegrees": [
+          "b6",
+          "8",
+          "b10"
+        ],
+        "LHVoicings": [
+          [
+            8,
+            12,
+            15
+          ],
+          [
+            12,
+            15,
+            20
+          ],
+          [
+            15,
+            20,
+            24
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Upper root position",
+          "Upper first inversion",
+          "Upper second inversion"
+        ],
+        "Stack": {
+          "kind": "slash",
+          "upperInterval": 8,
+          "upperDegree": "b6"
+        },
+        "Scales": [
+          {
+            "name": "Natural Minor",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Phrygian",
+            "intervals": [
+              24,
+              25,
+              27,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "b2",
+              "b3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Harmonic Minor",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              32,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "b6",
+              "7",
+              "8"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "bVII/I",
+        "LHIntervals": [
+          10,
+          14,
+          17
+        ],
+        "LHDegrees": [
+          "b7",
+          "9",
+          "11"
+        ],
+        "LHVoicings": [
+          [
+            10,
+            14,
+            17
+          ],
+          [
+            14,
+            17,
+            22
+          ],
+          [
+            17,
+            22,
+            26
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Upper root position",
+          "Upper first inversion",
+          "Upper second inversion"
+        ],
+        "Stack": {
+          "kind": "slash",
+          "upperInterval": 10,
+          "upperDegree": "b7"
+        },
+        "Scales": [
+          {
+            "name": "dominant",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Dorian",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Natural Minor",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "bIII/I",
+        "LHIntervals": [
+          3,
+          7,
+          10
+        ],
+        "LHDegrees": [
+          "b3",
+          "5",
+          "b7"
+        ],
+        "LHVoicings": [
+          [
+            3,
+            7,
+            10
+          ],
+          [
+            7,
+            10,
+            15
+          ],
+          [
+            10,
+            15,
+            19
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Upper root position",
+          "Upper first inversion",
+          "Upper second inversion"
+        ],
+        "Stack": {
+          "kind": "slash",
+          "upperInterval": 3,
+          "upperDegree": "b3"
+        },
+        "Scales": [
+          {
+            "name": "Natural Minor",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Dorian",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Phrygian",
+            "intervals": [
+              24,
+              25,
+              27,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "b2",
+              "b3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "7(#5)",
+        "LHIntervals": [
+          4,
+          8,
+          10
+        ],
+        "LHDegrees": [
+          "3",
+          "#5",
+          "b7"
+        ],
+        "LHVoicings": [
+          [
+            4,
+            8,
+            10
+          ],
+          [
+            10,
+            16,
+            20
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Built from 3rd",
+          "Built from 7th"
+        ],
+        "Scales": [
+          {
+            "name": "Whole Tone",
+            "intervals": [
+              24,
+              26,
+              28,
+              30,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "#4",
+              "#5",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Altered",
+            "intervals": [
+              24,
+              25,
+              27,
+              28,
+              30,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "b9",
+              "#9",
+              "3",
+              "b5",
+              "#5",
+              "b7",
+              "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST \u266dVI",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              8,
+              12,
+              15
+            ],
+            "RHDegrees": [
+              "b6",
+              "8",
+              "b10"
+            ]
+          },
+          {
+            "name": "UST \u266dIIm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              1,
+              4,
+              8
+            ],
+            "RHDegrees": [
+              "b2",
+              "b4",
+              "b6"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "7(b5)",
+        "LHIntervals": [
+          4,
+          6,
+          10
+        ],
+        "LHDegrees": [
+          "3",
+          "b5",
+          "b7"
+        ],
+        "LHVoicings": [
+          [
+            4,
+            6,
+            10
+          ],
+          [
+            10,
+            16,
+            18
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Built from 3rd",
+          "Built from 7th"
+        ],
+        "Scales": [
+          {
+            "name": "Whole Tone",
+            "intervals": [
+              24,
+              26,
+              28,
+              30,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "#4",
+              "#5",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Lydian dominant",
+            "intervals": [
+              24,
+              26,
+              28,
+              30,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "#4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Altered",
+            "intervals": [
+              24,
+              25,
+              27,
+              28,
+              30,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "b9",
+              "#9",
+              "3",
+              "b5",
+              "#5",
+              "b7",
+              "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST II",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              2,
+              6,
+              9
+            ],
+            "RHDegrees": [
+              "2",
+              "#4",
+              "6"
+            ]
+          },
+          {
+            "name": "UST \u266fIV",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              6,
+              10,
+              13
+            ],
+            "RHDegrees": [
+              "#4",
+              "#6",
+              "#8"
+            ]
+          },
+          {
+            "name": "UST \u266dIIIm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              3,
+              6,
+              10
+            ],
+            "RHDegrees": [
+              "b3",
+              "b5",
+              "b7"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "7alt",
+        "LHIntervals": [
+          4,
+          8,
+          10,
+          15
+        ],
+        "LHDegrees": [
+          "3",
+          "b13",
+          "b7",
+          "#9"
+        ],
+        "LHVoicings": [
+          [
+            4,
+            8,
+            10,
+            15
+          ],
+          [
+            10,
+            15,
+            16,
+            20
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Built from 3rd",
+          "Built from 7th"
+        ],
+        "Scales": [
+          {
+            "name": "Altered",
+            "intervals": [
+              24,
+              25,
+              27,
+              28,
+              30,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "b9",
+              "#9",
+              "3",
+              "b5",
+              "#5",
+              "b7",
+              "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST \u266dVI",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              8,
+              12,
+              15
+            ],
+            "RHDegrees": [
+              "b6",
+              "8",
+              "b10"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "7(b13)",
+        "LHIntervals": [
+          4,
+          7,
+          8,
+          10
+        ],
+        "LHDegrees": [
+          "3",
+          "5",
+          "b13",
+          "b7"
+        ],
+        "LHVoicings": [
+          [
+            4,
+            7,
+            8,
+            10
+          ],
+          [
+            10,
+            16,
+            19,
+            20
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Built from 3rd",
+          "Built from 7th"
+        ],
+        "Scales": [
+          {
+            "name": "Mixolydian b6",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Phrygian Dominant",
+            "intervals": [
+              24,
+              25,
+              28,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "b2",
+              "3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "UST \u266dIIm",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              1,
+              4,
+              8
+            ],
+            "RHDegrees": [
+              "b2",
+              "b4",
+              "b6"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "9(b13)",
+        "LHIntervals": [
+          4,
+          8,
+          10,
+          14
+        ],
+        "LHDegrees": [
+          "3",
+          "b13",
+          "b7",
+          "9"
+        ],
+        "LHVoicings": [
+          [
+            4,
+            8,
+            10,
+            14
+          ],
+          [
+            10,
+            14,
+            16,
+            20
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Built from 3rd",
+          "Built from 7th"
+        ],
+        "Scales": [
+          {
+            "name": "Mixolydian b6",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "min(add9)",
+        "LHIntervals": [
+          0,
+          3,
+          7,
+          14
+        ],
+        "LHDegrees": [
+          "1",
+          "b3",
+          "5",
+          "9"
+        ],
+        "LHVoicings": [
+          [
+            0,
+            3,
+            7,
+            14
+          ],
+          [
+            3,
+            7,
+            14,
+            24
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Root position",
+          "First inversion"
+        ],
+        "Scales": [
+          {
+            "name": "Natural Minor",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Dorian",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Melodic Minor",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "Open",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "5"
+            ],
+            "RHIntervals": [
+              14,
+              15,
+              24
+            ],
+            "RHDegrees": [
+              "9",
+              "b10",
+              "15"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "IV/I",
+        "LHIntervals": [
+          5,
+          9,
+          12
+        ],
+        "LHDegrees": [
+          "4",
+          "6",
+          "8"
+        ],
+        "LHVoicings": [
+          [
+            5,
+            9,
+            12
+          ],
+          [
+            9,
+            12,
+            17
+          ],
+          [
+            12,
+            17,
+            21
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Upper root position",
+          "Upper first inversion",
+          "Upper second inversion"
+        ],
+        "Stack": {
+          "kind": "slash",
+          "upperInterval": 5,
+          "upperDegree": "4",
+          "upperQuality": "major"
+        },
+        "Scales": [
+          {
+            "name": "Major",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          {
+            "name": "dominant",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Dorian",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ii/I",
+        "LHIntervals": [
+          2,
+          5,
+          9
+        ],
+        "LHDegrees": [
+          "2",
+          "4",
+          "6"
+        ],
+        "LHVoicings": [
+          [
+            2,
+            5,
+            9
+          ],
+          [
+            5,
+            9,
+            14
+          ],
+          [
+            9,
+            14,
+            17
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Upper root position",
+          "Upper first inversion",
+          "Upper second inversion"
+        ],
+        "Stack": {
+          "kind": "slash",
+          "upperInterval": 2,
+          "upperDegree": "2",
+          "upperQuality": "minor"
+        },
+        "Scales": [
+          {
+            "name": "Major",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          {
+            "name": "dominant",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Dorian",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "sus4(add9)",
+        "LHIntervals": [
+          0,
+          5,
+          7,
+          14
+        ],
+        "LHDegrees": [
+          "1",
+          "4",
+          "5",
+          "9"
+        ],
+        "LHVoicings": [
+          [
+            0,
+            5,
+            7,
+            14
+          ],
+          [
+            5,
+            7,
+            14,
+            24
+          ],
+          [
+            7,
+            12,
+            14,
+            17
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Root position",
+          "Built from 4th",
+          "Built from 5th"
+        ],
+        "Scales": [
+          {
+            "name": "Major",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          {
+            "name": "dominant",
+            "intervals": [
+              24,
+              26,
+              28,
+              29,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Dorian",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Natural Minor",
+            "intervals": [
+              24,
+              26,
+              27,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "b3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ]
+          },
+          {
+            "name": "Suspended Pentatonic",
+            "intervals": [
+              24,
+              26,
+              29,
+              31,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "4",
+              "5",
+              "b7",
+              "8"
+            ]
+          }
+        ],
+        "HandVoicings": [
+          {
+            "name": "Open",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "5"
+            ],
+            "RHIntervals": [
+              14,
+              17,
+              24
+            ],
+            "RHDegrees": [
+              "9",
+              "11",
+              "15"
             ]
           }
         ]
