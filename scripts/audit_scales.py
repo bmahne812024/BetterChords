@@ -49,6 +49,13 @@ def validate_data():
         for ints, degrees in [('LHScaleIntervals', 'LHScaleDegrees'), ('RHExtension', 'RHDegrees')]:
             if ints in chord:
                 pairs.append((chord[ints], chord[degrees]))
+        if 'LHVoicings' in chord:
+            base_pitches = {i % 12 for i in chord['LHIntervals']}
+            for voicing in chord['LHVoicings']:
+                assert voicing == sorted(set(voicing)), chord['name']
+                assert {i % 12 for i in voicing} == base_pitches, chord['name']
+            if 'LHVoicingLabels' in chord:
+                assert len(chord['LHVoicingLabels']) == len(chord['LHVoicings'])
         names = []
         assert chord.get('Scales'), f'No scales for {chord["name"]}'
         for scale in chord['Scales']:
@@ -200,7 +207,12 @@ for chord in decoded.Chords.allChords {
             a.selectedScale = ""
             guard let close = a.voicedChordNotes(inversion: inversion) else { continue }
             precondition(a.rightHandNotes.isEmpty)
-            for option in ["Drop 2", "Drop 3", "Drop 2 & 3"] {
+            a.selectedScale = "Double"
+            precondition(a.rightHandNotes == Set(close.map { $0 + 12 }))
+            precondition(a.selectedChordNotes == Set(close).union([root]))
+            precondition(a.rightHandNotes.allSatisfy { (0..<60).contains($0) })
+            precondition(a.dropOptions.contains("Drop 2 & 3") == !a.triadNames.contains(chord.name))
+            for option in a.dropOptions {
                 a.selectedScale = option
                 guard let drop = a.dropVoicing else { fatalError("Missing drop voicing") }
                 let expected = Set(close.map { $0 % 12 })
@@ -218,6 +230,111 @@ for chord in decoded.Chords.allChords {
     }
 }
 print("PASS: \(dropsChecked) drop voicings, hand separation, spelling, and empty RH defaults")
+var shellsChecked = 0
+for chord in decoded.Chords.allChords {
+    a.selectedChord = chord.name
+    a.selectedScale = "LH Shell"
+    for root in 0..<12 {
+        a.selectedRoot = root
+        for inversion in a.availableInversions {
+            a.selectedInversion = inversion
+            guard let notes = a.voicedChordNotes(inversion: inversion) else { continue }
+            if chord.LHIntervals.first == 0 && inversion != 0 {
+                precondition(a.selectedShell == nil)
+                continue
+            }
+            if chord.LHIntervals.first != 0 && !chord.LHIntervals.contains(where: { [10,11].contains($0%12) }) {
+                precondition(a.selectedShell == nil)
+                continue
+            }
+            let loweredShell = ["9", "13", "9(13)", "13(9)"].contains(chord.name)
+            if loweredShell && root + 10 >= notes.first! {
+                precondition(a.selectedShell == nil)
+                continue
+            }
+            guard let shell = a.selectedShell else { fatalError("Missing shell for \(chord.name)") }
+            if loweredShell {
+                precondition(shell.left == Set([root, root + 10]))
+                precondition(shell.right == Set(notes))
+            }
+            if chord.LHIntervals.first == 0 {
+                precondition(shell.left == Set([notes.first!, notes.last!]))
+            } else {
+                let seventh = chord.LHIntervals.first(where: { [10,11].contains($0 % 12) })! % 12
+                precondition(Set(shell.left.map { ($0-root+12)%12 }) == Set([0,seventh]))
+            }
+            precondition(Set(shell.right.map { $0%12 }) == Set(notes.map { $0%12 }))
+            precondition(shell.right.min()! > shell.left.max()!)
+            precondition(a.selectedChordNotes.contains(root))
+            for note in shell.left.union(shell.right) {
+                precondition(pitchClass(of:a.noteName(note)) == note%12)
+            }
+            shellsChecked += 1
+        }
+    }
+}
+print("PASS: \(shellsChecked) shells, hand separation, spelling, and inversion restrictions")
+a.selectedChord="min6/9"; a.selectedRoot=0; a.selectedScale=""
+precondition(Array(a.availableInversions) == [0,1])
+precondition(a.voicedChordNotes(inversion:0) == [15,19,21,26])
+precondition(a.voicedChordNotes(inversion:1) == [21,26,27,31])
+precondition(a.voicedChordNotes(inversion:2) == nil)
+var rhChecked = 0
+for chord in decoded.Chords.allChords where !(chord.RHExtension ?? []).isEmpty {
+    a.selectedChord = chord.name
+    a.selectedScale = "Right hand extension"
+    for root in 0..<12 {
+        a.selectedRoot = root
+        for inversion in a.availableInversions {
+            a.selectedInversion = inversion
+            guard let lh = a.voicedChordNotes(inversion: inversion) else { continue }
+            let rh = a.rightHandNotes
+            precondition(rh.count == chord.RHExtension!.count)
+            precondition(rh.min()! > lh.max()!)
+            precondition(rh.allSatisfy { (0..<60).contains($0) })
+            for note in rh { precondition(pitchClass(of:a.noteName(note)) == note%12) }
+            rhChecked += 1
+        }
+    }
+}
+let alteredChords = ["7(#9)", "7(b9)", "7(#9, #5)", "7(b9, b5)"]
+for name in alteredChords {
+    a.selectedChord = name
+    a.selectedScale = ""
+    precondition(Array(a.availableInversions) == [0,1])
+    for root in 0..<12 {
+        a.selectedRoot = root
+        a.selectValidInversion()
+        precondition(a.voicedChordNotes(inversion:a.selectedInversion) != nil)
+        for inversion in a.availableInversions {
+            guard let notes = a.voicedChordNotes(inversion:inversion) else { continue }
+            let expectedBass = inversion == 0 ? 4 : 10
+            precondition((notes.first!-root+12)%12 == expectedBass)
+            precondition(notes.allSatisfy { (14...33).contains($0) })
+        }
+    }
+}
+print("PASS: \(rhChecked) RH extensions above LH without clipping; altered dominant basses/ranges/defaults")
+var explicitChecked = 0
+for chord in decoded.Chords.allChords {
+    guard let voicings = chord.LHVoicings, let labels = chord.LHVoicingLabels else { continue }
+    a.selectedChord = chord.name
+    a.selectedScale = ""
+    precondition(labels.count == voicings.count)
+    for root in 0..<12 {
+        a.selectedRoot = root
+        precondition(a.hasValidVoicing(chord:chord.name,root:root))
+        a.selectValidInversion()
+        precondition(a.voicedChordNotes(inversion:a.selectedInversion) != nil)
+        for inversion in a.availableInversions {
+            guard let notes = a.voicedChordNotes(inversion:inversion) else { continue }
+            precondition((notes.first!-root+12)%12 == voicings[inversion].first!%12)
+            precondition(notes.allSatisfy { (14...33).contains($0) })
+            explicitChecked += 1
+        }
+    }
+}
+print("PASS: \(explicitChecked) explicit voicings: bass, D–A range, and valid default in every root")
 // The original, explicitly requested substitutions still apply.
 a.selectedChord="maj7"; a.selectedRoot=0; a.selectedScale="Major"
 precondition(a.voicedChordNotes(inversion:1) == [16,19,21,24])

@@ -26,6 +26,8 @@ struct ChordCategories: Decodable {
 struct ChordFormula: Decodable {
     let name: String
     let LHIntervals: [Int]
+    let LHVoicings: [[Int]]?
+    let LHVoicingLabels: [String]?
     let LHDegrees: [String]
     let LHScaleIntervals: [Int]?
     let LHScaleDegrees: [String]?
@@ -89,6 +91,7 @@ struct ContentView: View {
     ]
 
     private var availableInversions: Range<Int> {
+        if let voicings = formulas[selectedChord]?.LHVoicings { return 0..<voicings.count }
         if selectedChord == "9" { return 0..<2 }
         return 0..<(extensionNames.contains(selectedChord) ? 1 : min(chordIntervals[selectedChord]?.count ?? 3, inversionNames.count))
     }
@@ -114,7 +117,12 @@ struct ContentView: View {
         case "minmaj9": return "Minor Major 9"
         case "dim7": return "Diminished 7"
         case "min7b5": return "Minor 7♭5"
-        default: return chord.replacingOccurrences(of: "#", with: "♯")
+        default:
+            let label: String
+            if chord.hasPrefix("maj") { label = "Major " + chord.dropFirst(3) }
+            else if chord.hasPrefix("min") { label = "Minor " + chord.dropFirst(3) }
+            else { label = chord }
+            return label.replacingOccurrences(of: "#", with: "♯").replacingOccurrences(of: "b", with: "♭")
         }
     }
     @State private var chordIntervals: [String: [Int]] = [:]
@@ -137,7 +145,22 @@ struct ContentView: View {
         let suffix = selectedChord == "maj" ? "" : selectedChord
             .replacingOccurrences(of: "min", with: "m")
             .replacingOccurrences(of: "#", with: "♯")
+            .replacingOccurrences(of: "b", with: "♭")
         return root + suffix
+    }
+
+    private var chordSymbolParts: (base: String, extensionText: String) {
+        guard roots.indices.contains(selectedRoot) else { return ("", "") }
+        let root = roots[selectedRoot].replacingOccurrences(of: "b", with: "♭")
+        if selectedChord == "maj" { return (root, "") }
+        if selectedChord.hasPrefix("min") {
+            let extensionText = String(selectedChord.dropFirst(3))
+                .replacingOccurrences(of: "b", with: "♭")
+                .replacingOccurrences(of: "#", with: "♯")
+            return (root + "m", extensionText)
+        }
+        // All remaining quality marks, extensions, and alterations are raised.
+        return (root, selectedChord.replacingOccurrences(of: "#", with: "♯").replacingOccurrences(of: "b", with: "♭"))
     }
 
     @ViewBuilder
@@ -155,14 +178,24 @@ struct ContentView: View {
                 }
                 if selectedChord == "minmaj9" {
                     Text("9")
-                        .font(.system(size: 30, weight: .bold))
+                        .font(.system(size: 28, weight: .bold))
+                        .offset(y: -12)
                 }
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(chordSymbol)
         } else {
-            Text(chordSymbol)
-                .font(.system(size: 48, weight: .bold))
+            HStack(alignment: .firstTextBaseline, spacing: 2) {
+                Text(chordSymbolParts.base)
+                    .font(.system(size: 48, weight: .bold))
+                if !chordSymbolParts.extensionText.isEmpty {
+                    Text(chordSymbolParts.extensionText)
+                        .font(.system(size: 28, weight: .bold))
+                        .baselineOffset(18)
+                }
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(chordSymbol)
         }
     }
 
@@ -187,10 +220,17 @@ struct ContentView: View {
         } else {
             formulaName = selectedChord
         }
-        let intervals = leftHandIntervals(for: formulaName, scale: scale).sorted()
-        guard !intervals.isEmpty, intervals.indices.contains(inversion) else { return nil }
-
-        let bassInterval = intervals[inversion]
+        let intervals: [Int]
+        let bassInterval: Int
+        if let voicings = formulas[formulaName]?.LHVoicings {
+            guard voicings.indices.contains(inversion), !voicings[inversion].isEmpty else { return nil }
+            intervals = voicings[inversion].sorted()
+            bassInterval = intervals[0]
+        } else {
+            intervals = leftHandIntervals(for: formulaName, scale: scale).sorted()
+            guard !intervals.isEmpty, intervals.indices.contains(inversion) else { return nil }
+            bassInterval = intervals[inversion]
+        }
         let bassNote = middleCNote + selectedRoot + bassInterval
         var notes = intervals.map { interval in
             bassNote + ((interval - bassInterval) % 12 + 12) % 12
@@ -215,7 +255,7 @@ struct ContentView: View {
     }
 
     private func hasValidVoicing(chord: String, root: Int, scale: String? = nil) -> Bool {
-        let count = chord == "9" ? 2 : (extensionNames.contains(chord) ? 1 : min(chordIntervals[chord]?.count ?? 0, inversionNames.count))
+        let count = formulas[chord]?.LHVoicings?.count ?? (chord == "9" ? 2 : (extensionNames.contains(chord) ? 1 : min(chordIntervals[chord]?.count ?? 0, inversionNames.count)))
         return (0..<count).contains { voicedChordNotes(inversion: $0, chord: chord, root: root, scale: scale) != nil }
     }
 
@@ -223,6 +263,12 @@ struct ContentView: View {
         selectedInversion = availableInversions.first {
             voicedChordNotes(inversion: $0) != nil
         } ?? 0
+    }
+
+    private var dropOptions: [String] {
+        triadNames.contains(selectedChord)
+            ? ["Drop 2", "Drop 3"]
+            : ["Drop 2", "Drop 3", "Drop 2 & 3"]
     }
 
     private var dropPositions: [Int] {
@@ -248,12 +294,56 @@ struct ContentView: View {
         return (left, right)
     }
 
+    private func shellVoicing(inversion: Int) -> (left: Set<Int>, right: Set<Int>)? {
+        guard let intervals = chordIntervals[selectedChord],
+              let notes = voicedChordNotes(inversion: inversion),
+              let bottom = notes.first, let top = notes.last else { return nil }
+        if ["9", "13", "9(13)", "13(9)"].contains(selectedChord) {
+            let left = Set([selectedRoot, selectedRoot + 10])
+            let right = Set(notes)
+            // Keep the existing chord register and lower the shell one octave.
+            // Disable combinations whose hands would overlap.
+            guard left.max()! < bottom else { return nil }
+            return (left, right)
+        }
+        let left: Set<Int>
+        if intervals.first == 0 {
+            // Traditional chords use only their root-position outer voices.
+            guard inversion == 0 else { return nil }
+            left = Set([bottom, top])
+        } else {
+            // Rootless voicings retain their actual seventh (major or minor).
+            guard let seventh = intervals.first(where: { [10, 11].contains($0 % 12) }) else { return nil }
+            var rootNote = 12 + selectedRoot
+            while rootNote + seventh % 12 > 33 { rootNote -= 12 }
+            left = Set([rootNote, rootNote + seventh % 12])
+        }
+        var right = notes.map { $0 + 12 }
+        // Keep the complete RH voicing strictly above the shell.
+        while right.min()! <= left.max()! { right = right.map { $0 + 12 } }
+        guard left.union(right).allSatisfy({ (0..<totalNotes).contains($0) }) else { return nil }
+        return (left, Set(right))
+    }
+
+    private var selectedShell: (left: Set<Int>, right: Set<Int>)? {
+        selectedScale == "LH Shell" ? shellVoicing(inversion: selectedInversion) : nil
+    }
+
+    private var leftHandNotes: Set<Int> {
+        if let selectedShell { return selectedShell.left }
+        if let dropVoicing { return dropVoicing.left }
+        return Set(voicedChordNotes(inversion: selectedInversion) ?? [])
+    }
+
     private var selectedChordNotes: Set<Int> {
-        if let dropVoicing { return dropVoicing.left.union([selectedRoot]) }
-        return Set(voicedChordNotes(inversion: selectedInversion) ?? []).union([selectedRoot])
+        leftHandNotes.union([selectedRoot])
     }
 
     private var rightHandNotes: Set<Int> {
+        if selectedScale == "Double" {
+            return Set((voicedChordNotes(inversion: selectedInversion) ?? []).map { $0 + 12 })
+        }
+        if let selectedShell { return selectedShell.right }
         if let dropVoicing { return dropVoicing.right }
         if selectedScale.isEmpty { return [] }
         if selectedScale != "Right hand extension" { return scaleNotes }
@@ -266,7 +356,14 @@ struct ContentView: View {
             voicedRoot = middleCNote + selectedRoot
             while voicedRoot + highestInterval > 33 { voicedRoot -= 12 }
         }
-        return Set(extensions.map { voicedRoot + $0 }.filter { (0..<totalNotes).contains($0) })
+        guard let highestLeft = voicedChordNotes(inversion: selectedInversion)?.max(), !extensions.isEmpty else { return [] }
+        var notes = extensions.map { voicedRoot + $0 }
+        while notes.min()! <= highestLeft { notes = notes.map { $0 + 12 } }
+        while notes.max()! >= totalNotes && notes.min()! - 12 > highestLeft {
+            notes = notes.map { $0 - 12 }
+        }
+        guard notes.allSatisfy({ (0..<totalNotes).contains($0) }) else { return [] }
+        return Set(notes)
     }
 
     private var scaleNotes: Set<Int> {
@@ -312,7 +409,9 @@ struct ContentView: View {
 
     private func highlightedColor(_ note: Int) -> Color {
         let color: Color
-        if note == selectedRoot {
+        if leftHandNotes.contains(note) {
+            color = .blue
+        } else if note == selectedRoot {
             color = .green
         } else if rightHandNotes.contains(note) {
             color = .purple
@@ -320,12 +419,17 @@ struct ContentView: View {
             color = .blue
         }
         guard isBlackKey(note) else { return color }
+        if leftHandNotes.contains(note) { return Color(red: 0.0, green: 0.26, blue: 0.52) }
         if note == selectedRoot { return Color(red: 0.09, green: 0.44, blue: 0.20) }
         if rightHandNotes.contains(note) { return Color(red: 0.34, green: 0.12, blue: 0.44) }
         return Color(red: 0.0, green: 0.26, blue: 0.52)
     }
 
     private func inversionLabel(_ inversion: Int) -> String {
+        if let labels = formulas[selectedChord]?.LHVoicingLabels, labels.indices.contains(inversion) {
+            return labels[inversion]
+        }
+        if selectedChord == "min6/9" { return inversion == 0 ? "Built from 3rd" : "Built from 6th" }
         if selectedChord == "9" && inversion == 0 { return "Built from 3rd" }
         if selectedChord == "9" && inversion == 1 { return "Built from 7th" }
         if (selectedChord == "13" || selectedChord == "13(9)") && inversion == 0 {
@@ -364,6 +468,12 @@ struct ContentView: View {
     private func noteName(_ note: Int) -> String {
         let root = roots[selectedRoot]
         if note == selectedRoot { return NoteSpelling.name(root: root, interval: 0, degree: "1") }
+        if selectedScale == "LH Shell", selectedShell?.left.contains(note) == true {
+            let pitch = (note - selectedRoot + 12) % 12
+            if pitch == 0 { return NoteSpelling.name(root: root, interval: 0, degree: "1") }
+            if pitch == 10 { return NoteSpelling.name(root: root, interval: 10, degree: "b7") }
+            if pitch == 11 { return NoteSpelling.name(root: root, interval: 11, degree: "7") }
+        }
         let pitchClass = (note - selectedRoot + 12) % 12
         func spell(_ intervals: [Int], _ degrees: [String]) -> String? {
             guard let index = intervals.firstIndex(where: { $0 % 12 == pitchClass }),
@@ -481,7 +591,7 @@ struct ContentView: View {
                         }
                         .accessibilityLabel("Extension")
 
-                        if selectedChord == "9" || selectedChord == "13" || selectedChord == "13(9)" {
+                        if formulas[selectedChord]?.LHVoicings != nil || selectedChord == "9" || selectedChord == "13" || selectedChord == "13(9)" {
                             inversionMenu
                         }
 
@@ -500,7 +610,26 @@ struct ContentView: View {
                                         Text("RH")
                                     }
                                 }
-                                ForEach(["Drop 2", "Drop 3", "Drop 2 & 3"], id: \.self) { option in
+                                Button {
+                                    selectedScale = "LH Shell"
+                                } label: {
+                                    if selectedScale == "LH Shell" {
+                                        Label("LH Shell", systemImage: "checkmark")
+                                    } else {
+                                        Text("LH Shell")
+                                    }
+                                }
+                                .disabled(shellVoicing(inversion: selectedInversion) == nil)
+                                Button {
+                                    selectedScale = "Double"
+                                } label: {
+                                    if selectedScale == "Double" {
+                                        Label("Double", systemImage: "checkmark")
+                                    } else {
+                                        Text("Double")
+                                    }
+                                }
+                                ForEach(dropOptions, id: \.self) { option in
                                     Button {
                                         selectedScale = option
                                     } label: {
@@ -725,6 +854,11 @@ struct ContentView: View {
         }
         .onChange(of: selectedRoot) { _, _ in
             selectValidInversion()
+        }
+        .onChange(of: selectedInversion) { _, _ in
+            if selectedScale == "LH Shell" && shellVoicing(inversion: selectedInversion) == nil {
+                selectedScale = ""
+            }
         }
         .onChange(of: selectedScale) { _, _ in
             if voicedChordNotes(inversion: selectedInversion) == nil {

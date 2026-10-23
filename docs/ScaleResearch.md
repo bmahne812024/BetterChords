@@ -73,3 +73,62 @@ The app keeps the original choices first. An em dash means the chord already had
 Run `python3 scripts/audit_scales.py` from the repository. It validates the JSON, unique names, interval/degree agreement, and all chord-group links. It then extracts the actual Swift model, spelling, LH voicing, scale placement, and note-label functions into a temporary command-line audit; the test does not maintain a second implementation of the placement algorithm.
 
 The October 21 pass checked 863 interval/degree pairs, 2,864 valid root/chord/inversion/scale combinations, and 35,419 displayed-note labels. It excluded 220 unavailable voicings. All scales were complete, within the 60-key keyboard, and strictly above the highest LH note. The highest used key was index 59. The iOS Simulator build passed.
+
+
+## Altered dominants added October 22, 2026
+
+Four new Major-group extensions use conventional dominant-seventh names: `7(#9)`, `7(b9)`, `7(#9, #5)`, and `7(b9, b5)`. They omit the root from the LH; the separate bass root remains present. Explicit `LHVoicings` and `LHVoicingLabels` store two forms, built from the third and from the flat seventh. The existing second-D to third-A range (indices 14–33) applies to each complete voicing. Unavailable forms are disabled; root/chord changes choose the first fitting form.
+
+| Chord | Built from 3rd | Built from 7th | RH extension | Scales |
+| --- | --- | --- | --- | --- |
+| 7(#9) | 4, 10, 15 | 10, 15, 16 | 19, 24 | Half-whole diminished; Altered |
+| 7(b9) | 4, 10, 13 | 10, 13, 16 | 19, 24 | Half-whole diminished; Phrygian Dominant; Altered |
+| 7(#9, #5) | 4, 8, 10, 15 | 10, 15, 16, 20 | 20, 24 | Altered |
+| 7(b9, b5) | 4, 6, 10, 13 | 10, 13, 16, 18 | 18, 24 | Half-whole diminished; Altered |
+
+The RH dyads are app-specific arrangements of the written fifth (perfect, raised, or lowered) and root. Their entire register shifts by octaves as necessary to stay strictly above the LH. A scale replaces that dyad. No natural ninth or perfect fifth is forced into an explicitly altered LH formula.
+
+Altered uses stored semitones `24, 25, 27, 28, 30, 32, 34, 36`, with tension-oriented spelling degrees `1, b9, #9, 3, b5, #5, b7, 8`. Phrygian Dominant uses `24, 25, 28, 29, 31, 32, 34, 36` with `1, b2, 3, 4, 5, b6, b7, 8`. Existing Half-whole Diminished data is reused unchanged in pitch and degree, with the upper-octave offset. Every included scale contains all explicitly voiced LH pitch classes. Whole Tone and unaltered dominant/bebop scales are excluded because they omit the requested altered ninth.
+
+Sources and arrangement rationale:
+
+- [Jazz Nomenclature Packet](https://jazzday.com/media/Dyas-Jazz-Nomenclature-Packet-Complete.pdf): chord-symbol chart includes these exact four chord types; the chord-scale discussion distinguishes diminished and altered dominant pitch collections.
+- [The Jazz Piano Site: Rootless Voicings](https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/): third- and seventh-based forms, retaining guide tones and altering tensions.
+- [The Jazz Piano Site: Melodic Minor Modes and Altered Scale](https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/melodic-minor-modes/): altered tensions and omission of the natural fifth.
+- [The Jazz Piano Site: Diminished Scale](https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/diminished-scale/): half-whole use over dominant flat-nine chords.
+- Dr. Mark Watkins, BYU–Idaho, [Fundamentals of Jazz Improvisation, Theory 2](https://content.byui.edu/file/be14498b-aa3f-4b2a-b9e6-4fb3fdbd1d12/1/05%20Theory%202.pdf), pages 5–8: Phrygian Dominant over V7(b9) and Altered over altered fifths/ninths.
+
+The earlier placement section describes the October 21 defaults. Current menus default to empty `RH` per the later user request, and offer Double, LH Shell, Drop options, extensions, and scales where supported.
+
+
+## Additional chord families, October 22, 2026
+
+Nineteen additional formulas complete the previously proposed list. Existing formulas and scale choices are preserved. Rootless major/minor forms use third/seventh basses, sixth chords use third/sixth, add9 uses third/fifth, and suspended forms use fourth/seventh. Each entire LH voicing must fit indices 14–33. RH extensions are app arrangements of supporting chord tones or available tensions, placed above the LH as complete octave-shifted groups. Scales replace the extension and are checked against every explicit LH pitch class.
+
+| Chord | LH intervals | LH degrees | RH extension | RH degrees | Scales |
+| --- | --- | --- | --- | --- | --- |
+| 6/9 | 4, 7, 9, 14 | 3, 5, 6, 9 | 19, 24 | 12, 15 | Major; Lydian; Major Pentatonic; Major Bebop |
+| add9 | 4, 7, 14 | 3, 5, 9 | 19, 24 | 12, 15 | Major; Lydian; Major Pentatonic; Harmonic Major |
+| maj13 | 4, 9, 11, 14 | 3, 13, 7, 9 | 19, 24 | 12, 15 | Major; Lydian; Major Bebop |
+| maj7(#11) | 4, 6, 11 | 3, #11, 7 | 19, 24 | 12, 15 | Lydian |
+| maj9(#11) | 4, 6, 11, 14 | 3, #11, 7, 9 | 19, 24 | 12, 15 | Lydian |
+| min11 | 3, 5, 10, 14 | b3, 11, b7, 9 | 19, 24 | 12, 15 | Dorian; Natural Minor; Dorian Bebop |
+| min13 | 3, 9, 10, 14 | b3, 13, b7, 9 | 19, 24 | 12, 15 | Dorian; Dorian Bebop; Dorian #4 |
+| 7sus4 | 5, 7, 10 | 4, 5, b7 | 19, 24 | 12, 15 | dominant; dominant bebop; Dorian; Suspended Pentatonic |
+| 9sus4 | 5, 10, 14 | 4, b7, 9 | 19, 24 | 12, 15 | dominant; dominant bebop; Dorian; Suspended Pentatonic |
+| 13sus4 | 5, 9, 10, 14 | 4, 13, b7, 9 | 19, 24 | 12, 15 | dominant; dominant bebop; Dorian |
+| 7(#11) | 4, 6, 10 | 3, #11, b7 | 19, 24 | 12, 15 | Lydian dominant; Whole Tone; half-whole diminished; Altered |
+| 9(#11) | 4, 6, 10, 14 | 3, #11, b7, 9 | 19, 24 | 12, 15 | Lydian dominant; Whole Tone |
+| 13(#11) | 4, 6, 9, 10 | 3, #11, 13, b7 | 26, 31, 36 | 16, 19, 22 | Lydian dominant; half-whole diminished |
+| 7(b9, #5) | 4, 8, 10, 13 | 3, #5, b7, b9 | 20, 24 | #12, 15 | Altered; Phrygian Dominant |
+| 7(#9, #11) | 4, 6, 10, 15 | 3, #11, b7, #9 | 19, 24 | 12, 15 | half-whole diminished; Altered |
+| 13(b9) | 4, 9, 10, 13 | 3, 13, b7, b9 | 19, 24 | 12, 15 | half-whole diminished |
+| min9b5 | 3, 6, 10, 14 | b3, b5, b7, 9 | 17, 24 | 11, 15 | Locrian Natural 2 |
+| min11b5 | 3, 5, 6, 10, 14 | b3, 11, b5, b7, 9 | 24, 29 | 15, 18 | Locrian Natural 2 |
+| maj7(#5) | 4, 8, 11 | 3, #5, 7 | 26, 36 | 16, 22 | Lydian Augmented; Augmented |
+
+All scale patterns reuse the existing validated data, shifted to a stored starting offset of 24. Minor 13 requires a natural sixth, so Natural Minor is excluded. Minor ninth/eleventh flat-five requires a natural ninth, so Locrian Natural 2 is used rather than ordinary Locrian. The augmented-major seventh requires both a raised fifth and a major seventh, excluding Whole Tone. 13(b9) retains a natural thirteenth and uses Half-whole Diminished, excluding Altered and Phrygian Dominant. Suspended scales can include a third as a passing scale tone, but the LH chord contains the fourth and no third.
+
+For compact rootless maj13/min13 voicings, the fifth is supplied by the RH extension rather than crowded into the LH. For 13(#11), the LH retains the sharp eleventh and thirteenth; the RH extension supplies ninth, fifth, and root. Minor 11 flat-five keeps its ninth and eleventh in the LH so it remains distinct from Minor 9 flat-five.
+
+Sources: [Jazz Nomenclature Packet, chord and chord-scale charts](https://jazzday.com/media/Dyas-Jazz-Nomenclature-Packet-Complete.pdf), [TJPS rootless voicing principles](https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/), and the scale-specific sources documented above. The exact LH/RH distributions are arrangements for this app, not verbatim transcriptions of the source examples.
