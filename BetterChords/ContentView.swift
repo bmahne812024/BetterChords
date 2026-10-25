@@ -258,6 +258,14 @@ struct ContentView: View {
         return chordIntervals[chord] ?? []
     }
 
+    private func leftHandFloor(bassInterval: Int, intervals: [Int], degrees: [String]) -> Int {
+        let pitch = (bassInterval % 12 + 12) % 12
+        let degree = zip(intervals, degrees).first { ($0.0 % 12 + 12) % 12 == pitch }?.1
+        let number = degree.flatMap { Int($0.filter(\.isNumber)) }
+        let startsOnThirdOrSeventh = number.map { [3, 7].contains(($0 - 1) % 7 + 1) } ?? false
+        return startsOnThirdOrSeventh ? 14 : 10 // D3 or B♭2; upper limit stays A4.
+    }
+
     private func voicedChordNotes(inversion: Int, chord: String? = nil, root: Int? = nil, scale: String? = nil) -> [Int]? {
         let selectedChord = chord ?? self.selectedChord
         let selectedRoot = root ?? self.selectedRoot
@@ -289,17 +297,18 @@ struct ContentView: View {
         if triadNames.contains(selectedChord) || formulas[selectedChord]?.Stack?.kind == "polychord" {
             while notes.first! >= 24 { notes = notes.map { $0 - 12 } }
             while notes.first! < 12 { notes = notes.map { $0 + 12 } }
-            return notes
         }
 
-        // Move the whole voicing so its highest note ends in the target range.
-        let usesDARange = !triadNames.contains(selectedChord)
-        let highestAllowed = usesDARange ? 33 : 35
-        while notes.last! > highestAllowed { notes = notes.map { $0 - 12 } }
-        while notes.last! < (usesDARange ? 14 : 24) {
+        let formula = formulas[formulaName]
+        let lowestAllowed = leftHandFloor(bassInterval: bassInterval,
+                                          intervals: formula?.LHIntervals ?? [],
+                                          degrees: formula?.LHDegrees ?? [])
+        // Third/seventh basses stay in D–A; other basses may reach B♭ below D.
+        while notes.last! > 33 { notes = notes.map { $0 - 12 } }
+        while notes.first! < lowestAllowed {
             notes = notes.map { $0 + 12 }
         }
-        if usesDARange && notes.first! < 14 { return nil }
+        guard notes.last! <= 33 else { return nil }
         return notes
     }
 
@@ -340,7 +349,21 @@ struct ContentView: View {
         let left = Set(droppedIndices.map { upperNotes[$0] - 12 })
         let right = Set(upperNotes.indices.filter { !droppedIndices.contains($0) }.map { upperNotes[$0] })
         guard left.union(right).allSatisfy({ (0..<totalNotes).contains($0) }) else { return nil }
-        return (left, right)
+        return boundedHandVoicing(left: left, right: right)
+    }
+
+    private func boundedHandVoicing(left: Set<Int>, right: Set<Int>) -> (left: Set<Int>, right: Set<Int>)? {
+        guard let bass = left.min(), let top = left.max(), let formula = formulas[selectedChord] else { return nil }
+        let floor = leftHandFloor(bassInterval: bass - selectedRoot,
+                                  intervals: formula.LHIntervals, degrees: formula.LHDegrees)
+        var shift = 0
+        while top + shift > 33 { shift -= 12 }
+        while bass + shift < floor { shift += 12 }
+        let adjustedLeft = Set(left.map { $0 + shift })
+        let adjustedRight = Set(right.map { $0 + shift })
+        guard adjustedLeft.allSatisfy({ (floor...33).contains($0) }),
+              adjustedRight.allSatisfy({ (0..<totalNotes).contains($0) }) else { return nil }
+        return (adjustedLeft, adjustedRight)
     }
 
     private func shellVoicing(inversion: Int) -> (left: Set<Int>, right: Set<Int>)? {
@@ -353,7 +376,7 @@ struct ContentView: View {
             // Keep the existing chord register and lower the shell one octave.
             // Disable combinations whose hands would overlap.
             guard left.max()! < bottom else { return nil }
-            return (left, right)
+            return boundedHandVoicing(left: left, right: right)
         }
         let left: Set<Int>
         if intervals.first == 0 {
@@ -371,7 +394,7 @@ struct ContentView: View {
         // Keep the complete RH voicing strictly above the shell.
         while right.min()! <= left.max()! { right = right.map { $0 + 12 } }
         guard left.union(right).allSatisfy({ (0..<totalNotes).contains($0) }) else { return nil }
-        return (left, Set(right))
+        return boundedHandVoicing(left: left, right: Set(right))
     }
 
     private var selectedShell: (left: Set<Int>, right: Set<Int>)? {
@@ -383,11 +406,14 @@ struct ContentView: View {
     }
 
     private func handVoicing(_ formula: HandVoicingFormula) -> (left: Set<Int>, right: Set<Int>)? {
+        guard let bassInterval = formula.LHIntervals.min() else { return nil }
+        let lowestAllowed = leftHandFloor(bassInterval: bassInterval,
+                                          intervals: formula.LHIntervals, degrees: formula.LHDegrees)
         var anchor = 12 + selectedRoot
         var left = formula.LHIntervals.map { anchor + $0 }
         while left.max()! > 33 { anchor -= 12; left = formula.LHIntervals.map { anchor + $0 } }
-        while left.min()! < 14 { anchor += 12; left = formula.LHIntervals.map { anchor + $0 } }
-        guard left.allSatisfy({ (14...33).contains($0) }) else { return nil }
+        while left.min()! < lowestAllowed { anchor += 12; left = formula.LHIntervals.map { anchor + $0 } }
+        guard left.allSatisfy({ (lowestAllowed...33).contains($0) }) else { return nil }
         var right = formula.RHIntervals.map { anchor + $0 }
         while right.min()! <= left.max()! { right = right.map { $0 + 12 } }
         guard right.allSatisfy({ (0..<totalNotes).contains($0) }) else { return nil }
@@ -447,8 +473,15 @@ struct ContentView: View {
         guard let extensions = rightHandExtensions[selectedChord],
               let bass = voicedChordNotes(inversion: selectedInversion)?.first else { return [] }
         let intervals = (chordIntervals[selectedChord] ?? []).sorted()
-        guard intervals.indices.contains(selectedInversion) else { return [] }
-        var voicedRoot = bass - intervals[selectedInversion]
+        let bassInterval: Int
+        if let voicings = formulas[selectedChord]?.LHVoicings,
+           voicings.indices.contains(selectedInversion), let first = voicings[selectedInversion].first {
+            bassInterval = first
+        } else {
+            guard intervals.indices.contains(selectedInversion) else { return [] }
+            bassInterval = intervals[selectedInversion]
+        }
+        var voicedRoot = bass - bassInterval
         if extensionNames.contains(selectedChord), let highestInterval = intervals.max() {
             voicedRoot = middleCNote + selectedRoot
             while voicedRoot + highestInterval > 33 { voicedRoot -= 12 }
@@ -581,7 +614,7 @@ struct ContentView: View {
                 return NoteSpelling.name(root: root, interval: intervals[index], degree: degrees[index])
             }
         }
-        if note == selectedRoot { return NoteSpelling.name(root: root, interval: 0, degree: "1") }
+        if note % 12 == selectedRoot { return NoteSpelling.name(root: root, interval: 0, degree: "1") }
         if selectedScale == "LH Shell", selectedShell?.left.contains(note) == true {
             let pitch = (note - selectedRoot + 12) % 12
             if pitch == 0 { return NoteSpelling.name(root: root, interval: 0, degree: "1") }
@@ -1153,5 +1186,5 @@ struct ContentView: View {
 
 
 #Preview(traits: .landscapeLeft) {
-    ContentView(initialChord: "maj")
+    ContentView(initialChord: "maj7(#5)")
 }

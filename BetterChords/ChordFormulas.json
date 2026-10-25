@@ -6621,11 +6621,32 @@
             11,
             16,
             20
+          ],
+          [
+            0,
+            4,
+            8,
+            11
+          ],
+          [
+            8,
+            11,
+            12,
+            16
+          ],
+          [
+            11,
+            12,
+            16,
+            20
           ]
         ],
         "LHVoicingLabels": [
           "Built from 3rd",
-          "Built from 7th"
+          "Built from 7th",
+          "Root position",
+          "Second inversion",
+          "Third inversion"
         ],
         "RHExtension": [
           26,

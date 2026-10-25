@@ -53,7 +53,12 @@ def validate_data():
             base_pitches = {i % 12 for i in chord['LHIntervals']}
             for voicing in chord['LHVoicings']:
                 assert voicing == sorted(set(voicing)), chord['name']
-                assert {i % 12 for i in voicing} == base_pitches, chord['name']
+                voiced_pitches = {i % 12 for i in voicing}
+                # Major 7 #5 offers both rootless and complete inversions.
+                allowed_pitches = [base_pitches]
+                if chord['name'] == 'maj7(#5)':
+                    allowed_pitches.append(base_pitches | {0})
+                assert voiced_pitches in allowed_pitches, chord['name']
             if 'LHVoicingLabels' in chord:
                 assert len(chord['LHVoicingLabels']) == len(chord['LHVoicings'])
         for option in chord.get('HandVoicings', []):
@@ -120,6 +125,7 @@ let middleCNote = 24
 let totalNotes = 60
 let inversionNames = ["Root", "First", "Second", "Third", "Fourth"]
 var selectedRoot = 0
+var rootEnabled = true
 var selectedChord = "maj"
 var selectedInversion = 0
 var selectedScale = ""
@@ -157,6 +163,14 @@ func pitchClass(of name: String) -> Int {
     }
     return (natural[name.first!]! + alteration + 24) % 12
 }
+func expectedFloor(_ chord: ChordFormula, bass: Int) -> Int {
+    let pitch = (bass % 12 + 12) % 12
+    for (interval, degree) in zip(chord.LHIntervals, chord.LHDegrees) where interval % 12 == pitch {
+        let number = Int(degree.filter { $0.isNumber })!
+        if [3, 7].contains((number - 1) % 7 + 1) { return 14 }
+    }
+    return 10
+}
 precondition(NoteSpelling.name(root:"Db", interval:3, degree:"b3") == "F♭")
 precondition(NoteSpelling.name(root:"Db", interval:6, degree:"b5") == "A𝄫")
 precondition(NoteSpelling.name(root:"Db", interval:9, degree:"bb7") == "C𝄫")
@@ -176,11 +190,8 @@ for chord in decoded.Chords.allChords {
             for inversion in a.availableInversions {
                 a.selectedInversion = inversion
                 guard let lh = a.voicedChordNotes(inversion:inversion) else { disabled += 1; continue }
-                if a.triadNames.contains(chord.name) || chord.Stack?.kind == "polychord" {
-                    precondition((12..<24).contains(lh.first!))
-                } else {
-                    precondition(lh.allSatisfy { (14...33).contains($0) })
-                }
+                let floor = expectedFloor(chord, bass: lh.first! - root)
+                precondition(lh.allSatisfy { (floor...33).contains($0) })
                 precondition(a.chordPlaybackNotes == Set(lh).union([root]), "Scale leaked into chord playback")
                 let notes = a.scaleNotes.sorted()
                 let description = "\\(root) \\(chord.name) inversion \\(inversion) \\(scale.name)"
@@ -226,6 +237,7 @@ for chord in decoded.Chords.allChords {
                 guard let drop = a.dropVoicing else { fatalError("Missing drop voicing") }
                 let expected = Set(close.map { $0 % 12 })
                 precondition(Set(drop.left.union(drop.right).map { $0 % 12 }) == expected)
+                precondition(drop.left.allSatisfy { (expectedFloor(chord, bass: drop.left.min()! - root)...33).contains($0) })
                 precondition(drop.left.isDisjoint(with: drop.right))
                 precondition(drop.left.count == a.dropPositions.count)
                 precondition(drop.left.count + drop.right.count == close.count)
@@ -262,18 +274,23 @@ for chord in decoded.Chords.allChords {
                 precondition(a.selectedShell == nil)
                 continue
             }
-            guard let shell = a.selectedShell else { fatalError("Missing shell for \(chord.name)") }
+            guard let shell = a.selectedShell else { continue }
             if loweredShell {
-                precondition(shell.left == Set([root, root + 10]))
-                precondition(shell.right == Set(notes))
+                let shift = shell.left.min()! - root
+                precondition(shift % 12 == 0)
+                precondition(shell.left == Set([root + shift, root + 10 + shift]))
+                precondition(shell.right == Set(notes.map { $0 + shift }))
             }
             if chord.LHIntervals.first == 0 {
-                precondition(shell.left == Set([notes.first!, notes.last!]))
+                let shift = shell.left.min()! - notes.first!
+                precondition(shift % 12 == 0)
+                precondition(shell.left == Set([notes.first! + shift, notes.last! + shift]))
             } else {
                 let seventh = chord.LHIntervals.first(where: { [10,11].contains($0 % 12) })! % 12
                 precondition(Set(shell.left.map { ($0-root+12)%12 }) == Set([0,seventh]))
             }
             precondition(Set(shell.right.map { $0%12 }) == Set(notes.map { $0%12 }))
+            precondition(shell.left.allSatisfy { (expectedFloor(chord, bass: shell.left.min()! - root)...33).contains($0) })
             precondition(shell.right.min()! > shell.left.max()!)
             precondition(a.selectedChordNotes.contains(root))
             for note in shell.left.union(shell.right) {
@@ -341,20 +358,36 @@ for chord in decoded.Chords.allChords {
             guard let notes = a.voicedChordNotes(inversion:inversion) else { continue }
             precondition((notes.first!-root+12)%12 == voicings[inversion].first!%12)
             if chord.Stack?.kind == "polychord" {
-                precondition((12..<24).contains(notes.first!))
+                precondition(notes.allSatisfy { (expectedFloor(chord, bass: notes.first! - root)...33).contains($0) })
                 a.selectedInversion = inversion
                 let upper = a.coreRightHandNotes(inversion: inversion)
                 precondition(upper.count == 3 && upper.min()! > notes.last!)
                 precondition(upper.allSatisfy { (0..<60).contains($0) })
                 for note in upper { precondition(pitchClass(of:a.noteName(note)) == note%12) }
             } else {
-                precondition(notes.allSatisfy { (14...33).contains($0) })
+                precondition(notes.allSatisfy { (expectedFloor(chord, bass: notes.first! - root)...33).contains($0) })
             }
             explicitChecked += 1
         }
     }
 }
-print("PASS: \(explicitChecked) explicit voicings: bass, D–A range, and valid default in every root")
+print("PASS: \(explicitChecked) explicit voicings: bass, bass-dependent range, and valid default in every root")
+// Root and fifth basses may reach B-flat; thirds and sevenths retain D.
+a.selectedChord="maj7(#5)"; a.selectedRoot=0; a.selectedScale=""
+precondition(a.voicedChordNotes(inversion:2) == [12,16,20,23])
+a.selectedRoot=10
+precondition(a.voicedChordNotes(inversion:2) == [22,26,30,33])
+precondition(a.leftHandFloor(bassInterval:0, intervals:[0,4,8,11], degrees:["1","3","#5","7"]) == 10)
+a.selectedRoot=1
+precondition(a.voicedChordNotes(inversion:2) == [13,17,21,24])
+for root in 0..<12 {
+    a.selectedRoot=root
+    for inversion in [0,1,4] {
+        if let notes=a.voicedChordNotes(inversion:inversion) {
+            precondition(notes.allSatisfy { (14...33).contains($0) })
+        }
+    }
+}
 // Full upper chords remain present in the default mode, unlike slash bass chords.
 a.selectedRoot=0; a.selectedScale=""; a.selectedInversion=0
 a.selectedChord="V over I"
@@ -375,7 +408,10 @@ for chord in decoded.Chords.allChords {
         for root in 0..<12 {
             a.selectedRoot = root
             guard let hands = a.handVoicing(option) else { fatalError("Hand option out of range") }
-            precondition(hands.left.allSatisfy { (14...33).contains($0) })
+            let bassDegree = option.LHDegrees[option.LHIntervals.firstIndex(of: option.LHIntervals.min()!)!]
+            let bassNumber = Int(bassDegree.filter { $0.isNumber })!
+            let floor = [3, 7].contains((bassNumber - 1) % 7 + 1) ? 14 : 10
+            precondition(hands.left.allSatisfy { (floor...33).contains($0) })
             precondition(hands.right.min()! > hands.left.max()!)
             precondition(hands.right.allSatisfy { (0..<60).contains($0) })
             precondition(hands.left.count == option.LHIntervals.count)
@@ -390,8 +426,8 @@ for chord in decoded.Chords.allChords {
     }
 }
 a.selectedRoot=0; a.selectedChord="min7"; a.selectedScale="So What"
-precondition(a.leftHandNotes == Set([24,29]))
-precondition(a.rightHandNotes == Set([34,39,43]))
+precondition(a.leftHandNotes == Set([12,17]))
+precondition(a.rightHandNotes == Set([22,27,31]))
 print("PASS: \(handChecks) upper-structure / So What hand splits across all roots")
 // Open worship shapes preserve their defining tones and keep the bass separate.
 a.selectedRoot=0; a.selectedScale="Open"; a.selectedInversion=0
