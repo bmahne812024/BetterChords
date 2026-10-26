@@ -113,10 +113,14 @@ def swift_function(source, marker):
 
 def run_swift_audit():
     source = SOURCE.read_text()
-    models = source[source.index('struct ChordFormulaFile'):source.index('struct ContentView')]
+    models = (ROOT / 'BetterChords/ChordBank.swift').read_text() + '\n' + source[source.index('struct ChordFormulaFile'):source.index('struct ContentView')]
     methods = source[source.index('    private func leftHandIntervals'):source.index('    private func highlightedColor')]
     methods = methods.replace('private ', '').replace('func selectValidInversion()', 'mutating func selectValidInversion()')
     labels = swift_function(source, '    private func noteName')
+    suggestions = '\n'.join(swift_function(source, marker) for marker in [
+        '    private var substituteChoices', '    private func substituteArrangements', '    private func substituteReason', '    private func substituteSymbol', '    private var approachChoices', '    private func previewApproach', '    private func randomizeApproach'
+    ])
+    suggestions = suggestions.replace('func previewApproach()', 'mutating func previewApproach()').replace('func randomizeApproach()', 'mutating func randomizeApproach()')
     available = source[source.index('    private var availableInversions'):source.index('    @State private var chordTypes')].replace('private ', '')
     harness = '''import Foundation
 MODELS
@@ -126,6 +130,13 @@ let totalNotes = 60
 let inversionNames = ["Root", "First", "Second", "Third", "Fourth"]
 var selectedRoot = 0
 var rootEnabled = true
+var recalledBankChord: SavedChord?
+var savedChords: [SavedChord] = []
+var approachCount = 1
+var approachChoice = ""
+var approachPreview: [SavedChord] = []
+var approachTargetID: UUID?
+var bankError: String?
 var selectedChord = "maj"
 var selectedInversion = 0
 var selectedScale = ""
@@ -142,6 +153,7 @@ var usesMinorSixSubstitution: Bool { selectedChord == "minmaj7" && selectedInver
 AVAILABLE
 METHODS
 LABELS
+SUGGESTIONS
 }
 let data = try Data(contentsOf: URL(fileURLWithPath: CommandLine.arguments[1]))
 let decoded = try JSONDecoder().decode(ChordFormulaFile.self, from: data)
@@ -175,6 +187,114 @@ precondition(NoteSpelling.name(root:"Db", interval:3, degree:"b3") == "F♭")
 precondition(NoteSpelling.name(root:"Db", interval:6, degree:"b5") == "A𝄫")
 precondition(NoteSpelling.name(root:"Db", interval:9, degree:"bb7") == "C𝄫")
 precondition(NoteSpelling.name(root:"B", interval:8, degree:"#5") == "F𝄪")
+var approachChecks = 0
+for name in ["maj9", "min9", "maj7(#5)"] {
+    a.selectedChord = name
+    for root in 0..<12 {
+        a.selectedRoot = root
+        for twoHands in [false, true] {
+            guard let arrangement = a.substituteArrangements(for: name, twoHands: twoHands).first else { continue }
+            let target = SavedChord(title: "Target", root: root, chord: name, inversion: arrangement.inversion, option: arrangement.option, rootEnabled: true, left: arrangement.left, right: arrangement.right)
+            a.savedChords = [target]
+            for count in 1...4 {
+                a.approachCount = count
+                for recipe in a.approachChoices {
+                    a.approachChoice = recipe.id; a.approachPreview = []; a.bankError = nil
+                    a.previewApproach()
+                    precondition(a.bankError == nil, a.bankError ?? "")
+                    precondition(a.approachPreview.count == count)
+                    precondition(a.savedChords == [target], "Approach altered target")
+                    for chord in a.approachPreview {
+                        precondition(chord.left.count > 0 && chord.right.isEmpty != twoHands)
+                        precondition(chord.left.allSatisfy { (10...33).contains($0) })
+                        precondition(chord.right.isEmpty || chord.right.min()! > chord.left.max()!)
+                    }
+                    approachChecks += 1
+                }
+            }
+        }
+    }
+}
+print("PASS: \(approachChecks) approach progressions across roots, minor/major/augmented targets, both hand modes; target unchanged")
+for count in 1...4 {
+    a.approachCount = count
+    precondition(a.approachChoices.count >= 4)
+    precondition(Set(a.approachChoices.map { $0.id }).count == a.approachChoices.count)
+    for _ in 0..<12 {
+        let previous = a.approachChoice
+        a.randomizeApproach()
+        precondition(a.approachPreview.count == count)
+        precondition(a.approachChoice != previous)
+    }
+}
+print("PASS: random defaults are ready to insert at each length; shuffle chooses a different approach")
+a.savedChords = []; a.approachPreview = []
+var substitutesChecked = 0
+for chord in decoded.Chords.allChords {
+    a.selectedChord=chord.name; a.selectedScale=""; a.selectedInversion=0
+    for root in 0..<12 {
+        a.selectedRoot=root
+        for enabled in [true, false] {
+            a.rootEnabled=enabled
+            let choices=a.substituteChoices
+            precondition(choices.count <= 3)
+            precondition(Set(choices.map { $0.chord }).count == choices.count)
+            for choice in choices {
+                precondition(choice.chord != chord.name && a.formulas[choice.chord] != nil)
+                let original=a.selectedChord
+                a.selectedChord=choice.chord
+                a.selectValidInversion()
+                precondition(choice.notes == a.chordPlaybackNotes, "Preview differs from Use: \(original) -> \(choice.chord)")
+                precondition(!choice.reason.isEmpty && !a.substituteSymbol(choice.chord).isEmpty)
+                precondition(choice.notes.allSatisfy { (0..<60).contains($0) })
+                a.selectedChord=original
+                substitutesChecked += 1
+            }
+        }
+    }
+}
+var arrangementsChecked = 0
+for chord in decoded.Chords.allChords {
+    a.selectedChord=chord.name
+    for root in 0..<12 {
+        a.selectedRoot=root
+        for enabled in [true, false] {
+            a.rootEnabled=enabled
+            let candidates=a.substituteChoices.map { $0.chord }
+            for candidate in candidates {
+                for twoHands in [false, true] {
+                    let arrangements=a.substituteArrangements(for:candidate,twoHands:twoHands)
+                    precondition(Set(arrangements.map { $0.option }).count == arrangements.count)
+                    if twoHands {
+                        if arrangements.contains(where: { $0.option == "Drop 2 & 3" }) {
+                            precondition(arrangements.first?.option == "Drop 2 & 3")
+                        } else if arrangements.contains(where: { $0.option == "Drop 2" }) {
+                            precondition(arrangements.first?.option == "Drop 2")
+                        }
+                    }
+                    for arrangement in arrangements {
+                        a.selectedChord=candidate
+                        a.selectedScale=arrangement.option
+                        a.selectedInversion=arrangement.inversion
+                        precondition(arrangement.notes == a.chordPlaybackNotes, "Arrangement playback mismatch: \(candidate) \(arrangement.option)")
+                        let expectedLeft=enabled ? a.leftHandNotes : a.leftHandNotes.subtracting([root])
+                        precondition(arrangement.left == expectedLeft, "Left-hand split mismatch")
+                        precondition(arrangement.right == a.rightHandNotes, "Right-hand split mismatch")
+                        precondition(twoHands == !arrangement.right.isEmpty)
+                        precondition(arrangement.bass == (enabled ? Set([root]) : Set<Int>()))
+                        precondition(arrangement.notes.allSatisfy { (0..<60).contains($0) })
+                        precondition(arrangement.left.max()! < (arrangement.right.min() ?? 60))
+                        arrangementsChecked += 1
+                    }
+                    a.selectedChord=chord.name; a.selectedScale=""; a.selectedInversion=0
+                }
+            }
+        }
+    }
+}
+a.rootEnabled=true
+print("PASS: \(arrangementsChecked) one/two-hand arrangements: exact playback, hand splits, range, root settings")
+print("PASS: \(substitutesChecked) substitute previews match selected playback across all roots and both Root settings")
 var checked = 0
 var disabled = 0
 var highest = 0
@@ -457,7 +577,7 @@ precondition(a.hasValidVoicing(chord:a.selectedChord, root:9, scale:""))
 print("PASS: \\(checked) root/chord/inversion/scale combinations; \\(disabled) invalid voicings excluded")
 print("PASS: \\(labelsChecked) displayed-note labels; highest key index \\(highest); no scale clipping or overlap")
 '''
-    for token, value in [('MODELS', models), ('AVAILABLE', available), ('METHODS', methods), ('LABELS', labels)]:
+    for token, value in [('MODELS', models), ('AVAILABLE', available), ('METHODS', methods), ('LABELS', labels), ('SUGGESTIONS', suggestions)]:
         harness = harness.replace(token, value)
     with tempfile.TemporaryDirectory(prefix='betterchords-scale-audit-') as directory:
         path = Path(directory) / 'audit.swift'

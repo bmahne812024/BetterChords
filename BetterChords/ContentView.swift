@@ -1,6 +1,7 @@
 
 import SwiftUI
 import AVFoundation
+import UniformTypeIdentifiers
 
 struct ChordFormulaFile: Decodable {
     let Roots: [String: String]
@@ -88,6 +89,16 @@ enum NoteSpelling {
     }
 }
 
+struct SubstituteArrangement {
+    let chord: String
+    let option: String
+    let inversion: Int
+    let left: Set<Int>
+    let right: Set<Int>
+    let bass: Set<Int>
+    var notes: Set<Int> { left.union(right).union(bass) }
+}
+
 struct ContentView: View {
     init(initialChord: String = "maj") {
         _selectedChord = State(initialValue: initialChord)
@@ -104,6 +115,30 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var selectedRoot = 0
     @State private var rootEnabled = true
+    @State private var showingSubstitutes = false
+    @State private var substitutesUseTwoHands = false
+    @State private var substituteOptions: [String: String] = [:]
+    @State private var pendingSubstitute: SubstituteArrangement?
+    @AppStorage("betterChords.bank.v1") private var savedChordData = Data()
+    @State private var showingChordBank = false
+    @State private var recalledBankChord: SavedChord?
+    @State private var bankHistory = ChordBankHistory()
+    @State private var bankUndo: [UUID: SavedChord] = [:]
+    @State private var bankError: String?
+    @AppStorage("betterChords.bank.library.v1") private var bankLibraryData = Data()
+    @AppStorage("betterChords.bank.title") private var bankTitle = "Untitled Bank"
+    @AppStorage("betterChords.bank.currentID") private var currentBankID = ""
+    @State private var namingBank = false
+    @State private var proposedBankTitle = ""
+    @State private var openingBank = false
+    @State private var importingBank = false
+    @State private var exportingBank = false
+    @State private var approachExpanded = false
+    @State private var approachCount = 1
+    @State private var approachChoice = ""
+    @State private var approachPreview: [SavedChord] = []
+    @State private var approachTargetID: UUID?
+
     @State private var selectedChord = "maj"
     @State private var selectedInversion = 0
     @State private var selectedScale = ""
@@ -339,20 +374,25 @@ struct ContentView: View {
     }
 
     private var dropVoicing: (left: Set<Int>, right: Set<Int>)? {
-        guard !dropPositions.isEmpty,
-              let closeNotes = voicedChordNotes(inversion: selectedInversion),
-              closeNotes.count >= (dropPositions.max() ?? 0) else { return nil }
+        guard let closeNotes = voicedChordNotes(inversion: selectedInversion) else { return nil }
+        return makeDropVoicing(notes: closeNotes, positions: dropPositions, chord: selectedChord, root: selectedRoot)
+    }
+
+    private func makeDropVoicing(notes closeNotes: [Int], positions: [Int], chord: String, root: Int) -> (left: Set<Int>, right: Set<Int>)? {
+        guard !positions.isEmpty, closeNotes.count >= (positions.max() ?? 0) else { return nil }
         // Raise the close voicing one octave, then drop the requested voices.
         // Count from the top of the original voicing for combined drops.
         let upperNotes = closeNotes.map { $0 + 12 }
-        let droppedIndices = Set(dropPositions.map { upperNotes.count - $0 })
+        let droppedIndices = Set(positions.map { upperNotes.count - $0 })
         let left = Set(droppedIndices.map { upperNotes[$0] - 12 })
         let right = Set(upperNotes.indices.filter { !droppedIndices.contains($0) }.map { upperNotes[$0] })
         guard left.union(right).allSatisfy({ (0..<totalNotes).contains($0) }) else { return nil }
-        return boundedHandVoicing(left: left, right: right)
+        return boundedHandVoicing(left: left, right: right, chord: chord, root: root)
     }
 
-    private func boundedHandVoicing(left: Set<Int>, right: Set<Int>) -> (left: Set<Int>, right: Set<Int>)? {
+    private func boundedHandVoicing(left: Set<Int>, right: Set<Int>, chord: String? = nil, root: Int? = nil) -> (left: Set<Int>, right: Set<Int>)? {
+        let selectedChord = chord ?? self.selectedChord
+        let selectedRoot = root ?? self.selectedRoot
         guard let bass = left.min(), let top = left.max(), let formula = formulas[selectedChord] else { return nil }
         let floor = leftHandFloor(bassInterval: bass - selectedRoot,
                                   intervals: formula.LHIntervals, degrees: formula.LHDegrees)
@@ -366,9 +406,11 @@ struct ContentView: View {
         return (adjustedLeft, adjustedRight)
     }
 
-    private func shellVoicing(inversion: Int) -> (left: Set<Int>, right: Set<Int>)? {
+    private func shellVoicing(inversion: Int, chord: String? = nil, root: Int? = nil) -> (left: Set<Int>, right: Set<Int>)? {
+        let selectedChord = chord ?? self.selectedChord
+        let selectedRoot = root ?? self.selectedRoot
         guard let intervals = chordIntervals[selectedChord],
-              let notes = voicedChordNotes(inversion: inversion),
+              let notes = voicedChordNotes(inversion: inversion, chord: selectedChord, root: selectedRoot, scale: ""),
               let bottom = notes.first, let top = notes.last else { return nil }
         if ["9", "13", "9(13)", "13(9)"].contains(selectedChord) {
             let left = Set([selectedRoot, selectedRoot + 10])
@@ -376,7 +418,7 @@ struct ContentView: View {
             // Keep the existing chord register and lower the shell one octave.
             // Disable combinations whose hands would overlap.
             guard left.max()! < bottom else { return nil }
-            return boundedHandVoicing(left: left, right: right)
+            return boundedHandVoicing(left: left, right: right, chord: selectedChord, root: selectedRoot)
         }
         let left: Set<Int>
         if intervals.first == 0 {
@@ -394,7 +436,7 @@ struct ContentView: View {
         // Keep the complete RH voicing strictly above the shell.
         while right.min()! <= left.max()! { right = right.map { $0 + 12 } }
         guard left.union(right).allSatisfy({ (0..<totalNotes).contains($0) }) else { return nil }
-        return boundedHandVoicing(left: left, right: Set(right))
+        return boundedHandVoicing(left: left, right: Set(right), chord: selectedChord, root: selectedRoot)
     }
 
     private var selectedShell: (left: Set<Int>, right: Set<Int>)? {
@@ -425,7 +467,15 @@ struct ContentView: View {
         return handVoicing(formula)
     }
 
+    private var activeBankVoicing: SavedChord? {
+        guard let saved = recalledBankChord, saved.root == selectedRoot,
+              saved.chord == selectedChord, saved.inversion == selectedInversion,
+              saved.option == selectedScale else { return nil }
+        return saved
+    }
+
     private var leftHandNotes: Set<Int> {
+        if let saved = activeBankVoicing { return saved.left }
         if let selectedHandVoicing { return selectedHandVoicing.left }
         if let selectedShell { return selectedShell.left }
         if let dropVoicing { return dropVoicing.left }
@@ -437,14 +487,19 @@ struct ContentView: View {
     }
 
     private var chordPlaybackNotes: Set<Int> {
+        if let saved = activeBankVoicing {
+            return saved.left.union(saved.right).union(rootEnabled ? [selectedRoot] : [])
+        }
         let isScale = (chordScales[selectedChord] ?? []).contains { $0.name == selectedScale }
         return selectedChordNotes.union(isScale ? [] : rightHandNotes)
     }
 
-    private func coreRightHandNotes(inversion: Int) -> Set<Int> {
+    private func coreRightHandNotes(inversion: Int, chord: String? = nil, root: Int? = nil) -> Set<Int> {
+        let selectedChord = chord ?? self.selectedChord
+        let selectedRoot = root ?? self.selectedRoot
         guard let formula = formulas[selectedChord],
               let intervals = formula.RHChordIntervals, !intervals.isEmpty,
-              let left = voicedChordNotes(inversion: inversion, scale: ""),
+              let left = voicedChordNotes(inversion: inversion, chord: selectedChord, root: selectedRoot, scale: ""),
               let bass = left.first, let highest = left.last else { return [] }
         let bassInterval = formula.LHVoicings?[inversion].first ?? formula.LHIntervals[inversion]
         let voicedRoot = bass - bassInterval
@@ -455,6 +510,7 @@ struct ContentView: View {
     }
 
     private var rightHandNotes: Set<Int> {
+        if let saved = activeBankVoicing { return saved.right }
         if let selectedHandVoicing { return selectedHandVoicing.right }
         if (chordScales[selectedChord] ?? []).contains(where: { $0.name == selectedScale }) {
             return scaleNotes
@@ -579,6 +635,9 @@ struct ContentView: View {
 
     private var inversionMenu: some View {
         Menu {
+            if activeBankVoicing != nil {
+                Button("Return to preset voicing") { recalledBankChord = nil; selectValidInversion() }
+            }
             ForEach(availableInversions, id: \.self) { inversion in
                 let isAvailable = voicedChordNotes(inversion: inversion) != nil
                 Button {
@@ -595,7 +654,7 @@ struct ContentView: View {
             }
         } label: {
             HStack(spacing: 8) {
-                Text(selectedHandFormula == nil ? inversionLabel(selectedInversion) : "Fixed voicing")
+                Text(activeBankVoicing != nil ? "Saved voicing" : selectedHandFormula == nil ? inversionLabel(selectedInversion) : "Fixed voicing")
                     .font(.system(size: 22, weight: .bold))
                 Image(systemName: "chevron.down")
                     .font(.system(size: 12, weight: .semibold))
@@ -648,6 +707,9 @@ struct ContentView: View {
 
     private var rightHandMenu: some View {
         Menu {
+            if activeBankVoicing != nil {
+                Button("Return to preset voicing") { recalledBankChord = nil; selectValidInversion() }
+            }
             Button {
                 selectedScale = ""
             } label: {
@@ -743,6 +805,614 @@ struct ContentView: View {
         .tint(.purple)
         .accessibilityLabel("Right hand")
         .accessibilityValue((chordScales[selectedChord] ?? []).contains(where: { $0.name == selectedScale }) ? "Scale: " + selectedScale : (selectedScale.isEmpty ? emptyRightHandLabel : selectedScale))
+    }
+
+    private var substituteChoices: [(chord: String, reason: String, notes: Set<Int>)] {
+        let families: [[String]] = [
+            ["6/9", "maj9", "maj7", "maj13", "6", "add9", "maj", "maj7(#11)", "maj9(#11)"],
+            ["min9", "min11", "min7", "min13", "min(add9)", "min"],
+            ["min6", "min6/9", "minmaj7", "minmaj9"],
+            ["9", "13", "7", "13(9)", "9(13)", "7(#11)", "9(#11)", "13(#11)"],
+            ["7(#9)", "7(b9)", "7(#9, #5)", "7(b9, b5)", "7alt", "7(b9, #5)", "7(#9, #11)", "13(b9)", "7(b13)", "9(b13)", "7(#5)", "7(b5)", "9(#5)", "9(#11, #5)"],
+            ["min7b5", "min9b5", "min11b5"],
+            ["sus4", "sus4(add9)", "7sus4", "9sus4", "13sus4"],
+            ["aug", "maj7(#5)"], ["dim", "dim7"]
+        ]
+        guard let family = families.first(where: { $0.contains(selectedChord) }) else { return [] }
+        return family.filter { $0 != selectedChord }.compactMap { chord -> (chord: String, reason: String, notes: Set<Int>)? in
+            guard hasValidVoicing(chord: chord, root: selectedRoot, scale: "") else { return nil }
+            let count = formulas[chord]?.LHVoicings?.count ?? (chord == "9" ? 2 : (extensionNames.contains(chord) ? 1 : min(chordIntervals[chord]?.count ?? 0, inversionNames.count)))
+            let voicings = (0..<count).compactMap { voicedChordNotes(inversion: $0, chord: chord, scale: "") }
+            guard let notes = voicings.first else { return nil }
+            let pitches = rootEnabled ? Set(notes).union([selectedRoot]) : Set(notes).subtracting([selectedRoot])
+            return (chord, substituteReason(chord), pitches)
+        }.prefix(3).map { $0 }
+    }
+
+    private func substituteArrangements(for chord: String, twoHands: Bool) -> [SubstituteArrangement] {
+        guard let formula = formulas[chord] else { return [] }
+        let count = formula.LHVoicings?.count ?? (chord == "9" ? 2 : (extensionNames.contains(chord) ? 1 : min(formula.LHIntervals.count, inversionNames.count)))
+        let options = twoHands
+            ? (triadNames.contains(chord) ? [] : ["Drop 2 & 3"]) + ["Drop 2", "Drop 3", "LH Shell", "Double"] + (formula.HandVoicings ?? []).map(\.name)
+            : [""]
+        return options.compactMap { option in
+            for inversion in 0..<count {
+                guard let close = voicedChordNotes(inversion: inversion, chord: chord, scale: "") else { continue }
+                let core = coreRightHandNotes(inversion: inversion, chord: chord)
+                let hands: (left: Set<Int>, right: Set<Int>)?
+                if let custom = formula.HandVoicings?.first(where: { $0.name == option }) {
+                    hands = handVoicing(custom)
+                } else {
+                    switch option {
+                    case "": hands = (Set(close), core)
+                    case "Double": hands = (Set(close), Set(close.map { $0 + 12 }).union(core))
+                    case "LH Shell":
+                        if let shell = shellVoicing(inversion: inversion, chord: chord) {
+                            hands = (shell.left, shell.right.union(core))
+                        } else { hands = nil }
+                    default:
+                        let positions = option == "Drop 2" ? [2] : option == "Drop 3" ? [3] : [2, 3]
+                        if let drop = makeDropVoicing(notes: close, positions: positions, chord: chord, root: selectedRoot) {
+                            hands = (drop.left, drop.right.union(core))
+                        } else { hands = nil }
+                    }
+                }
+                guard let hands, !hands.left.isEmpty,
+                      twoHands == !hands.right.isEmpty,
+                      hands.left.union(hands.right).allSatisfy({ (0..<totalNotes).contains($0) }) else { continue }
+                let left = rootEnabled ? hands.left : hands.left.subtracting([selectedRoot])
+                return SubstituteArrangement(chord: chord, option: option, inversion: inversion,
+                                             left: left, right: hands.right,
+                                             bass: rootEnabled ? [selectedRoot] : [])
+            }
+            return nil
+        }
+    }
+
+    private func substituteReason(_ chord: String) -> String {
+        if chord == "aug" || chord == "dim" { return "A simpler triad; leaves out the seventh." }
+        if chord == "maj7(#5)" { return "Adds a major seventh to the augmented triad." }
+        if chord == "dim7" { return "Adds a diminished seventh for more tension." }
+        if chord.contains("#11") { return "A brighter raised-eleventh color." }
+        if chord.contains("alt") || chord.contains("b9") || chord.contains("#9") || chord.contains("b13") || chord.contains("#5") || chord.contains("b5") {
+            return "An alternative tension color; check against the melody."
+        }
+        if chord.contains("13") { return "A fuller thirteenth color." }
+        if chord.contains("11") { return "An open eleventh color." }
+        if chord == "6" || chord == "min6" || chord.contains("6/9") { return "A softer sixth-based color; changes the seventh sound." }
+        if chord.contains("9") { return "Adds or changes the ninth color." }
+        if chord.contains("maj7") { return "A major-seventh color; check against the melody." }
+        if chord.contains("7") { return "A simpler seventh-chord color." }
+        return "A simpler version of the same chord family."
+    }
+
+    private func substituteSymbol(_ chord: String) -> String {
+        let root = roots.indices.contains(selectedRoot) ? roots[selectedRoot].replacingOccurrences(of: "b", with: "♭") : ""
+        let suffix = chord == "maj" ? "" : chord == "min" ? "m" : chord.replacingOccurrences(of: "min", with: "m")
+        return root + suffix.replacingOccurrences(of: "#", with: "♯").replacingOccurrences(of: "b", with: "♭")
+    }
+
+    private func substituteKeyboard(_ arrangement: SubstituteArrangement) -> some View {
+        let notes = arrangement.notes
+        let first = ((notes.min() ?? 12) / 12) * 12
+        let highestNote: Int = notes.max() ?? 24
+        let lastOctave: Int = (highestNote / 12 + 1) * 12 - 1
+        let desiredLast: Int = max(first + 23, lastOctave)
+        let last: Int = min(totalNotes - 1, desiredLast)
+        let whites = (first...last).filter { !isBlackKey($0) }
+        return GeometryReader { geometry in
+            let width = geometry.size.width / CGFloat(whites.count)
+            ZStack(alignment: .topLeading) {
+                HStack(spacing: 0) {
+                    ForEach(whites, id: \.self) { note in
+                        Rectangle().fill(substituteKeyColor(note, arrangement: arrangement, unselected: .white))
+                            .overlay(Rectangle().stroke(.black, lineWidth: 0.5))
+                            .frame(width: width)
+                    }
+                }
+                ForEach((first...last).filter { isBlackKey($0) }, id: \.self) { note in
+                    Rectangle().fill(substituteKeyColor(note, arrangement: arrangement, unselected: .black))
+                        .frame(width: width * 0.65, height: geometry.size.height * 0.62)
+                        .offset(x: CGFloat(whites.filter { $0 < note }.count) * width - width * 0.325)
+                }
+            }
+        }
+        .frame(height: 56)
+        .accessibilityLabel("Keyboard preview")
+        .accessibilityValue("Left hand: \(arrangement.left.count) notes. Right hand: \(arrangement.right.count) notes. Bass root \(arrangement.bass.isEmpty ? "off" : "on").")
+    }
+
+    private func substituteKeyColor(_ note: Int, arrangement: SubstituteArrangement, unselected: Color) -> Color {
+        if arrangement.left.contains(note) { return .blue }
+        if arrangement.bass.contains(note) { return .green }
+        if arrangement.right.contains(note) { return .purple }
+        return unselected
+    }
+
+    private func substituteCard(chord: String) -> some View {
+        let arrangements = substituteArrangements(for: chord, twoHands: substitutesUseTwoHands)
+        let arrangement = arrangements.first(where: { $0.option == substituteOptions[chord] }) ?? arrangements.first
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(substituteSymbol(chord)).font(.title3.bold())
+                    .lineLimit(1).minimumScaleFactor(0.7)
+                Spacer(minLength: 4)
+                if let arrangement, substitutesUseTwoHands {
+                    Picker("Arrangement", selection: Binding(
+                        get: { arrangement.option },
+                        set: { chordAudio.stop(); substituteOptions[chord] = $0 }
+                    )) {
+                        ForEach(arrangements, id: \.option) { item in Text(item.option).tag(item.option) }
+                    }
+                    .pickerStyle(.menu)
+                    .accessibilityLabel("Arrangement for " + substituteSymbol(chord))
+                }
+            }
+            if let arrangement {
+                substituteKeyboard(arrangement)
+                HStack {
+                    Button { chordAudio.play(keyIndices: arrangement.notes) } label: {
+                        Label("Play", systemImage: "play.fill")
+                    }
+                    .accessibilityLabel("Play " + substituteSymbol(chord) + " " + (substitutesUseTwoHands ? arrangement.option : "left hand"))
+                    Spacer()
+                    Button("Use") {
+                        chordAudio.stop()
+                        recalledBankChord = nil
+                        pendingSubstitute = arrangement
+                        selectedChord = arrangement.chord
+                        showingSubstitutes = false
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .accessibilityLabel("Use " + substituteSymbol(chord))
+                }
+            } else {
+                Text("No valid arrangement in this range.").foregroundStyle(.secondary)
+            }
+        }
+        .padding(12).frame(width: 260)
+        .background(.quaternary, in: RoundedRectangle(cornerRadius: 16))
+    }
+
+    private var substitutesSheet: some View {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 8) {
+                Picker("Voicing", selection: $substitutesUseTwoHands) {
+                    Text("Left hand").tag(false)
+                    Text("Two hands").tag(true)
+                }
+                .pickerStyle(.segmented)
+                .onChange(of: substitutesUseTwoHands) { _, _ in chordAudio.stop() }
+                if substituteChoices.isEmpty {
+                    Text("No same-root suggestions are available for this chord yet.")
+                        .foregroundStyle(.secondary)
+                }
+                ScrollView(.horizontal) {
+                    HStack(alignment: .top, spacing: 12) {
+                        ForEach(substituteChoices, id: \.chord) { choice in
+                            substituteCard(chord: choice.chord)
+                        }
+                    }
+                }
+                .scrollIndicators(.hidden)
+            }
+            .padding(12)
+            .frame(maxHeight: .infinity, alignment: .top)
+            .navigationTitle("Substitutes for " + chordSymbol)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showingSubstitutes = false } } }
+        }
+        .preferredColorScheme(.dark)
+    }
+
+    private var savedChords: [SavedChord] {
+        (try? JSONDecoder().decode([SavedChord].self, from: savedChordData)) ?? []
+    }
+
+    @discardableResult
+    private func writeChordBank(_ chords: [SavedChord], recordHistory: Bool = true) -> Bool {
+        do {
+            if !savedChordData.isEmpty { _ = try JSONDecoder().decode([SavedChord].self, from: savedChordData) }
+            let previous = savedChords
+            let encoded = try JSONEncoder().encode(chords)
+            savedChordData = encoded
+            if recordHistory { bankHistory.record(before: previous, after: chords) }
+            return true
+        } catch {
+            bankError = "Couldn’t save the chord bank. Your previous saved data has been kept."
+            return false
+        }
+    }
+
+    private func restoreBankHistory(redo: Bool) {
+        var history = bankHistory
+        let restored = redo ? history.redo(current: savedChords) : history.undo(current: savedChords)
+        guard let restored, writeChordBank(restored, recordHistory: false) else { return }
+        chordAudio.stop()
+        bankHistory = history
+        bankUndo = [:]
+        approachPreview = []; approachExpanded = false
+    }
+
+    private func saveCurrentChord() {
+        guard formulas[selectedChord] != nil else { return }
+        showingChordBank = true
+        let saved = SavedChord(title: chordSymbol, root: selectedRoot, chord: selectedChord,
+                               inversion: selectedInversion, option: selectedScale, rootEnabled: rootEnabled,
+                               left: leftHandNotes.intersection(chordPlaybackNotes),
+                               right: rightHandNotes.intersection(chordPlaybackNotes),
+                               voiceLed: activeBankVoicing?.voiceLed ?? false,
+                               movementSummary: activeBankVoicing?.movementSummary)
+        guard !saved.left.isEmpty else { bankError = "Select a chord voicing before saving."; return }
+        if writeChordBank(savedChords + [saved]) { showingChordBank = true }
+    }
+
+    private func recallChord(_ saved: SavedChord) {
+        guard formulas[saved.chord] != nil, (0..<12).contains(saved.root),
+              saved.notes.allSatisfy({ (0..<totalNotes).contains($0) }) else {
+            bankError = "This saved chord is unavailable."; return
+        }
+        chordAudio.stop()
+        pendingSubstitute = nil
+        selectedRoot = saved.root
+        selectedChord = saved.chord
+        selectedInversion = saved.inversion
+        selectedScale = saved.option
+        rootEnabled = saved.rootEnabled
+        recalledBankChord = saved
+        showingChordBank = false
+    }
+
+    private func voiceLeadChord(at index: Int) {
+        var chords = savedChords
+        guard index > 0, chords.indices.contains(index), let formula = formulas[chords[index].chord] else { return }
+        let target = chords[index]
+        let hand = formula.HandVoicings?.first { $0.name == target.option }
+        guard let adjusted = ChordVoiceLeading.lead(from: chords[index - 1], to: target,
+                                                    intervals: hand?.LHIntervals ?? formula.LHIntervals,
+                                                    degrees: hand?.LHDegrees ?? formula.LHDegrees) else {
+            bankError = "No voice leading fits this hand split and range. The saved chord is unchanged."; return
+        }
+        chords[index] = adjusted
+        if writeChordBank(chords) { bankUndo[target.id] = target }
+    }
+
+    private func undoVoiceLeading(_ saved: SavedChord) {
+        var chords = savedChords
+        guard let index = chords.firstIndex(where: { $0.id == saved.id }), let previous = bankUndo[saved.id] else { return }
+        chords[index] = previous
+        if writeChordBank(chords) { bankUndo[saved.id] = nil }
+    }
+
+    private func moveSavedChord(_ saved: SavedChord, by offset: Int) {
+        var chords = savedChords
+        guard let index = chords.firstIndex(where: { $0.id == saved.id }), chords.indices.contains(index + offset) else { return }
+        chords.swapAt(index, index + offset)
+        writeChordBank(chords)
+    }
+
+    private var bankLibrary: [ChordBankFile] {
+        ((try? JSONDecoder().decode([ChordBankFile].self, from: bankLibraryData)) ?? [])
+            .sorted { $0.modified > $1.modified }
+    }
+
+    private var currentBankFile: ChordBankFile {
+        ChordBankFile(id: UUID(uuidString: currentBankID) ?? UUID(), title: bankTitle, chords: savedChords)
+    }
+
+    @discardableResult
+    private func storeBank(_ bank: ChordBankFile) -> Bool {
+        do {
+            var library = bankLibraryData.isEmpty ? [] : try JSONDecoder().decode([ChordBankFile].self, from: bankLibraryData)
+            library.removeAll { $0.id == bank.id }
+            library.insert(bank, at: 0)
+            bankLibraryData = try JSONEncoder().encode(library)
+            return true
+        } catch { bankError = "Couldn’t save the bank library. Previous banks have been kept."; return false }
+    }
+
+    private func saveNamedBank(asNew: Bool) {
+        let title = asNew ? proposedBankTitle.trimmingCharacters(in: .whitespacesAndNewlines) : bankTitle
+        guard !title.isEmpty else { bankError = "Enter a name for your bank."; return }
+        var bank = currentBankFile
+        if asNew { bank.id = UUID() }
+        bank.title = title
+        if storeBank(bank) { bankTitle = title; currentBankID = bank.id.uuidString }
+    }
+
+    private func preserveCurrentBank() -> Bool {
+        guard !savedChords.isEmpty || !currentBankID.isEmpty else { return true }
+        let bank = currentBankFile
+        guard storeBank(bank) else { return false }
+        currentBankID = bank.id.uuidString
+        return true
+    }
+
+    private func openBank(_ bank: ChordBankFile) {
+        if currentBankID == bank.id.uuidString { openingBank = false; return }
+        guard preserveCurrentBank(), writeChordBank(bank.chords, recordHistory: false) else { return }
+        bankTitle = bank.title; currentBankID = bank.id.uuidString
+        var recent = bank; recent.modified = Date(); _ = storeBank(recent)
+        bankHistory = ChordBankHistory(); bankUndo = [:]; approachPreview = []; approachChoice = ""; openingBank = false
+    }
+
+    private func importBank(_ result: Result<URL, Error>) {
+        do {
+            let url = try result.get()
+            let scoped = url.startAccessingSecurityScopedResource()
+            defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+            var bank = try JSONDecoder().decode(ChordBankFile.self, from: Data(contentsOf: url))
+            guard !bank.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                  Set(bank.chords.map(\.id)).count == bank.chords.count,
+                  bank.chords.allSatisfy({ formulas[$0.chord] != nil && (0..<12).contains($0.root) && !$0.left.isEmpty && $0.notes.allSatisfy { (0..<totalNotes).contains($0) } }) else {
+                throw CocoaError(.fileReadCorruptFile)
+            }
+            bank.id = UUID()
+            openBank(bank)
+        } catch { bankError = "Couldn’t open this chord bank: " + error.localizedDescription }
+    }
+
+    private var bankFileMenu: some View {
+        Menu {
+            Button("New Bank") {
+                guard preserveCurrentBank(), writeChordBank([], recordHistory: false) else { return }
+                bankTitle = "Untitled Bank"; currentBankID = ""; bankHistory = ChordBankHistory(); bankUndo = [:]; approachPreview = []
+            }
+            Button("Save") {
+                if currentBankID.isEmpty { proposedBankTitle = bankTitle; namingBank = true }
+                else { saveNamedBank(asNew: false) }
+            }
+            Button("Save As…") { proposedBankTitle = bankTitle; namingBank = true }
+            Button("Open…") { openingBank = true }
+            Menu("Open Recent") {
+                ForEach(Array(bankLibrary.prefix(8))) { bank in
+                    Button(bank.title) { openBank(bank) }
+                }
+            }.disabled(bankLibrary.isEmpty)
+            Divider()
+            Button("Import Bank File…") { importingBank = true }
+            Button("Export Bank File…") { exportingBank = true }
+        } label: {
+            HStack(spacing: 6) {
+                Text("File")
+                Image(systemName: "chevron.down").font(.caption.bold())
+            }.padding(.horizontal, 10).padding(.vertical, 7)
+                .background(.quaternary, in: RoundedRectangle(cornerRadius: 8))
+        }
+    }
+
+    private var bankOpenSheet: some View {
+        NavigationStack {
+            List(bankLibrary) { bank in
+                Button { openBank(bank) } label: {
+                    VStack(alignment: .leading) {
+                        Text(bank.title)
+                        Text("\(bank.chords.count) chords").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+            }
+            .overlay { if bankLibrary.isEmpty { ContentUnavailableView("No saved banks", systemImage: "folder", description: Text("Use File → Save As to name a bank.")) } }
+            .navigationTitle("Open Chord Bank")
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Cancel") { openingBank = false } } }
+        }.preferredColorScheme(.dark)
+    }
+
+    private var approachChoices: [ChordApproach] {
+        guard let target = savedChords.first else { return [] }
+        return ChordApproach.choices(count: approachCount, target: target.chord, minor: target.chord.hasPrefix("min"))
+    }
+
+    private func previewApproach() {
+        guard let target = savedChords.first,
+              let recipe = approachChoices.first(where: { $0.id == approachChoice }) ?? approachChoices.first else { return }
+        var generated: [SavedChord] = []
+        for step in recipe.steps {
+            let root = (target.root + step.offset + 12) % 12
+            guard let formula = formulas[step.chord] else { bankError = "This approach is unavailable."; return }
+            var saved: SavedChord
+            if recipe.id.hasPrefix("Half-step") {
+                let shift = step.offset
+                saved = target
+                saved.id = UUID(); saved.root = root
+                saved.left = Set(target.left.map { $0 + shift })
+                saved.right = Set(target.right.map { $0 + shift })
+                saved.voiceLed = false; saved.movementSummary = nil
+            } else {
+                let count = formula.LHVoicings?.count ?? min(formula.LHIntervals.count, inversionNames.count)
+                guard let inversion = (0..<count).first(where: { voicedChordNotes(inversion: $0, chord: step.chord, root: root, scale: "") != nil }),
+                      let close = voicedChordNotes(inversion: inversion, chord: step.chord, root: root, scale: "") else {
+                    bankError = "No voicing fits this approach."; return
+                }
+                let drop = target.right.isEmpty ? nil : makeDropVoicing(notes: close, positions: [2, 3], chord: step.chord, root: root)
+                    ?? makeDropVoicing(notes: close, positions: [2], chord: step.chord, root: root)
+                guard target.right.isEmpty || drop != nil else { bankError = "No two-hand voicing fits this approach."; return }
+                saved = SavedChord(title: "", root: root, chord: step.chord, inversion: inversion,
+                                   option: drop == nil ? "" : "Approach voicing", rootEnabled: target.rootEnabled,
+                                   left: drop?.left ?? Set(close), right: drop?.right ?? [])
+            }
+            let suffix = step.chord == "maj" ? "" : step.chord.replacingOccurrences(of: "min", with: "m")
+            saved.title = roots[root].replacingOccurrences(of: "b", with: "♭") + suffix.replacingOccurrences(of: "#", with: "♯").replacingOccurrences(of: "b", with: "♭")
+            generated.append(saved)
+        }
+        // Work backward toward the fixed destination; the target card never changes.
+        var next = target
+        for index in generated.indices.reversed() {
+            let chord = generated[index]
+            guard let formula = formulas[chord.chord],
+                  let fitted = ChordVoiceLeading.lead(from: next, to: chord, intervals: formula.LHIntervals, degrees: formula.LHDegrees) else {
+                bankError = "No approach fits the voicing range."; return
+            }
+            generated[index] = fitted; next = fitted
+        }
+        approachPreview = generated; approachTargetID = target.id
+    }
+
+    private func randomizeApproach() {
+        let alternatives = approachChoices.filter { $0.id != approachChoice }
+        approachChoice = (alternatives.isEmpty ? approachChoices : alternatives).randomElement()?.id ?? ""
+        approachPreview = []
+        previewApproach()
+    }
+
+    private var approachCard: some View {
+        Group {
+            if approachExpanded {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text("Lead to first chord").font(.headline)
+                        Spacer()
+                        Button { withAnimation { approachExpanded = false } } label: {
+                            Image(systemName: "chevron.left")
+                        }.accessibilityLabel("Collapse approaches")
+                    }
+                    Picker("Chords", selection: Binding(get: { approachCount }, set: {
+                        approachCount = $0; randomizeApproach()
+                    })) {
+                        ForEach(1...4, id: \.self) { Text("\($0)").tag($0) }
+                    }.pickerStyle(.segmented)
+                    Picker("Approach", selection: Binding(get: { approachChoice }, set: {
+                        approachChoice = $0; approachPreview = []; previewApproach()
+                    })) {
+                        ForEach(approachChoices) { Text($0.id).tag($0.id) }
+                    }.labelsHidden()
+                    Text(approachPreview.map(\.title).joined(separator: " → ")).font(.caption).lineLimit(2)
+                    HStack {
+                        Menu("Play") {
+                            ForEach(approachPreview) { chord in Button(chord.title) { chordAudio.play(keyIndices: chord.notes) } }
+                            if let target = savedChords.first { Button("Target: " + target.title) { chordAudio.play(keyIndices: target.notes) } }
+                        }.disabled(approachPreview.isEmpty)
+                        Button { randomizeApproach() } label: { Image(systemName: "shuffle") }
+                            .accessibilityLabel("Random approach")
+                        Spacer()
+                        Button("Insert", systemImage: "plus") {
+                            guard !approachPreview.isEmpty, savedChords.first?.id == approachTargetID else { return }
+                            if writeChordBank(approachPreview + savedChords) {
+                                approachPreview = []; bankUndo = [:]
+                                withAnimation { approachExpanded = false }
+                            }
+                        }.buttonStyle(.borderedProminent).disabled(approachPreview.isEmpty)
+                    }
+                }
+                .padding(12).frame(width: 270)
+            } else {
+                Button {
+                    randomizeApproach()
+                    withAnimation { approachExpanded = true }
+                } label: {
+                    Image(systemName: "plus").font(.system(size: 26, weight: .semibold))
+                        .frame(width: 52, height: 148)
+                }.accessibilityLabel("Add approach chords before first chord")
+            }
+        }
+        .background(.quaternary, in: RoundedRectangle(cornerRadius: 16))
+        .onChange(of: savedChords.first) { _, _ in
+            approachPreview = []; approachExpanded = false
+        }
+    }
+
+    private func bankCard(_ saved: SavedChord, index: Int) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("\(index + 1). \(saved.title)").font(.headline).lineLimit(1).minimumScaleFactor(0.7)
+                Spacer()
+                Menu {
+                    Button("Move left") { moveSavedChord(saved, by: -1) }.disabled(index == 0)
+                    Button("Move right") { moveSavedChord(saved, by: 1) }.disabled(index == savedChords.count - 1)
+                    Button("Remove", role: .destructive) {
+                        if writeChordBank(savedChords.filter { $0.id != saved.id }) { bankUndo[saved.id] = nil }
+                    }
+                } label: { Image(systemName: "ellipsis.circle") }
+                .accessibilityLabel("Options for saved chord \(index + 1)")
+            }
+            Text(saved.voiceLed ? "Voice led" : saved.option.isEmpty ? "Left hand" : saved.option)
+                .font(.caption).foregroundStyle(.secondary).lineLimit(1)
+            substituteKeyboard(SubstituteArrangement(chord: saved.chord, option: saved.option,
+                                inversion: saved.inversion, left: saved.left, right: saved.right, bass: saved.bass))
+            HStack {
+                Button { chordAudio.play(keyIndices: saved.notes) } label: { Label("Play", systemImage: "play.fill") }
+                    .accessibilityLabel("Play saved chord \(index + 1), \(saved.title)")
+                Spacer()
+                Button("Recall") { recallChord(saved) }.buttonStyle(.borderedProminent)
+                Button(role: .destructive) {
+                    if writeChordBank(savedChords.filter { $0.id != saved.id }) { bankUndo[saved.id] = nil }
+                } label: { Image(systemName: "trash") }
+                .accessibilityLabel("Remove saved chord \(index + 1)")
+            }
+            if let summary = saved.movementSummary {
+                Text(summary).font(.caption2).foregroundStyle(.secondary).lineLimit(2)
+            }
+        }
+        .padding(12).frame(width: 230)
+        .background(.quaternary, in: RoundedRectangle(cornerRadius: 16))
+    }
+
+    private var chordBankSheet: some View {
+        NavigationStack {
+            ScrollView(.horizontal) {
+                HStack(alignment: .center, spacing: 12) {
+                    if !savedChords.isEmpty { approachCard }
+                    if savedChords.isEmpty {
+                        Text("Save chords from the keyboard, then use Voice Lead between cards to adjust the next chord.")
+                            .frame(width: 340).foregroundStyle(.secondary)
+                    }
+                    ForEach(Array(savedChords.enumerated()), id: \.element.id) { index, saved in
+                        if index > 0 {
+                            VStack(spacing: 8) {
+                                Button { chordAudio.stop(); voiceLeadChord(at: index) } label: {
+                                    VStack(spacing: 4) {
+                                        Image(systemName: "arrow.right")
+                                        Text("Voice Lead").font(.caption.bold())
+                                    }
+                                }.buttonStyle(.bordered)
+                                .accessibilityLabel("Voice lead chord \(index + 1) from chord \(index)")
+                                if bankUndo[saved.id] != nil { Button("Undo") { undoVoiceLeading(saved) }.font(.caption) }
+                            }
+                        }
+                        bankCard(saved, index: index)
+                    }
+                }.padding(12)
+            }
+            .navigationTitle(bankTitle)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        chordAudio.stop()
+                        withAnimation(.easeInOut(duration: 0.3)) { showingChordBank = false }
+                    } label: {
+                        Image(systemName: "chevron.up")
+                            .font(.system(size: 25, weight: .bold)).frame(width: 44, height: 44)
+                    }.accessibilityLabel("Close Chord Bank")
+                }
+                ToolbarItem(placement: .topBarLeading) { bankFileMenu }
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    Button { restoreBankHistory(redo: false) } label: {
+                        Label("Undo", systemImage: "arrow.uturn.backward")
+                    }.disabled(!bankHistory.canUndo).accessibilityLabel("Undo bank edit")
+                    Button { restoreBankHistory(redo: true) } label: {
+                        Label("Redo", systemImage: "arrow.uturn.forward")
+                    }.disabled(!bankHistory.canRedo).accessibilityLabel("Redo bank edit")
+                }
+                ToolbarItem(placement: .topBarTrailing) { Button("Save chord", systemImage: "plus") { saveCurrentChord() } }
+            }
+            .sheet(isPresented: $openingBank) { bankOpenSheet }
+            .alert("Save Bank As", isPresented: $namingBank) {
+                TextField("Bank title", text: $proposedBankTitle)
+                Button("Save") { saveNamedBank(asNew: true) }
+                Button("Cancel", role: .cancel) { }
+            } message: { Text("Give this chord bank a name.") }
+            .fileExporter(isPresented: $exportingBank,
+                          document: ChordBankDocument(bank: currentBankFile), contentType: .json,
+                          defaultFilename: bankTitle) { result in
+                if case .failure(let error) = result { bankError = error.localizedDescription }
+            }
+            .fileImporter(isPresented: $importingBank, allowedContentTypes: [.json]) { result in
+                importBank(result)
+            }
+            .alert("Chord Bank", isPresented: Binding(get: { bankError != nil }, set: { if !$0 { bankError = nil } })) {
+                Button("OK", role: .cancel) { bankError = nil }
+            } message: { Text(bankError ?? "") }
+        }.preferredColorScheme(.dark)
     }
 
     var body: some View {
@@ -1037,15 +1707,48 @@ struct ContentView: View {
             .padding(.bottom, 12)
         }
         .overlay(alignment: .bottomLeading) {
-            Toggle("Root", isOn: $rootEnabled)
+            HStack(spacing: 16) {
+                Toggle("Root", isOn: $rootEnabled)
                 .toggleStyle(.switch)
                 .tint(.green)
                 .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(.white)
                 .fixedSize()
                 .accessibilityHint("Shows and plays the bass root when enabled")
+                Button("Substitutes") { showingSubstitutes = true }
+                    .font(.system(size: 15, weight: .semibold))
+                    .buttonStyle(.bordered)
+                    .tint(.blue)
+            }
                 .padding(.leading, 18)
                 .padding(.bottom, 24)
+        }
+        .sheet(isPresented: $showingSubstitutes, onDismiss: { chordAudio.stop() }) {
+            substitutesSheet
+        }
+        .allowsHitTesting(!showingChordBank)
+        .accessibilityHidden(showingChordBank)
+        .overlay(alignment: .topLeading) {
+            if showingChordBank {
+                chordBankSheet
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background { Color.black.ignoresSafeArea() }
+                    .transition(.move(edge: .top))
+                    .zIndex(1)
+            } else {
+                Button {
+                    chordAudio.stop()
+                    withAnimation(.easeInOut(duration: 0.3)) { showingChordBank = true }
+                } label: {
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 25, weight: .bold))
+                        .frame(width: 48, height: 48)
+                        .background(.regularMaterial, in: Circle())
+                }
+                .accessibilityLabel("Open Chord Bank")
+                .padding(.leading, 16)
+                .padding(.top, 4)
+            }
         }
         .alert("Playback unavailable", isPresented: Binding(
             get: { chordAudio.errorMessage != nil },
@@ -1073,11 +1776,21 @@ struct ContentView: View {
         }
         .onChange(of: selectedChord) { _, _ in
             chordAudio.stop()
-            selectedScale = defaultScale(for: selectedChord)
-            selectValidInversion()
+            if activeBankVoicing != nil { return }
+            recalledBankChord = nil
+            if let arrangement = pendingSubstitute, arrangement.chord == selectedChord {
+                selectedScale = arrangement.option
+                selectedInversion = arrangement.inversion
+                pendingSubstitute = nil
+            } else {
+                selectedScale = defaultScale(for: selectedChord)
+                selectValidInversion()
+            }
         }
         .onChange(of: selectedRoot) { _, _ in
             chordAudio.stop()
+            if activeBankVoicing != nil { return }
+            recalledBankChord = nil
             if let formula = selectedHandFormula, handVoicing(formula) == nil { selectedScale = "" }
             selectValidInversion()
         }
@@ -1086,12 +1799,16 @@ struct ContentView: View {
         }
         .onChange(of: selectedInversion) { _, _ in
             chordAudio.stop()
+            if activeBankVoicing != nil { return }
+            recalledBankChord = nil
             if selectedScale == "LH Shell" && shellVoicing(inversion: selectedInversion) == nil {
                 selectedScale = ""
             }
         }
         .onChange(of: selectedScale) { _, _ in
             chordAudio.stop()
+            if activeBankVoicing != nil { return }
+            recalledBankChord = nil
             if voicedChordNotes(inversion: selectedInversion) == nil {
                 selectValidInversion()
             }
