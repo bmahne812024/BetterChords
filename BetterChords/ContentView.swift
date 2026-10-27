@@ -2015,21 +2015,23 @@ struct ContentView: View {
                 )
             }
         }
-        .overlay(alignment: .bottom) {
-            VStack(spacing: 4) {
-                chordSymbolView
+        .safeAreaInset(edge: .top, spacing: 0) {
+            if usesMajorSixSubstitution || usesMinorSixSubstitution {
+                Text(usesMinorSixSubstitution
+                     ? "changed to minor six to avoid dissonance on top of chord"
+                     : "changed to major six to avoid dissonance on top of chord")
+                    .font(.system(size: 14))
                     .foregroundStyle(.white)
-                if usesMajorSixSubstitution || usesMinorSixSubstitution {
-                    Text(usesMinorSixSubstitution
-                         ? "changed to minor six to avoid dissonance on top of chord"
-                         : "changed to major six to avoid dissonance on top of chord")
-                        .font(.system(size: 16))
-                        .foregroundStyle(.white)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 20)
-                }
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 72)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .background(.black)
             }
-            .padding(.bottom, 12)
+        }
+        .overlay(alignment: .bottom) {
+            chordSymbolView
+                .foregroundStyle(.white)
+                .padding(.bottom, 12)
         }
         .overlay(alignment: .bottomTrailing) {
             HStack(spacing: 12) {
