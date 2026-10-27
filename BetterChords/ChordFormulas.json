@@ -493,27 +493,6 @@
               "8",
               "b10"
             ]
-          },
-          {
-            "name": "So What",
-            "LHIntervals": [
-              0,
-              5
-            ],
-            "LHDegrees": [
-              "1",
-              "4"
-            ],
-            "RHIntervals": [
-              10,
-              15,
-              19
-            ],
-            "RHDegrees": [
-              "b7",
-              "b10",
-              "12"
-            ]
           }
         ]
       },
@@ -1338,92 +1317,6 @@
               "8"
             ]
           }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
-          {
-            "name": "UST VI",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              9,
-              13,
-              16
-            ],
-            "RHDegrees": [
-              "6",
-              "#8",
-              "10"
-            ]
-          },
-          {
-            "name": "UST \u266fIV",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              10,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "#6",
-              "#8"
-            ]
-          },
-          {
-            "name": "UST \u266dIII",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              3,
-              7,
-              10
-            ],
-            "RHDegrees": [
-              "b3",
-              "5",
-              "b7"
-            ]
-          }
         ]
       },
       {
@@ -1529,71 +1422,6 @@
               "5",
               "6",
               "8"
-            ]
-          }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              11
-            ],
-            "LHDegrees": [
-              "3",
-              "7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
-          {
-            "name": "UST V",
-            "LHIntervals": [
-              4,
-              11
-            ],
-            "LHDegrees": [
-              "3",
-              "7"
-            ],
-            "RHIntervals": [
-              7,
-              11,
-              14
-            ],
-            "RHDegrees": [
-              "5",
-              "7",
-              "9"
-            ]
-          },
-          {
-            "name": "UST VIm",
-            "LHIntervals": [
-              4,
-              11
-            ],
-            "LHDegrees": [
-              "3",
-              "7"
-            ],
-            "RHIntervals": [
-              9,
-              12,
-              16
-            ],
-            "RHDegrees": [
-              "6",
-              "8",
-              "10"
             ]
           }
         ]
@@ -1770,134 +1598,6 @@
               "8"
             ]
           }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
-          {
-            "name": "UST \u266dVI",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              8,
-              12,
-              15
-            ],
-            "RHDegrees": [
-              "b6",
-              "8",
-              "b10"
-            ]
-          },
-          {
-            "name": "UST \u266dVII",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              10,
-              14,
-              17
-            ],
-            "RHDegrees": [
-              "b7",
-              "9",
-              "11"
-            ]
-          },
-          {
-            "name": "UST \u266dII",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              1,
-              5,
-              8
-            ],
-            "RHDegrees": [
-              "b2",
-              "4",
-              "b6"
-            ]
-          },
-          {
-            "name": "UST IV",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              5,
-              9,
-              12
-            ],
-            "RHDegrees": [
-              "4",
-              "6",
-              "8"
-            ]
-          },
-          {
-            "name": "So What",
-            "LHIntervals": [
-              0,
-              5
-            ],
-            "LHDegrees": [
-              "1",
-              "4"
-            ],
-            "RHIntervals": [
-              10,
-              15,
-              19
-            ],
-            "RHDegrees": [
-              "b7",
-              "b10",
-              "12"
-            ]
-          }
         ]
       },
       {
@@ -1961,71 +1661,6 @@
               "6",
               "7",
               "8"
-            ]
-          }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST V",
-            "LHIntervals": [
-              3,
-              11
-            ],
-            "LHDegrees": [
-              "b3",
-              "7"
-            ],
-            "RHIntervals": [
-              7,
-              11,
-              14
-            ],
-            "RHDegrees": [
-              "5",
-              "7",
-              "9"
-            ]
-          },
-          {
-            "name": "UST IV",
-            "LHIntervals": [
-              3,
-              11
-            ],
-            "LHDegrees": [
-              "b3",
-              "7"
-            ],
-            "RHIntervals": [
-              5,
-              9,
-              12
-            ],
-            "RHDegrees": [
-              "4",
-              "6",
-              "8"
-            ]
-          },
-          {
-            "name": "UST IIm",
-            "LHIntervals": [
-              3,
-              11
-            ],
-            "LHDegrees": [
-              "b3",
-              "7"
-            ],
-            "RHIntervals": [
-              2,
-              5,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "4",
-              "6"
             ]
           }
         ]
@@ -2117,49 +1752,7 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST \u266fIV",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              10,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "#6",
-              "#8"
-            ]
-          },
-          {
-            "name": "UST \u266fIVm",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              9,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "6",
-              "#8"
-            ]
-          },
-          {
-            "name": "UST \u266dIIIm",
+            "name": "UST ♭IIIm",
             "LHIntervals": [
               3,
               10
@@ -2383,27 +1976,6 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
-          {
             "name": "UST Vm",
             "LHIntervals": [
               4,
@@ -2514,28 +2086,7 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST \u266dVI",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              8,
-              12,
-              15
-            ],
-            "RHDegrees": [
-              "b6",
-              "8",
-              "b10"
-            ]
-          },
-          {
-            "name": "UST \u266dIII",
+            "name": "UST ♭III",
             "LHIntervals": [
               4,
               10
@@ -2552,27 +2103,6 @@
             "RHDegrees": [
               "b3",
               "5",
-              "b7"
-            ]
-          },
-          {
-            "name": "UST \u266dIIIm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              3,
-              6,
-              10
-            ],
-            "RHDegrees": [
-              "b3",
-              "b5",
               "b7"
             ]
           },
@@ -2707,92 +2237,6 @@
               "8"
             ]
           }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST VI",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              9,
-              13,
-              16
-            ],
-            "RHDegrees": [
-              "6",
-              "#8",
-              "10"
-            ]
-          },
-          {
-            "name": "UST \u266fIV",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              10,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "#6",
-              "#8"
-            ]
-          },
-          {
-            "name": "UST \u266fIVm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              9,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "6",
-              "#8"
-            ]
-          },
-          {
-            "name": "UST \u266dIIm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              1,
-              4,
-              8
-            ],
-            "RHDegrees": [
-              "b2",
-              "b4",
-              "b6"
-            ]
-          }
         ]
       },
       {
@@ -2862,7 +2306,7 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST \u266dVI",
+            "name": "UST ♭VI",
             "LHIntervals": [
               4,
               10
@@ -2976,7 +2420,7 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST \u266fIV",
+            "name": "UST ♯IV",
             "LHIntervals": [
               4,
               10
@@ -2993,27 +2437,6 @@
             "RHDegrees": [
               "#4",
               "#6",
-              "#8"
-            ]
-          },
-          {
-            "name": "UST \u266fIVm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              9,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "6",
               "#8"
             ]
           }
@@ -3141,48 +2564,6 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
-          {
-            "name": "UST VI",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              9,
-              13,
-              16
-            ],
-            "RHDegrees": [
-              "6",
-              "#8",
-              "10"
-            ]
-          },
-          {
             "name": "UST VIm",
             "LHIntervals": [
               4,
@@ -3201,27 +2582,6 @@
               "6",
               "8",
               "10"
-            ]
-          },
-          {
-            "name": "UST \u266fIVm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              9,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "6",
-              "#8"
             ]
           }
         ]
@@ -3320,29 +2680,6 @@
               "b7",
               "7",
               "8"
-            ]
-          }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
             ]
           }
         ]
@@ -3558,29 +2895,6 @@
               "8"
             ]
           }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          }
         ]
       },
       {
@@ -3691,27 +3005,6 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              11
-            ],
-            "LHDegrees": [
-              "3",
-              "7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
-          {
             "name": "UST V",
             "LHIntervals": [
               4,
@@ -3730,27 +3023,6 @@
               "5",
               "7",
               "9"
-            ]
-          },
-          {
-            "name": "UST VIIm",
-            "LHIntervals": [
-              4,
-              11
-            ],
-            "LHDegrees": [
-              "3",
-              "7"
-            ],
-            "RHIntervals": [
-              11,
-              14,
-              18
-            ],
-            "RHDegrees": [
-              "7",
-              "9",
-              "#11"
             ]
           }
         ]
@@ -3988,27 +3260,6 @@
               "7",
               "9"
             ]
-          },
-          {
-            "name": "UST IIm",
-            "LHIntervals": [
-              3,
-              11
-            ],
-            "LHDegrees": [
-              "b3",
-              "7"
-            ],
-            "RHIntervals": [
-              2,
-              5,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "4",
-              "6"
-            ]
           }
         ]
       },
@@ -4163,69 +3414,6 @@
           }
         ],
         "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
-          {
-            "name": "UST \u266dVII",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              10,
-              14,
-              17
-            ],
-            "RHDegrees": [
-              "b7",
-              "9",
-              "11"
-            ]
-          },
-          {
-            "name": "UST IIm",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              5,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "4",
-              "6"
-            ]
-          },
           {
             "name": "UST Vm",
             "LHIntervals": [
@@ -4642,29 +3830,6 @@
               "8"
             ]
           }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              11
-            ],
-            "LHDegrees": [
-              "3",
-              "7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          }
         ]
       },
       {
@@ -4725,50 +3890,6 @@
               "6",
               "7",
               "8"
-            ]
-          }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              11
-            ],
-            "LHDegrees": [
-              "3",
-              "7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
-          {
-            "name": "UST VIIm",
-            "LHIntervals": [
-              4,
-              11
-            ],
-            "LHDegrees": [
-              "3",
-              "7"
-            ],
-            "RHIntervals": [
-              11,
-              14,
-              18
-            ],
-            "RHDegrees": [
-              "7",
-              "9",
-              "#11"
             ]
           }
         ]
@@ -4839,27 +3960,6 @@
           }
         ],
         "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              11
-            ],
-            "LHDegrees": [
-              "3",
-              "7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
           {
             "name": "UST VIIm",
             "LHIntervals": [
@@ -4998,7 +4098,7 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST \u266dVII",
+            "name": "UST ♭VII",
             "LHIntervals": [
               3,
               10
@@ -5016,27 +4116,6 @@
               "b7",
               "9",
               "11"
-            ]
-          },
-          {
-            "name": "UST IIm",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              5,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "4",
-              "6"
             ]
           },
           {
@@ -5176,27 +4255,6 @@
           }
         ],
         "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              3,
-              10
-            ],
-            "LHDegrees": [
-              "b3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
           {
             "name": "UST IIm",
             "LHIntervals": [
@@ -5790,92 +4848,6 @@
               "8"
             ]
           }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
-          {
-            "name": "UST \u266fIV",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              10,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "#6",
-              "#8"
-            ]
-          },
-          {
-            "name": "UST \u266fIVm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              9,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "6",
-              "#8"
-            ]
-          },
-          {
-            "name": "UST \u266dIIIm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              3,
-              6,
-              10
-            ],
-            "RHDegrees": [
-              "b3",
-              "b5",
-              "b7"
-            ]
-          }
         ]
       },
       {
@@ -5961,29 +4933,6 @@
               "#5",
               "b7",
               "8"
-            ]
-          }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
             ]
           }
         ]
@@ -6101,27 +5050,6 @@
               "#4",
               "6"
             ]
-          },
-          {
-            "name": "UST \u266fIVm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              9,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "6",
-              "#8"
-            ]
           }
         ]
       },
@@ -6215,7 +5143,7 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST \u266dIIm",
+            "name": "UST ♭IIm",
             "LHIntervals": [
               4,
               10
@@ -6329,7 +5257,7 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST \u266dIIIm",
+            "name": "UST ♭IIIm",
             "LHIntervals": [
               4,
               10
@@ -6439,27 +5367,6 @@
               "#8",
               "10"
             ]
-          },
-          {
-            "name": "UST \u266fIVm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              9,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "6",
-              "#8"
-            ]
           }
         ]
       },
@@ -6494,14 +5401,6 @@
         "LHVoicingLabels": [
           "Built from 3rd",
           "Built from 7th"
-        ],
-        "RHExtension": [
-          17,
-          24
-        ],
-        "RHDegrees": [
-          "11",
-          "15"
         ],
         "Scales": [
           {
@@ -6648,14 +5547,6 @@
           "Second inversion",
           "Third inversion"
         ],
-        "RHExtension": [
-          26,
-          36
-        ],
-        "RHDegrees": [
-          "16",
-          "22"
-        ],
         "Scales": [
           {
             "name": "Lydian Augmented",
@@ -6704,27 +5595,6 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST \u266dVI",
-            "LHIntervals": [
-              4,
-              11
-            ],
-            "LHDegrees": [
-              "3",
-              "7"
-            ],
-            "RHIntervals": [
-              8,
-              12,
-              15
-            ],
-            "RHDegrees": [
-              "b6",
-              "8",
-              "b10"
-            ]
-          },
-          {
             "name": "UST III",
             "LHIntervals": [
               4,
@@ -6743,27 +5613,6 @@
               "3",
               "#5",
               "7"
-            ]
-          },
-          {
-            "name": "UST \u266dVIm",
-            "LHIntervals": [
-              4,
-              11
-            ],
-            "LHDegrees": [
-              "3",
-              "7"
-            ],
-            "RHIntervals": [
-              8,
-              11,
-              15
-            ],
-            "RHDegrees": [
-              "b6",
-              "b8",
-              "b10"
             ]
           }
         ]
@@ -7662,50 +6511,6 @@
               "8"
             ]
           }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST \u266dVI",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              8,
-              12,
-              15
-            ],
-            "RHDegrees": [
-              "b6",
-              "8",
-              "b10"
-            ]
-          },
-          {
-            "name": "UST \u266dIIm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              1,
-              4,
-              8
-            ],
-            "RHDegrees": [
-              "b2",
-              "b4",
-              "b6"
-            ]
-          }
         ]
       },
       {
@@ -7804,71 +6609,6 @@
               "8"
             ]
           }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST II",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              2,
-              6,
-              9
-            ],
-            "RHDegrees": [
-              "2",
-              "#4",
-              "6"
-            ]
-          },
-          {
-            "name": "UST \u266fIV",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              6,
-              10,
-              13
-            ],
-            "RHDegrees": [
-              "#4",
-              "#6",
-              "#8"
-            ]
-          },
-          {
-            "name": "UST \u266dIIIm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              3,
-              6,
-              10
-            ],
-            "RHDegrees": [
-              "b3",
-              "b5",
-              "b7"
-            ]
-          }
         ]
       },
       {
@@ -7930,7 +6670,7 @@
         ],
         "HandVoicings": [
           {
-            "name": "UST \u266dVI",
+            "name": "UST ♭VI",
             "LHIntervals": [
               4,
               10
@@ -8029,29 +6769,6 @@
               "b6",
               "b7",
               "8"
-            ]
-          }
-        ],
-        "HandVoicings": [
-          {
-            "name": "UST \u266dIIm",
-            "LHIntervals": [
-              4,
-              10
-            ],
-            "LHDegrees": [
-              "3",
-              "b7"
-            ],
-            "RHIntervals": [
-              1,
-              4,
-              8
-            ],
-            "RHDegrees": [
-              "b2",
-              "b4",
-              "b6"
             ]
           }
         ]

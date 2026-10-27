@@ -1,6 +1,6 @@
 import Foundation
 
-nonisolated struct SavedChord: Codable, Identifiable, Equatable {
+nonisolated struct SavedChord: Codable, Identifiable, Equatable, Sendable {
     var id = UUID()
     var title: String
     var root: Int
@@ -16,7 +16,7 @@ nonisolated struct SavedChord: Codable, Identifiable, Equatable {
     var notes: Set<Int> { left.union(right).union(bass) }
 }
 
-enum ChordVoiceLeading {
+nonisolated enum ChordVoiceLeading {
     private static func cost(_ distance: Int) -> Int {
         distance + max(0, distance - 2) * 12
     }
@@ -76,15 +76,19 @@ enum ChordVoiceLeading {
         let rightCandidates = candidates(for: target.right, range: 10...59)
         var best: (left: [Int], right: [Int], score: Int, tie: Int, distances: [Int])?
         let sourceLeft = source.left.sorted(), sourceRight = source.right.sorted()
+        let originalLeft = target.left.sorted(), originalRight = target.right.sorted()
+        let rightMoves = rightCandidates.map { right in
+            (notes: right, move: movement(from: sourceRight, to: right),
+             tie: zip(right, originalRight).reduce(0) { $0 + abs($1.0 - $1.1) })
+        }
         for left in leftCandidates {
             let leftMove = movement(from: sourceLeft, to: left)
-            for right in rightCandidates where right.isEmpty || right[0] > left.last! {
-                let rightMove = movement(from: sourceRight, to: right)
-                let score = leftMove.score + rightMove.score
-                let tie = zip(left, target.left.sorted()).reduce(0) { $0 + abs($1.0 - $1.1) }
-                    + zip(right, target.right.sorted()).reduce(0) { $0 + abs($1.0 - $1.1) }
+            let leftTie = zip(left, originalLeft).reduce(0) { $0 + abs($1.0 - $1.1) }
+            for right in rightMoves where right.notes.isEmpty || right.notes[0] > left.last! {
+                let score = leftMove.score + right.move.score
+                let tie = leftTie + right.tie
                 if best == nil || score < best!.score || (score == best!.score && tie < best!.tie) {
-                    best = (left, right, score, tie, leftMove.distances + rightMove.distances)
+                    best = (left, right.notes, score, tie, leftMove.distances + right.move.distances)
                 }
             }
         }
@@ -163,5 +167,90 @@ nonisolated struct ChordBankHistory {
         guard let next = redoStack.popLast() else { return nil }
         undoStack.append(current)
         return next
+    }
+}
+
+nonisolated struct ChordContinuation: Identifiable {
+    let label: String
+    let offset: Int
+    let chord: String
+    var slide = false
+    var id: String { "\(offset):\(chord)" }
+
+    static func choices(after chord: String) -> [ChordContinuation] {
+        var choices: [ChordContinuation]
+        if chord.contains("dim") {
+            choices = [.init(label: "Resolve up a half step", offset: 1, chord: "maj7"),
+                       .init(label: "Resolve to minor", offset: 1, chord: "min7")]
+        } else if chord.contains("b5") && chord.hasPrefix("min") {
+            choices = [.init(label: "Minor ii–V", offset: 5, chord: "7(b9)"),
+                       .init(label: "Relative major", offset: 3, chord: "maj7")]
+        } else if chord.hasPrefix("min") {
+            choices = [.init(label: "ii–V motion", offset: 5, chord: "9"),
+                       .init(label: "Up to relative major", offset: 3, chord: "maj7"),
+                       .init(label: "Major color below", offset: 8, chord: "maj7"),
+                       .init(label: "Turn toward dominant", offset: 7, chord: "7(b9)")]
+        } else if chord.first?.isNumber == true || chord.contains("alt") {
+            choices = [.init(label: "Resolve up a fourth", offset: 5, chord: "maj7"),
+                       .init(label: "Resolve to minor", offset: 5, chord: "min7"),
+                       .init(label: "Tritone resolution", offset: -1, chord: "maj7"),
+                       .init(label: "Tritone to minor", offset: -1, chord: "min7"),
+                       .init(label: "Deceptive minor", offset: 2, chord: "min7")]
+        } else {
+            choices = [.init(label: "Up a fourth", offset: 5, chord: "maj7"),
+                       .init(label: "Relative minor", offset: 9, chord: "min7"),
+                       .init(label: "Move to ii", offset: 2, chord: "min7"),
+                       .init(label: "Turn toward dominant", offset: 7, chord: "9")]
+        }
+        choices += [.init(label: "Slide down a half step", offset: -1, chord: chord, slide: true),
+                    .init(label: "Slide up a half step", offset: 1, chord: chord, slide: true)]
+        var seen: Set<String> = []
+        return choices.filter { seen.insert($0.id).inserted }
+    }
+}
+
+nonisolated struct BankKeyboardEdit: Equatable {
+    let cardID: UUID?
+    let root: Int
+    let chord: String
+    let inversion: Int
+    let option: String
+    let rootEnabled: Bool
+    let recalled: SavedChord?
+}
+
+nonisolated struct VoiceLeadingCandidate: Sendable {
+    var chord: SavedChord
+    let intervals: [Int]
+    let degrees: [String]
+}
+
+extension ChordVoiceLeading {
+    nonisolated static func chordOptions(for chord: String) -> [String] {
+        let families = [
+            ["maj", "maj7", "maj9", "maj13", "maj7(#11)", "maj9(#11)"],
+            ["6", "6/9", "add9"],
+            ["min", "min7", "min9", "min11", "min13", "min(add9)"],
+            ["min6", "min6/9"], ["minmaj7", "minmaj9"],
+            ["7", "9", "13", "13(9)", "9(13)", "7(#11)", "9(#11)", "13(#11)", "7(b9)", "7(#9)", "7alt", "13(b9)", "7(b13)", "9(b13)"],
+            ["min7b5", "min9b5", "min11b5"],
+            ["sus4", "sus4(add9)", "7sus4", "9sus4", "13sus4"]
+        ]
+        return [chord] + (families.first { $0.contains(chord) } ?? []).filter { $0 != chord }
+    }
+
+    nonisolated static func best(from fixed: SavedChord, candidates: [VoiceLeadingCandidate], original: SavedChord) -> SavedChord? {
+        var best: (chord: SavedChord, score: Int, tie: Int)?
+        for candidate in candidates {
+            guard let fitted = lead(from: fixed, to: candidate.chord, intervals: candidate.intervals, degrees: candidate.degrees) else { continue }
+            let score = movement(from: fixed.left.sorted(), to: fitted.left.sorted()).score
+                + movement(from: fixed.right.sorted(), to: fitted.right.sorted()).score
+            // Keep the current harmony/arrangement on a movement tie.
+            let tie = (fitted.chord == original.chord ? 0 : 2) + (fitted.option == original.option ? 0 : 1)
+            if best == nil || score < best!.score || (score == best!.score && tie < best!.tie) {
+                best = (fitted, score, tie)
+            }
+        }
+        return best?.chord
     }
 }

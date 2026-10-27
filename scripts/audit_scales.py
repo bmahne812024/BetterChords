@@ -113,30 +113,40 @@ def swift_function(source, marker):
 
 def run_swift_audit():
     source = SOURCE.read_text()
-    models = (ROOT / 'BetterChords/ChordBank.swift').read_text() + '\n' + source[source.index('struct ChordFormulaFile'):source.index('struct ContentView')]
+    models = (ROOT / 'BetterChords/ChordTonePolicy.swift').read_text() + '\n' + (ROOT / 'BetterChords/ChordBank.swift').read_text() + '\n' + source[source.index('struct ChordFormulaFile'):source.index('struct ContentView')]
     methods = source[source.index('    private func leftHandIntervals'):source.index('    private func highlightedColor')]
     methods = methods.replace('private ', '').replace('func selectValidInversion()', 'mutating func selectValidInversion()')
     labels = swift_function(source, '    private func noteName')
     suggestions = '\n'.join(swift_function(source, marker) for marker in [
-        '    private var substituteChoices', '    private func substituteArrangements', '    private func substituteReason', '    private func substituteSymbol', '    private var approachChoices', '    private func previewApproach', '    private func randomizeApproach'
+        '    private var substituteChoices', '    private func substituteArrangements', '    private func substituteReason', '    private func substituteSymbol', '    private var approachChoices', '    private func previewApproach', '    private func randomizeApproach', '    private var currentBankChord', '    private func canOfferCurrentChord', '    private var continuationChoices', '    private func continuationSymbol', '    private func makeContinuation', '    private func resolvedBankInversion', '    private var displayedInversion:', '    private var displayedInversionLabel', '    private func inversionLabel', '    private func chooseInversion', '    private func chooseRightHandOption', '    private func flexibleVoiceLeadingCandidates', '    private var bankKeyboardEdit:', '    private func synchronizeEditingBankChord', '    private func rightHandOptionFits', '    private func normalizeRightHandSelection'
     ])
-    suggestions = suggestions.replace('func previewApproach()', 'mutating func previewApproach()').replace('func randomizeApproach()', 'mutating func randomizeApproach()')
+    suggestions = suggestions.replace('func previewApproach()', 'mutating func previewApproach()').replace('func randomizeApproach()', 'mutating func randomizeApproach()').replace('func chooseInversion(', 'mutating func chooseInversion(').replace('func chooseRightHandOption(', 'mutating func chooseRightHandOption(').replace('func synchronizeEditingBankChord()', 'mutating func synchronizeEditingBankChord()').replace('func normalizeRightHandSelection()', 'mutating func normalizeRightHandSelection()')
     available = source[source.index('    private var availableInversions'):source.index('    @State private var chordTypes')].replace('private ', '')
     harness = '''import Foundation
 MODELS
 struct Audit {
 let middleCNote = 24
 let totalNotes = 60
-let inversionNames = ["Root", "First", "Second", "Third", "Fourth"]
+let inversionNames = ["Root position", "First inversion", "Second inversion", "Third inversion", "Fourth inversion"]
 var selectedRoot = 0
 var rootEnabled = true
 var recalledBankChord: SavedChord?
 var savedChords: [SavedChord] = []
+var editingBankChordID: UUID?
+var lastBankKeyboardEdit: BankKeyboardEdit?
+var bankUndo: [UUID: SavedChord] = [:]
+var bankHistory = ChordBankHistory()
+mutating func writeChordBank(_ chords: [SavedChord], recordHistory: Bool = true) -> Bool {
+    if recordHistory { bankHistory.record(before: savedChords, after: chords) }
+    savedChords = chords
+    return true
+}
 var approachCount = 1
 var approachChoice = ""
 var approachPreview: [SavedChord] = []
 var approachTargetID: UUID?
 var bankError: String?
+var chordSymbol: String { "Current" }
 var selectedChord = "maj"
 var selectedInversion = 0
 var selectedScale = ""
@@ -229,6 +239,152 @@ for count in 1...4 {
 }
 print("PASS: random defaults are ready to insert at each length; shuffle chooses a different approach")
 a.savedChords = []; a.approachPreview = []
+var continuationChecks = 0
+for name in ["maj7", "min7", "9", "dim7", "min7b5", "maj7(#5)"] {
+    a.selectedChord = name; a.selectedScale = ""; a.recalledBankChord = nil
+    for root in 0..<12 {
+        a.selectedRoot = root
+        for twoHands in [false, true] {
+            guard let arrangement = a.substituteArrangements(for: name, twoHands: twoHands).first else { continue }
+            for enabled in [false, true] {
+                let source = SavedChord(title: "Source", root: root, chord: name, inversion: arrangement.inversion, option: arrangement.option, rootEnabled: enabled, left: arrangement.left, right: arrangement.right)
+                a.savedChords = [source]
+                a.selectedChord = name; a.selectedRoot = root; a.selectedInversion = arrangement.inversion; a.selectedScale = arrangement.option
+                a.recalledBankChord = source
+                precondition(!a.canOfferCurrentChord(beforeFirst: true) && !a.canOfferCurrentChord(beforeFirst: false))
+                a.recalledBankChord = nil; a.selectedChord = "maj"; a.selectedInversion = 0; a.selectedScale = ""
+                precondition(a.canOfferCurrentChord(beforeFirst: true) && a.canOfferCurrentChord(beforeFirst: false))
+                a.selectedChord = name; a.selectedRoot = root; a.selectedInversion = arrangement.inversion; a.selectedScale = arrangement.option
+                for choice in a.continuationChoices {
+                    guard let next = a.makeContinuation(choice) else { preconditionFailure("Missing continuation: \(name) \(root) \(choice.id)") }
+                    precondition(a.savedChords == [source])
+                    precondition(next.id != source.id && next.rootEnabled == enabled)
+                    precondition(next.left.allSatisfy { (10...33).contains($0) })
+                    precondition(next.right.isEmpty || next.right.min()! > next.left.max()!)
+                    precondition(next.right.isEmpty != twoHands)
+                    if choice.slide {
+                        precondition(next.left.map { $0 % 12 }.sorted() == source.left.map { ($0 + choice.offset + 12) % 12 }.sorted())
+                        precondition(next.right.map { $0 % 12 }.sorted() == source.right.map { ($0 + choice.offset + 12) % 12 }.sorted())
+                    }
+                    a.selectedChord = next.chord; a.selectedRoot = next.root; a.selectedInversion = next.inversion; a.selectedScale = next.option; a.rootEnabled = next.rootEnabled
+                    a.recalledBankChord = next
+                    precondition(a.leftHandNotes == next.left && a.rightHandNotes == next.right && a.chordPlaybackNotes == next.notes)
+                    a.recalledBankChord = nil; a.selectedChord = name; a.selectedRoot = root; a.selectedScale = ""
+                    continuationChecks += 1
+                }
+            }
+        }
+    }
+}
+print("PASS: \(continuationChecks) next-chord suggestions: exact recall/playback, both hands, bass setting, slides, adjacent duplicate exclusion, source unchanged")
+a.savedChords = []; a.recalledBankChord = nil
+// A recalled Dm7 in first inversion must not inherit the stale root-position index.
+a.selectedChord = "min7"; a.selectedRoot = 2; a.selectedInversion = 0; a.selectedScale = ""; a.rootEnabled = true
+let recalledDm = SavedChord(title: "Dm7", root: 2, chord: "min7", inversion: 0, option: "", rootEnabled: true, left: [17,21,24,26], right: [])
+a.recalledBankChord = recalledDm
+precondition(a.displayedInversion == 1 && a.displayedInversionLabel == "First inversion")
+precondition(a.leftHandNotes == recalledDm.left)
+a.chooseInversion(0)
+precondition(a.activeBankVoicing == nil && a.displayedInversion == 0 && a.leftHandNotes == Set([14,17,21,24]))
+a.recalledBankChord = recalledDm
+a.chooseRightHandOption("")
+precondition(a.activeBankVoicing == nil && a.selectedInversion == 1)
+var inversionChecks = 0
+for name in ["min7", "maj7", "maj7(#5)", "9"] {
+    a.selectedChord = name; a.selectedScale = ""; a.recalledBankChord = nil
+    for root in 0..<12 {
+        a.selectedRoot = root
+        for inversion in a.availableInversions {
+            guard let notes = a.voicedChordNotes(inversion: inversion) else { continue }
+            let saved = SavedChord(title: "Audit", root: root, chord: name, inversion: 0, option: "", rootEnabled: true, left: Set(notes), right: [])
+            precondition(a.resolvedBankInversion(saved) == inversion, "Wrong recalled inversion: \(name) \(root) \(inversion)")
+            inversionChecks += 1
+        }
+    }
+}
+a.recalledBankChord = nil
+print("PASS: \(inversionChecks) recalled inversions inferred from actual notes; Dm7 regression, explicit augmented shapes, and same-index menu selection")
+// Recall establishes an edit link without itself mutating the bank.
+a.selectedChord = "min7"; a.selectedRoot = 2; a.selectedInversion = 0; a.selectedScale = ""; a.rootEnabled = true
+a.recalledBankChord = recalledDm
+let untouched = SavedChord(title: "Other", root: 0, chord: "maj7", inversion: 0, option: "", rootEnabled: false, left: [12,16,19,23], right: [])
+a.savedChords = [recalledDm, untouched]; a.editingBankChordID = recalledDm.id
+a.lastBankKeyboardEdit = a.bankKeyboardEdit; a.bankHistory = ChordBankHistory()
+a.synchronizeEditingBankChord()
+precondition(a.savedChords == [recalledDm, untouched] && !a.bankHistory.canUndo)
+a.recalledBankChord = nil; a.selectedChord = "maj7"; a.selectedRoot = 5; a.chooseInversion(0)
+a.synchronizeEditingBankChord()
+precondition(a.savedChords[0].id == recalledDm.id && a.savedChords[0].chord == "maj7" && a.savedChords[0].root == 5)
+precondition(a.savedChords[0].notes == a.chordPlaybackNotes && a.savedChords[1] == untouched)
+a.rootEnabled = false; a.chooseRightHandOption("Drop 2")
+a.synchronizeEditingBankChord()
+precondition(a.savedChords[0].right == a.rightHandNotes && !a.savedChords[0].rootEnabled)
+let linkedBeforeUndo = a.savedChords
+let linkUndo = a.bankHistory.undo(current: linkedBeforeUndo)!
+precondition(linkUndo[0].rootEnabled && linkUndo[1] == untouched)
+a.editingBankChordID = nil; a.selectedRoot = 7; a.synchronizeEditingBankChord()
+precondition(a.savedChords == linkedBeforeUndo)
+a.lastBankKeyboardEdit = nil; a.recalledBankChord = nil
+print("PASS: linked card edits preserve position/ID and exact playback, Root, both hands; no write on recall; Undo and detached edits")
+var flexibleChecks = 0
+var differentStyles = 0
+let searchStart = Date()
+for root in 0..<12 {
+    a.selectedRoot = root; a.selectedChord = "maj7"; a.selectedScale = ""
+    guard let fixedArrangement = a.substituteArrangements(for: "maj7", twoHands: true).first(where: { $0.option == "Drop 2" }),
+          let targetNotes = a.voicedChordNotes(inversion: 0, chord: "min7", root: (root + 2) % 12, scale: "") else { continue }
+    let fixed = SavedChord(title: "Fixed", root: root, chord: "maj7", inversion: fixedArrangement.inversion, option: "Drop 2", rootEnabled: true, left: fixedArrangement.left, right: fixedArrangement.right)
+    let target = SavedChord(title: "Target", root: (root + 2) % 12, chord: "min7", inversion: 0, option: "", rootEnabled: false, left: Set(targetNotes), right: [])
+    let candidates = a.flexibleVoiceLeadingCandidates(for: target, fixed: fixed)
+    precondition(!candidates.isEmpty && candidates.allSatisfy { !$0.chord.right.isEmpty })
+    precondition(candidates.contains { $0.chord.chord == "min9" } && candidates.contains { $0.chord.option == "Drop 3" })
+    let result = ChordVoiceLeading.best(from: fixed, candidates: candidates, original: target)!
+    precondition(result.id == target.id && result.root == target.root && !result.rootEnabled && !result.right.isEmpty)
+    precondition(ChordVoiceLeading.chordOptions(for: target.chord).contains(result.chord))
+    if result.option != fixed.option { differentStyles += 1 }
+    // Reverse direction: only the earlier target is changed, using the later fixed card.
+    let reverse = a.flexibleVoiceLeadingCandidates(for: fixed, fixed: result)
+    let reverseResult = ChordVoiceLeading.best(from: result, candidates: reverse, original: fixed)!
+    precondition(reverseResult.id == fixed.id && reverseResult.root == fixed.root)
+    precondition(reverseResult.left.max()! < reverseResult.right.min()!)
+    flexibleChecks += 2
+}
+precondition(differentStyles > 0, "Voice leading incorrectly forces the fixed card's voicing style")
+print("PASS: \(flexibleChecks) flexible searches, both directions; compatible extensions, independent styles, one-to-two-hand conversion; \(Date().timeIntervalSince(searchStart)) seconds")
+a.editingBankChordID = nil; a.recalledBankChord = nil; a.selectedScale = ""
+var toneChecks = 0
+precondition(ChordTonePolicy.pitches["maj9"] == Set([0,2,4,7,11]))
+precondition(!ChordTonePolicy.pitches["maj9"]!.contains(6))
+precondition(ChordTonePolicy.pitches["maj9(#11)"]!.contains(6))
+precondition(a.formulas["maj9"]!.HandVoicings?.map { $0.name } == ["UST V"])
+precondition(a.formulas["maj9(#11)"]!.HandVoicings?.contains { $0.name == "UST VIIm" } == true)
+for formula in decoded.Chords.allChords {
+    precondition(ChordTonePolicy.pitches[formula.name] != nil)
+    precondition(ChordTonePolicy.allows(Set(formula.LHIntervals + (formula.RHChordIntervals ?? [])), chord: formula.name, root: 0))
+    for hand in formula.HandVoicings ?? [] {
+        precondition(ChordTonePolicy.allows(Set(hand.LHIntervals + hand.RHIntervals), chord: formula.name, root: 0), "Misnamed upper structure: \(formula.name) \(hand.name)")
+    }
+    precondition(ChordTonePolicy.allows(Set(formula.RHExtension ?? []), chord: formula.name, root: 0))
+    a.selectedChord = formula.name; a.recalledBankChord = nil
+    for root in 0..<12 {
+        a.selectedRoot = root
+        for inversion in a.availableInversions {
+            a.selectedInversion = inversion
+            for option in ["Double", "LH Shell", "Drop 2", "Drop 3", "Drop 2 & 3", "Right hand extension"] + (formula.HandVoicings ?? []).map({ $0.name }) {
+                if a.rightHandOptionFits(option, chord: formula.name, root: root, inversion: inversion) {
+                    a.selectedScale = option
+                    precondition(ChordTonePolicy.allows(a.rightHandNotes, chord: formula.name, root: root), "Off-chord RH: \(formula.name), \(option)")
+                    toneChecks += 1
+                }
+            }
+        }
+    }
+}
+a.selectedRoot = 0; a.selectedChord = "maj7"; a.selectedInversion = 0; a.selectedScale = "Double"
+a.chooseInversion(1)
+precondition(a.selectedScale.isEmpty && a.rightHandNotes.isEmpty, "Major-7 sixth-substitution must not offer an off-chord RH doubling")
+a.selectedScale = ""
+print("PASS: \(toneChecks) permitted RH options across roots/inversions; every upper structure and RH extension fits its chord symbol; Cmaj9/#11 and inversion-change regressions")
 var substitutesChecked = 0
 for chord in decoded.Chords.allChords {
     a.selectedChord=chord.name; a.selectedScale=""; a.selectedInversion=0
@@ -545,7 +701,7 @@ for chord in decoded.Chords.allChords {
         }
     }
 }
-a.selectedRoot=0; a.selectedChord="min7"; a.selectedScale="So What"
+a.selectedRoot=0; a.selectedChord="min11"; a.selectedScale="So What"
 precondition(a.leftHandNotes == Set([12,17]))
 precondition(a.rightHandNotes == Set([22,27,31]))
 print("PASS: \(handChecks) upper-structure / So What hand splits across all roots")
