@@ -27,3 +27,13 @@ Major chords offer sus2, suspended add9, sixth/ninth and Lydian colors. Dominant
 So What arrangements are available for 6/9, maj13, the new maj13(#11), 9sus4 and 13sus4, alongside the existing min11 arrangement. Further quartal stacks and fragments cover major, minor, suspended, dominant and half-diminished sounds. The library now contains 67 formulas, 201 scale assignments, 32 distinct scales and 90 named hand arrangements.
 
 Construction references: [So What](https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/so-what-chord/) and [quartal voicings](https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/). The audit checks exact So What intervals in all keys, permitted pitches, chord coverage and preview/Use parity.
+
+## Dominant tritone substitutions
+
+Dominant chords containing the major third and minor seventh now offer clearly labeled tritone recommendations at a root six semitones away, before the existing same-root choices. The recommended colors are 7, 9, 13, 7(#11), 9(#11) and 13(#11), subject to the selected hand mode and playable range. For example, G7 offers Db7 and its extended colors.
+
+Each card uses the target root for its symbol, hands, bass, preview and playback. Use preserves the chosen notes through root/quality changes, and the resulting bank card retains the new root and hand split. Arrangement choices are stored separately for each root and quality.
+
+Sus chords do not automatically receive this recommendation because they omit the dominant third. The card describes the shared guide-tone tritone and usual downward half-step resolution, with a reminder to check melody/tensions. These remain context-dependent recommendations, including for blues or nonfunctional dominants.
+
+Reference: [Tritone Substitution & Scales](https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/tritone-substitution-scales/).

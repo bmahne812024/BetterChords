@@ -96,6 +96,7 @@ struct SubstituteArrangement {
     let left: Set<Int>
     let right: Set<Int>
     let bass: Set<Int>
+    var root: Int? = nil
     var notes: Set<Int> { left.union(right).union(bass) }
 }
 
@@ -928,7 +929,31 @@ struct ContentView: View {
         }
     }
 
-    private func substituteArrangements(for chord: String, twoHands: Bool) -> [SubstituteArrangement] {
+    private var tritoneSubstituteChords: [String] {
+        // A true dominant third/seventh tritone is required; sus chords omit the third.
+        guard let pitches = ChordTonePolicy.pitches[selectedChord],
+              pitches.contains(4), pitches.contains(10) else { return [] }
+        let root = (selectedRoot + 6) % 12
+        return ["7", "9", "13", "7(#11)", "9(#11)", "13(#11)"].filter {
+            !substituteArrangements(for: $0, twoHands: substitutesUseTwoHands, root: root).isEmpty
+        }
+    }
+
+    private func applySubstitute(_ arrangement: SubstituteArrangement) {
+        let root = arrangement.root ?? selectedRoot
+        selectedRoot = root
+        selectedChord = arrangement.chord
+        selectedInversion = arrangement.inversion
+        selectedScale = arrangement.option
+        // Preserve the exact chosen hands through the root/chord onChange callbacks.
+        recalledBankChord = SavedChord(title: substituteSymbol(arrangement.chord, root: root),
+                                      root: root, chord: arrangement.chord, inversion: arrangement.inversion,
+                                      option: arrangement.option, rootEnabled: rootEnabled,
+                                      left: arrangement.left, right: arrangement.right)
+    }
+
+    private func substituteArrangements(for chord: String, twoHands: Bool, root: Int? = nil) -> [SubstituteArrangement] {
+        let selectedRoot = root ?? self.selectedRoot
         guard let formula = formulas[chord] else { return [] }
         let count = formula.LHVoicings?.count ?? (chord == "9" ? 2 : (extensionNames.contains(chord) ? 1 : min(formula.LHIntervals.count, inversionNames.count)))
         let options = twoHands
@@ -936,17 +961,17 @@ struct ContentView: View {
             : [""]
         return options.compactMap { option in
             for inversion in 0..<count {
-                guard let close = voicedChordNotes(inversion: inversion, chord: chord, scale: "") else { continue }
-                let core = coreRightHandNotes(inversion: inversion, chord: chord)
+                guard let close = voicedChordNotes(inversion: inversion, chord: chord, root: selectedRoot, scale: "") else { continue }
+                let core = coreRightHandNotes(inversion: inversion, chord: chord, root: selectedRoot)
                 let hands: (left: Set<Int>, right: Set<Int>)?
                 if let custom = formula.HandVoicings?.first(where: { $0.name == option }) {
-                    hands = handVoicing(custom)
+                    hands = handVoicing(custom, root: selectedRoot)
                 } else {
                     switch option {
                     case "": hands = (Set(close), core)
                     case "Double": hands = (Set(close), Set(close.map { $0 + 12 }).union(core))
                     case "LH Shell":
-                        if let shell = shellVoicing(inversion: inversion, chord: chord) {
+                        if let shell = shellVoicing(inversion: inversion, chord: chord, root: selectedRoot) {
                             hands = (shell.left, shell.right.union(core))
                         } else { hands = nil }
                     default:
@@ -963,7 +988,7 @@ struct ContentView: View {
                 let left = rootEnabled ? hands.left : hands.left.subtracting([selectedRoot])
                 return SubstituteArrangement(chord: chord, option: option, inversion: inversion,
                                              left: left, right: hands.right,
-                                             bass: rootEnabled ? [selectedRoot] : [])
+                                             bass: rootEnabled ? [selectedRoot] : [], root: selectedRoot)
             }
             return nil
         }
@@ -993,7 +1018,8 @@ struct ContentView: View {
         return "A simpler version of the same chord family."
     }
 
-    private func substituteSymbol(_ chord: String) -> String {
+    private func substituteSymbol(_ chord: String, root: Int? = nil) -> String {
+        let selectedRoot = root ?? self.selectedRoot
         let root = roots.indices.contains(selectedRoot) ? roots[selectedRoot].replacingOccurrences(of: "b", with: "♭") : ""
         let suffix = chord == "maj" ? "" : chord == "min" ? "m" : chord.replacingOccurrences(of: "min", with: "m")
         return root + suffix.replacingOccurrences(of: "#", with: "♯").replacingOccurrences(of: "b", with: "♭")
@@ -1039,49 +1065,48 @@ struct ContentView: View {
         return unselected
     }
 
-    private func substituteCard(chord: String) -> some View {
-        let arrangements = substituteArrangements(for: chord, twoHands: substitutesUseTwoHands)
-        let arrangement = arrangements.first(where: { $0.option == substituteOptions[chord] }) ?? arrangements.first
+    private func substituteCard(chord: String, root: Int? = nil) -> some View {
+        let targetRoot = root ?? selectedRoot
+        let symbol = substituteSymbol(chord, root: targetRoot)
+        let optionKey = "\(targetRoot):\(chord)"
+        let isTritone = targetRoot != selectedRoot
+        let arrangements = substituteArrangements(for: chord, twoHands: substitutesUseTwoHands, root: targetRoot)
+        let arrangement = arrangements.first(where: { $0.option == substituteOptions[optionKey] }) ?? arrangements.first
         return VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text(substituteSymbol(chord)).font(.title3.bold())
+                Text(symbol).font(.title3.bold())
                     .lineLimit(1).minimumScaleFactor(0.7)
                 Spacer(minLength: 4)
                 if let arrangement, substitutesUseTwoHands {
                     Picker("Arrangement", selection: Binding(
                         get: { arrangement.option },
-                        set: { chordAudio.stop(); substituteOptions[chord] = $0 }
+                        set: { chordAudio.stop(); substituteOptions[optionKey] = $0 }
                     )) {
                         ForEach(arrangements, id: \.option) { item in Text(item.option).tag(item.option) }
                     }
                     .pickerStyle(.menu)
-                    .accessibilityLabel("Arrangement for " + substituteSymbol(chord))
+                    .accessibilityLabel("Arrangement for " + symbol)
                 }
             }
-            Text(substituteReason(chord)).font(.caption).foregroundStyle(.secondary)
+            if isTritone { Text("Tritone substitute").font(.caption.bold()).foregroundStyle(.orange) }
+            Text(isTritone ? "Root moves a tritone; shares the dominant third/seventh tritone. Often resolves down a half step. Check tensions against the melody." : substituteReason(chord)).font(.caption).foregroundStyle(.secondary)
             if let arrangement {
                 substituteKeyboard(arrangement)
                 HStack {
                     Button { chordAudio.play(keyIndices: arrangement.notes) } label: {
                         Label("Play", systemImage: "play.fill")
                     }
-                    .accessibilityLabel("Play " + substituteSymbol(chord) + " " + (substitutesUseTwoHands ? arrangement.option : "left hand"))
+                    .accessibilityLabel("Play " + symbol + " " + (substitutesUseTwoHands ? arrangement.option : "left hand"))
                     Spacer()
                     Button("Use") {
                         chordAudio.stop()
                         recalledBankChord = nil
-                        if selectedChord == arrangement.chord {
-                            pendingSubstitute = nil
-                            selectedInversion = arrangement.inversion
-                            chooseRightHandOption(arrangement.option)
-                        } else {
-                            pendingSubstitute = arrangement
-                            selectedChord = arrangement.chord
-                        }
+                        pendingSubstitute = nil
+                        applySubstitute(arrangement)
                         showingSubstitutes = false
                     }
                     .buttonStyle(.borderedProminent)
-                    .accessibilityLabel("Use " + substituteSymbol(chord))
+                    .accessibilityLabel("Use " + symbol)
                 }
             } else {
                 Text("No valid arrangement in this range.").foregroundStyle(.secondary)
@@ -1100,12 +1125,15 @@ struct ContentView: View {
                 }
                 .pickerStyle(.segmented)
                 .onChange(of: substitutesUseTwoHands) { _, _ in chordAudio.stop() }
-                if substituteChoices.isEmpty {
-                    Text("No same-root suggestions are available for this chord yet.")
+                if substituteChoices.isEmpty && tritoneSubstituteChords.isEmpty {
+                    Text("No suggestions are available for this chord in this range.")
                         .foregroundStyle(.secondary)
                 }
                 ScrollView(.horizontal) {
                     HStack(alignment: .top, spacing: 12) {
+                        ForEach(tritoneSubstituteChords, id: \.self) { chord in
+                            substituteCard(chord: chord, root: (selectedRoot + 6) % 12)
+                        }
                         ForEach(substituteChoices, id: \.chord) { choice in
                             substituteCard(chord: choice.chord)
                         }

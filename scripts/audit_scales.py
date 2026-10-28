@@ -119,9 +119,9 @@ def run_swift_audit():
     methods = methods.replace('private ', '').replace('func selectValidInversion()', 'mutating func selectValidInversion()')
     labels = swift_function(source, '    private func noteName')
     suggestions = '\n'.join(swift_function(source, marker) for marker in [
-        '    private var substituteChoices', '    private func substituteArrangements', '    private func substituteReason', '    private func substituteSymbol', '    private var approachChoices', '    private func previewApproach', '    private func randomizeApproach', '    private var currentBankChord', '    private func canOfferCurrentChord', '    private var continuationChoices', '    private func continuationSymbol', '    private func makeContinuation', '    private func resolvedBankInversion', '    private var displayedInversion:', '    private var displayedInversionLabel', '    private func inversionLabel', '    private func chooseInversion', '    private func chooseRightHandOption', '    private func flexibleVoiceLeadingCandidates', '    private var bankKeyboardEdit:', '    private func synchronizeEditingBankChord', '    private func rightHandOptionFits', '    private func normalizeRightHandSelection'
+        '    private var substituteChoices', '    private var tritoneSubstituteChords', '    private func applySubstitute', '    private func substituteArrangements', '    private func substituteReason', '    private func substituteSymbol', '    private var approachChoices', '    private func previewApproach', '    private func randomizeApproach', '    private var currentBankChord', '    private func canOfferCurrentChord', '    private var continuationChoices', '    private func continuationSymbol', '    private func makeContinuation', '    private func resolvedBankInversion', '    private var displayedInversion:', '    private var displayedInversionLabel', '    private func inversionLabel', '    private func chooseInversion', '    private func chooseRightHandOption', '    private func flexibleVoiceLeadingCandidates', '    private var bankKeyboardEdit:', '    private func synchronizeEditingBankChord', '    private func rightHandOptionFits', '    private func normalizeRightHandSelection'
     ])
-    suggestions = suggestions.replace('func previewApproach()', 'mutating func previewApproach()').replace('func randomizeApproach()', 'mutating func randomizeApproach()').replace('func chooseInversion(', 'mutating func chooseInversion(').replace('func chooseRightHandOption(', 'mutating func chooseRightHandOption(').replace('func synchronizeEditingBankChord()', 'mutating func synchronizeEditingBankChord()').replace('func normalizeRightHandSelection()', 'mutating func normalizeRightHandSelection()')
+    suggestions = suggestions.replace('func applySubstitute(', 'mutating func applySubstitute(').replace('func previewApproach()', 'mutating func previewApproach()').replace('func randomizeApproach()', 'mutating func randomizeApproach()').replace('func chooseInversion(', 'mutating func chooseInversion(').replace('func chooseRightHandOption(', 'mutating func chooseRightHandOption(').replace('func synchronizeEditingBankChord()', 'mutating func synchronizeEditingBankChord()').replace('func normalizeRightHandSelection()', 'mutating func normalizeRightHandSelection()')
     available = source[source.index('    private var availableInversions'):source.index('    @State private var chordTypes')].replace('private ', '')
     harness = '''import Foundation
 MODELS
@@ -411,6 +411,46 @@ for root in 0..<12 {
     }
 }
 print("PASS: major sus2/Lydian recommendations, dominant-to-sus and six exact So What shapes in all keys")
+var tritoneChecks = 0
+let dominantNames = decoded.Chords.allChords.filter {
+    let p = ChordTonePolicy.pitches[$0.name] ?? []
+    return p.contains(4) && p.contains(10)
+}.map { $0.name }
+for original in dominantNames {
+    for sourceRoot in 0..<12 {
+        for enabled in [true, false] {
+            for twoHands in [true, false] {
+                a.recalledBankChord = nil; a.selectedChord = original; a.selectedRoot = sourceRoot
+                a.rootEnabled = enabled; a.substitutesUseTwoHands = twoHands
+                let recommendations = a.tritoneSubstituteChords
+                precondition(recommendations.contains("7") && recommendations.contains("7(#11)"))
+                let root = (sourceRoot + 6) % 12
+                for quality in recommendations {
+                    let shapes = a.substituteArrangements(for: quality, twoHands: twoHands, root: root)
+                    precondition(!shapes.isEmpty)
+                    for shape in shapes {
+                        precondition(shape.root == root && twoHands == !shape.right.isEmpty)
+                        precondition(shape.bass == (enabled ? Set([root]) : Set<Int>()))
+                        precondition(ChordTonePolicy.allows(shape.left.union(shape.right), chord: quality, root: root))
+                        a.applySubstitute(shape)
+                        precondition(a.selectedRoot == root && a.selectedChord == quality)
+                        precondition(a.activeBankVoicing != nil && a.chordPlaybackNotes == shape.notes)
+                        precondition(a.leftHandNotes == shape.left && a.rightHandNotes == shape.right)
+                        let saved = a.currentBankChord!
+                        precondition(saved.root == root && saved.notes == shape.notes)
+                        tritoneChecks += 1
+                    }
+                }
+            }
+        }
+    }
+}
+for chord in ["maj7", "min7", "dim7", "7sus4", "9sus4", "13sus4", "7sus4(b9)"] {
+    a.selectedChord = chord
+    precondition(a.tritoneSubstituteChords.isEmpty)
+}
+a.recalledBankChord = nil; a.substitutesUseTwoHands = false
+print("PASS: \(tritoneChecks) tritone substitution arrangements: all dominant roots, both hand modes, bass settings, exact Use and saved-bank notes")
 var substitutesChecked = 0
 for chord in decoded.Chords.allChords {
     a.selectedChord=chord.name; a.selectedScale=""; a.selectedInversion=0
