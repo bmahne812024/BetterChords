@@ -179,7 +179,15 @@ nonisolated struct ChordContinuation: Identifiable {
 
     static func choices(after chord: String) -> [ChordContinuation] {
         var choices: [ChordContinuation]
-        if chord.contains("dim") {
+        if chord == "dim7" {
+            choices = [.init(label: "Common-tone resolution to major", offset: 0, chord: "maj")]
+            // Each note of a fully diminished seventh can act as a leading tone.
+            for (offset, label) in [(1, "up a half step"), (4, "up a major third"),
+                                    (7, "up a fifth"), (10, "up a minor seventh")] {
+                choices += [.init(label: "Resolve \(label) to major", offset: offset, chord: "maj7"),
+                            .init(label: "Resolve \(label) to minor", offset: offset, chord: "min7")]
+            }
+        } else if chord.contains("dim") {
             choices = [.init(label: "Resolve up a half step", offset: 1, chord: "maj7"),
                        .init(label: "Resolve to minor", offset: 1, chord: "min7")]
         } else if chord.contains("b5") && chord.hasPrefix("min") {

@@ -5,6 +5,19 @@ import Foundation
    SavedChord(title: "Test", root: root, chord: "9", inversion: 0, option: "", rootEnabled: true, left: left, right: right)
   }
   func pitches(_ notes: Set<Int>) -> [Int] { notes.map { $0 % 12 }.sorted() }
+  let diminished = ChordContinuation.choices(after: "dim7")
+  precondition(diminished.contains { $0.offset == 0 && $0.chord == "maj" && !$0.slide })
+  for offset in [1, 4, 7, 10] {
+   for quality in ["maj7", "min7"] {
+    precondition(diminished.contains { $0.offset == offset && $0.chord == quality && !$0.slide })
+   }
+  }
+  precondition(diminished.filter { !$0.slide }.count == 9)
+  precondition(diminished.filter(\.slide).count == 2)
+  precondition(Set(diminished.map(\.id)).count == diminished.count)
+  precondition(ChordContinuation.choices(after: "dim").filter { !$0.slide }.count == 2)
+  precondition(ChordContinuation.choices(after: "min7b5").contains { $0.chord == "7(b9)" && $0.offset == 5 })
+  print("PASS: dim7 common-tone major, four major/minor destinations, slides, unique choices, and other diminished families")
   let source = chord(0, [16,21,22,26], [31,38])
   let data = try JSONEncoder().encode([source])
   let decoded = try JSONDecoder().decode([SavedChord].self, from: data)
