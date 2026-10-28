@@ -37,3 +37,9 @@ Each card uses the target root for its symbol, hands, bass, preview and playback
 Sus chords do not automatically receive this recommendation because they omit the dominant third. The card describes the shared guide-tone tritone and usual downward half-step resolution, with a reminder to check melody/tensions. These remain context-dependent recommendations, including for blues or nonfunctional dominants.
 
 Reference: [Tritone Substitution & Scales](https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/tritone-substitution-scales/).
+
+## Voicing defaults and bank bass-root switch
+
+Two-hand substitute cards now choose stable, varied defaults, prioritizing available So What, quartal, Barron and Hancock shapes, then other named arrangements. Where no named shape is available, the existing drop, shell and doubled arrangements share the defaults. An explicit choice in the arrangement picker still takes precedence. Choices remain stable through redraws.
+
+The bank toolbar has a **Bass roots** switch applying to every card in the current bank. It changes the added bass-root flag while retaining card IDs, order, hand notes and voicing metadata. Mixed banks display an off switch (accessibility announces Mixed); turning it on enables all roots, then turning it off disables all roots. The bulk edit is undoable/redoable, updates a linked keyboard card safely and is disabled for an empty bank or while voice leading is busy. Root notes inside the hand voicing remain part of that voicing.

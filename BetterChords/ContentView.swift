@@ -1065,13 +1065,28 @@ struct ContentView: View {
         return unselected
     }
 
+    private func defaultSubstituteArrangement(_ arrangements: [SubstituteArrangement], chord: String, root: Int) -> SubstituteArrangement? {
+        let modern = arrangements.filter {
+            $0.option == "So What" || $0.option.hasPrefix("Quartal") || ["Barron", "Hancock"].contains($0.option)
+        }
+        let named = arrangements.filter {
+            !["", "Drop 2 & 3", "Drop 2", "Drop 3", "LH Shell", "Double"].contains($0.option)
+        }
+        let pool = !modern.isEmpty ? modern : (!named.isEmpty ? named : arrangements)
+        guard !pool.isEmpty else { return nil }
+        // Stable across redraws, varied across roots and chord colors.
+        let seed = chord.utf8.reduce(root) { $0 + Int($1) }
+        return pool[seed % pool.count]
+    }
+
     private func substituteCard(chord: String, root: Int? = nil) -> some View {
         let targetRoot = root ?? selectedRoot
         let symbol = substituteSymbol(chord, root: targetRoot)
         let optionKey = "\(targetRoot):\(chord)"
         let isTritone = targetRoot != selectedRoot
         let arrangements = substituteArrangements(for: chord, twoHands: substitutesUseTwoHands, root: targetRoot)
-        let arrangement = arrangements.first(where: { $0.option == substituteOptions[optionKey] }) ?? arrangements.first
+        let arrangement = arrangements.first(where: { $0.option == substituteOptions[optionKey] })
+            ?? defaultSubstituteArrangement(arrangements, chord: chord, root: targetRoot)
         return VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text(symbol).font(.title3.bold())
@@ -1181,6 +1196,32 @@ struct ContentView: View {
         editingBankChordID = nil; lastBankKeyboardEdit = nil
         bankUndo = [:]
         approachPreview = []; approachExpanded = false
+    }
+
+    private var allBankRootsEnabled: Bool {
+        !savedChords.isEmpty && savedChords.allSatisfy(\.rootEnabled)
+    }
+
+    private func setBankRoots(_ enabled: Bool) {
+        let previous = savedChords
+        guard !previous.isEmpty, previous.contains(where: { $0.rootEnabled != enabled }) else { return }
+        let updated = previous.map { saved in
+            var chord = saved
+            chord.rootEnabled = enabled
+            return chord
+        }
+        guard writeChordBank(updated) else { return }
+        bankUndo = [:]
+        if let id = editingBankChordID, let linked = updated.first(where: { $0.id == id }),
+           linked.root == selectedRoot, linked.chord == selectedChord,
+           linked.inversion == selectedInversion, linked.option == selectedScale {
+            recalledBankChord = linked
+            rootEnabled = enabled
+            lastBankKeyboardEdit = bankKeyboardEdit
+        } else {
+            editingBankChordID = nil
+            lastBankKeyboardEdit = nil
+        }
     }
 
     private var bankKeyboardEdit: BankKeyboardEdit {
@@ -1790,6 +1831,17 @@ struct ContentView: View {
                     Button { restoreBankHistory(redo: true) } label: {
                         Label("Redo", systemImage: "arrow.uturn.forward")
                     }.disabled(!bankHistory.canRedo).accessibilityLabel("Redo bank edit")
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Toggle("Bass roots", isOn: Binding(
+                        get: { allBankRootsEnabled },
+                        set: { chordAudio.stop(); setBankRoots($0) }
+                    ))
+                    .toggleStyle(.switch)
+                    .fixedSize()
+                    .disabled(savedChords.isEmpty || voiceLeadingBusy)
+                    .accessibilityLabel("Bass roots for all bank chords")
+                    .accessibilityValue(allBankRootsEnabled ? "All on" : (savedChords.contains(where: \.rootEnabled) ? "Mixed" : "All off"))
                 }
                 ToolbarItem(placement: .topBarTrailing) { Button("Add Current Chord", systemImage: "plus") { saveCurrentChord() }.labelStyle(.titleAndIcon) }
             }

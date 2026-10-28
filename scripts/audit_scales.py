@@ -119,9 +119,9 @@ def run_swift_audit():
     methods = methods.replace('private ', '').replace('func selectValidInversion()', 'mutating func selectValidInversion()')
     labels = swift_function(source, '    private func noteName')
     suggestions = '\n'.join(swift_function(source, marker) for marker in [
-        '    private var substituteChoices', '    private var tritoneSubstituteChords', '    private func applySubstitute', '    private func substituteArrangements', '    private func substituteReason', '    private func substituteSymbol', '    private var approachChoices', '    private func previewApproach', '    private func randomizeApproach', '    private var currentBankChord', '    private func canOfferCurrentChord', '    private var continuationChoices', '    private func continuationSymbol', '    private func makeContinuation', '    private func resolvedBankInversion', '    private var displayedInversion:', '    private var displayedInversionLabel', '    private func inversionLabel', '    private func chooseInversion', '    private func chooseRightHandOption', '    private func flexibleVoiceLeadingCandidates', '    private var bankKeyboardEdit:', '    private func synchronizeEditingBankChord', '    private func rightHandOptionFits', '    private func normalizeRightHandSelection'
+        '    private func defaultSubstituteArrangement', '    private var allBankRootsEnabled', '    private func setBankRoots', '    private var substituteChoices', '    private var tritoneSubstituteChords', '    private func applySubstitute', '    private func substituteArrangements', '    private func substituteReason', '    private func substituteSymbol', '    private var approachChoices', '    private func previewApproach', '    private func randomizeApproach', '    private var currentBankChord', '    private func canOfferCurrentChord', '    private var continuationChoices', '    private func continuationSymbol', '    private func makeContinuation', '    private func resolvedBankInversion', '    private var displayedInversion:', '    private var displayedInversionLabel', '    private func inversionLabel', '    private func chooseInversion', '    private func chooseRightHandOption', '    private func flexibleVoiceLeadingCandidates', '    private var bankKeyboardEdit:', '    private func synchronizeEditingBankChord', '    private func rightHandOptionFits', '    private func normalizeRightHandSelection'
     ])
-    suggestions = suggestions.replace('func applySubstitute(', 'mutating func applySubstitute(').replace('func previewApproach()', 'mutating func previewApproach()').replace('func randomizeApproach()', 'mutating func randomizeApproach()').replace('func chooseInversion(', 'mutating func chooseInversion(').replace('func chooseRightHandOption(', 'mutating func chooseRightHandOption(').replace('func synchronizeEditingBankChord()', 'mutating func synchronizeEditingBankChord()').replace('func normalizeRightHandSelection()', 'mutating func normalizeRightHandSelection()')
+    suggestions = suggestions.replace('func setBankRoots(', 'mutating func setBankRoots(').replace('func applySubstitute(', 'mutating func applySubstitute(').replace('func previewApproach()', 'mutating func previewApproach()').replace('func randomizeApproach()', 'mutating func randomizeApproach()').replace('func chooseInversion(', 'mutating func chooseInversion(').replace('func chooseRightHandOption(', 'mutating func chooseRightHandOption(').replace('func synchronizeEditingBankChord()', 'mutating func synchronizeEditingBankChord()').replace('func normalizeRightHandSelection()', 'mutating func normalizeRightHandSelection()')
     available = source[source.index('    private var availableInversions'):source.index('    @State private var chordTypes')].replace('private ', '')
     harness = '''import Foundation
 MODELS
@@ -451,6 +451,46 @@ for chord in ["maj7", "min7", "dim7", "7sus4", "9sus4", "13sus4", "7sus4(b9)"] {
 }
 a.recalledBankChord = nil; a.substitutesUseTwoHands = false
 print("PASS: \(tritoneChecks) tritone substitution arrangements: all dominant roots, both hand modes, bass settings, exact Use and saved-bank notes")
+// Defaults vary predictably and prioritize modern textures when available.
+var defaultStyles = Set<String>()
+for root in 0..<12 {
+    a.selectedRoot = root
+    for formula in decoded.Chords.allChords {
+        let shapes = a.substituteArrangements(for: formula.name, twoHands: true)
+        guard let picked = a.defaultSubstituteArrangement(shapes, chord: formula.name, root: root) else {
+            precondition(shapes.isEmpty); continue
+        }
+        defaultStyles.insert(picked.option)
+        precondition(a.defaultSubstituteArrangement(shapes, chord: formula.name, root: root)?.option == picked.option)
+        let modern = shapes.filter { $0.option == "So What" || $0.option.hasPrefix("Quartal") || ["Barron", "Hancock"].contains($0.option) }
+        precondition(modern.isEmpty || modern.contains { $0.option == picked.option })
+    }
+}
+precondition(defaultStyles.contains("So What") && defaultStyles.contains("Quartal") && defaultStyles.count >= 5)
+// Bulk roots change only the bass flag, preserve cards and participate in one undo/redo edit.
+var bulk = a
+let firstBulk = SavedChord(title: "C", root: 0, chord: "maj", inversion: 0, option: "", rootEnabled: true, left: [12,16,19], right: [])
+let secondBulk = SavedChord(title: "Db9", root: 1, chord: "9", inversion: 0, option: "Quartal", rootEnabled: false, left: [17,23], right: [27,32])
+bulk.savedChords = [firstBulk, secondBulk]; bulk.bankHistory = ChordBankHistory()
+bulk.editingBankChordID = firstBulk.id; bulk.applySubstitute(SubstituteArrangement(chord: "maj", option: "", inversion: 0, left: firstBulk.left, right: [], bass: [0], root: 0))
+precondition(!bulk.allBankRootsEnabled)
+bulk.setBankRoots(true)
+precondition(bulk.allBankRootsEnabled && bulk.savedChords.map(\.id) == [firstBulk.id, secondBulk.id])
+precondition(bulk.savedChords[1].notes == secondBulk.notes.union([1]))
+precondition(bulk.recalledBankChord?.rootEnabled == true && bulk.lastBankKeyboardEdit == bulk.bankKeyboardEdit)
+bulk.setBankRoots(false)
+precondition(bulk.savedChords.allSatisfy { !$0.rootEnabled })
+precondition(bulk.savedChords[0].left == firstBulk.left && bulk.savedChords[1].right == secondBulk.right)
+precondition(bulk.savedChords[0].notes == firstBulk.left && bulk.recalledBankChord?.rootEnabled == false && !bulk.rootEnabled)
+let undoRoots = bulk.bankHistory.undo(current: bulk.savedChords)!
+precondition(undoRoots.allSatisfy(\.rootEnabled))
+let redoRoots = bulk.bankHistory.redo(current: undoRoots)!
+precondition(redoRoots.allSatisfy { !$0.rootEnabled })
+let originalRoots = bulk.bankHistory.undo(current: bulk.bankHistory.undo(current: redoRoots)!)!
+precondition(originalRoots == [firstBulk, secondBulk])
+bulk.savedChords = []; bulk.bankHistory = ChordBankHistory(); bulk.setBankRoots(true)
+precondition(!bulk.allBankRootsEnabled && !bulk.bankHistory.canUndo)
+print("PASS: varied stable voicing defaults and bulk bank bass roots: mixed state, exact hands, linked editing, undo/redo, empty bank")
 var substitutesChecked = 0
 for chord in decoded.Chords.allChords {
     a.selectedChord=chord.name; a.selectedScale=""; a.selectedInversion=0
