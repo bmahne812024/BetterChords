@@ -166,4 +166,4 @@ These are arrangements for BetterChords informed by [Worship Arts Conservatory's
 
 ## October 27, 2026 — approved theory expansion
 
-The library now has 66 formulas, 200 chord–scale assignments and 32 unique scales. Scale entries carry usage, target-degree, caution and source metadata. Chord metadata distinguishes defining tones from optional colors, omissions and contextual tensions. See [JazzTheoryImplementation.md](JazzTheoryImplementation.md) for the complete approved implementation and compatibility notes.
+The library now has 66 formulas, 200 chord–scale assignments and 32 unique scales. Scale entries carry usage, target-degree, caution and source metadata. Chord metadata distinguishes defining tones from optional colors, omissions and contextual tensions. The later scope revision keeps the data additions and removes the Theory & Practice interface and related app features. See [JazzTheoryImplementation.md](JazzTheoryImplementation.md) for the retained changes.

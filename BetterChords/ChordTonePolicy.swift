@@ -69,11 +69,6 @@ nonisolated enum ChordTonePolicy {
         "7(b9, b13)": [0, 1, 4, 7, 8, 10],
     ]
 
-    // Optional and contextual tones are not required just because they are allowed.
-    static func missingDefiningTones(_ notes: Set<Int>, root: Int, theory: ChordTheoryMetadata) -> Set<Int> {
-        Set(theory.defining).subtracting(notes.map { ($0 - root + 120) % 12 })
-    }
-
     static func allows(_ notes: Set<Int>, chord: String, root: Int) -> Bool {
         guard let allowed = pitches[chord] else { return false }
         return notes.allSatisfy { allowed.contains(($0 - root + 120) % 12) }

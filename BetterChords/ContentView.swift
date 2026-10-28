@@ -38,7 +38,6 @@ struct HandVoicingFormula: Decodable {
     let LHDegrees: [String]
     let RHIntervals: [Int]
     let RHDegrees: [String]
-    let explanation: String?
 }
 
 struct ChordFormula: Decodable {
@@ -55,15 +54,10 @@ struct ChordFormula: Decodable {
     let Stack: ChordStackFormula?
     let HandVoicings: [HandVoicingFormula]?
     let RHDegrees: [String]?
-    let Theory: ChordTheoryMetadata?
     let Scales: [ScaleFormula]?
 }
 
 struct ScaleFormula: Decodable {
-    let usage: String?
-    let targetDegrees: [String]?
-    let caution: String?
-    let sources: [String]?
     let name: String
     let intervals: [Int]
     let degrees: [String]
@@ -107,11 +101,7 @@ struct SubstituteArrangement {
 
 struct ContentView: View {
     init(initialChord: String = "maj") {
-        #if DEBUG
-        _selectedChord = State(initialValue: CommandLine.arguments.contains("--theory-preview") ? "min11" : initialChord)
-        #else
         _selectedChord = State(initialValue: initialChord)
-        #endif
     }
     
     let totalNotes = 60
@@ -124,23 +114,6 @@ struct ContentView: View {
     @StateObject private var chordAudio = ChordAudioPlayer()
     @Environment(\.scenePhase) private var scenePhase
     @State private var selectedRoot = 0
-    @State private var showingTheory = false
-    @State private var preferences = VoicingPreferences()
-    @AppStorage("betterChords.playability.v1") private var preferenceData = Data()
-    @State private var recallingPreferences = false
-    @State private var selectedBass = -1
-    @AppStorage("betterChords.voiceLeadingMode") private var voiceLeadingMode = "Preserve exact chord"
-    @State private var contextKey = -1
-    @State private var harmonicSetting = "Tonal"
-    @State private var destinationRoot = -1
-    @State private var destinationQuality = "Suggested"
-    @State private var practiceTemplate = "Major ii–V–I"
-    @State private var practiceKey = 0
-    @State private var practiceBPM = 90
-    @State private var practiceRepeat = false
-    @State private var practicePreview: [SavedChord] = []
-    @State private var theoryMessage: String?
-
     @State private var rootEnabled = true
     @State private var showingSubstitutes = false
     @State private var substitutesUseTwoHands = false
@@ -233,15 +206,14 @@ struct ContentView: View {
     private var stackedChordNames: (upper: String, lower: String)? {
         guard let stack = formulas[selectedChord]?.Stack, roots.indices.contains(selectedRoot) else { return nil }
         let root = roots[selectedRoot]
-        let lower = stack.kind == "slash" && roots.indices.contains(selectedBass) ? roots[selectedBass] : root
         return (NoteSpelling.name(root: root, interval: stack.upperInterval, degree: stack.upperDegree) + (stack.upperQuality == "minor" ? "m" : ""),
-                lower.replacingOccurrences(of: "b", with: "♭"))
+                root.replacingOccurrences(of: "b", with: "♭"))
     }
 
     private var chordSymbol: String {
         if let names = stackedChordNames {
             return formulas[selectedChord]?.Stack?.kind == "polychord"
-                ? "\(names.upper) over \(names.lower)" + (roots.indices.contains(selectedBass) && selectedBass != selectedRoot ? " (bass " + roots[selectedBass] + ")" : "") : "\(names.upper)/\(names.lower)"
+                ? "\(names.upper) over \(names.lower)" : "\(names.upper)/\(names.lower)"
         }
         guard roots.indices.contains(selectedRoot) else { return "" }
         let root = roots[selectedRoot].replacingOccurrences(of: "b", with: "♭")
@@ -249,9 +221,7 @@ struct ContentView: View {
             .replacingOccurrences(of: "min", with: "m")
             .replacingOccurrences(of: "#", with: "♯")
             .replacingOccurrences(of: "b", with: "♭")
-        let symbol = root + suffix
-        return selectedBass >= 0 && selectedBass != selectedRoot
-            ? symbol + "/" + roots[selectedBass].replacingOccurrences(of: "b", with: "♭") : symbol
+        return root + suffix
     }
 
     private var chordSymbolParts: (base: String, extensionText: String) {
@@ -276,9 +246,6 @@ struct ContentView: View {
                     Text(names.upper)
                     Rectangle().frame(height: 2)
                     Text(names.lower)
-                    if roots.indices.contains(selectedBass), selectedBass != selectedRoot {
-                        Text("bass " + roots[selectedBass]).font(.caption)
-                    }
                 }
                 .font(.system(size: 32, weight: .bold))
                 .frame(width: 76)
@@ -288,8 +255,6 @@ struct ContentView: View {
                 Text(chordSymbol)
                     .font(.system(size: 48, weight: .bold))
             }
-        } else if selectedBass >= 0 && selectedBass != selectedRoot {
-            Text(chordSymbol).font(.system(size: 40, weight: .bold))
         } else if selectedChord == "minmaj7" || selectedChord == "minmaj9" {
             HStack(spacing: 5) {
                 Text(roots.indices.contains(selectedRoot)
@@ -516,46 +481,21 @@ struct ContentView: View {
         return saved
     }
 
-    private var unfilteredLeftHandNotes: Set<Int> {
+    private var leftHandNotes: Set<Int> {
         if let saved = activeBankVoicing { return saved.left }
-        if selectedHandFormula != nil { return selectedHandVoicing?.left ?? [] }
+        if let selectedHandVoicing { return selectedHandVoicing.left }
         if let selectedShell { return selectedShell.left }
         if let dropVoicing { return dropVoicing.left }
         return Set(voicedChordNotes(inversion: selectedInversion) ?? [])
     }
 
-    private var selectedBassNote: Int { selectedBass < 0 ? selectedRoot : selectedBass }
-
-    private var performanceHands: (left: Set<Int>, right: Set<Int>)? {
-        if let saved = activeBankVoicing { return (saved.left, saved.right) }
-        let isScale = (chordScales[selectedChord] ?? []).contains { $0.name == selectedScale }
-        let rawRight = isScale ? Set<Int>() : unfilteredRightHandNotes
-        let hand = selectedHandFormula
-        let identity = JazzTheory.soundingQuality(selectedChord, inversion: selectedInversion, fixed: hand != nil)
-        let formula = formulas[identity]
-        let floor = leftHandFloor(bassInterval: (unfilteredLeftHandNotes.min() ?? selectedRoot) - selectedRoot,
-                                  intervals: hand?.LHIntervals ?? formula?.LHIntervals ?? [],
-                                  degrees: hand?.LHDegrees ?? formula?.LHDegrees ?? [])
-        guard let fitted = preferences.fit(left: unfilteredLeftHandNotes, right: rawRight,
-                                           preserveShape: hand != nil, minimumLeft: floor) else { return nil }
-        if isScale {
-            var scale = unfilteredRightHandNotes
-            while let bottom = scale.min(), let top = fitted.left.max(), bottom <= top { scale = Set(scale.map { $0 + 12 }) }
-            guard scale.allSatisfy({ (0..<totalNotes).contains($0) }) else { return nil }
-            return (fitted.left, scale)
-        }
-        return (fitted.left, fitted.right)
-    }
-    private var leftHandNotes: Set<Int> { performanceHands?.left ?? [] }
-    private var rightHandNotes: Set<Int> { performanceHands?.right ?? [] }
-
     private var selectedChordNotes: Set<Int> {
-        rootEnabled ? leftHandNotes.union([selectedBassNote]) : leftHandNotes.subtracting([selectedRoot])
+        rootEnabled ? leftHandNotes.union([selectedRoot]) : leftHandNotes.subtracting([selectedRoot])
     }
 
     private var chordPlaybackNotes: Set<Int> {
         if let saved = activeBankVoicing {
-            return saved.left.union(saved.right).union(rootEnabled ? [saved.bassNote ?? selectedRoot] : [])
+            return saved.left.union(saved.right).union(rootEnabled ? [selectedRoot] : [])
         }
         let isScale = (chordScales[selectedChord] ?? []).contains { $0.name == selectedScale }
         return selectedChordNotes.union(isScale ? [] : rightHandNotes)
@@ -576,9 +516,9 @@ struct ContentView: View {
         return Set(notes)
     }
 
-    private var unfilteredRightHandNotes: Set<Int> {
+    private var rightHandNotes: Set<Int> {
         if let saved = activeBankVoicing { return saved.right }
-        if selectedHandFormula != nil { return selectedHandVoicing?.right ?? [] }
+        if let selectedHandVoicing { return selectedHandVoicing.right }
         if (chordScales[selectedChord] ?? []).contains(where: { $0.name == selectedScale }) {
             return scaleNotes
         }
@@ -673,7 +613,7 @@ struct ContentView: View {
         let color: Color
         if leftHandNotes.contains(note) {
             color = .blue
-        } else if note == (activeBankVoicing?.bassNote ?? selectedBassNote) {
+        } else if note == selectedRoot {
             color = .green
         } else if rightHandNotes.contains(note) {
             color = .purple
@@ -682,7 +622,7 @@ struct ContentView: View {
         }
         guard isBlackKey(note) else { return color }
         if leftHandNotes.contains(note) { return Color(red: 0.0, green: 0.26, blue: 0.52) }
-        if note == (activeBankVoicing?.bassNote ?? selectedBassNote) { return Color(red: 0.09, green: 0.44, blue: 0.20) }
+        if note == selectedRoot { return Color(red: 0.09, green: 0.44, blue: 0.20) }
         if rightHandNotes.contains(note) { return Color(red: 0.34, green: 0.12, blue: 0.44) }
         return Color(red: 0.0, green: 0.26, blue: 0.52)
     }
@@ -767,10 +707,6 @@ struct ContentView: View {
     }
 
     private func inversionLabel(_ inversion: Int) -> String {
-        if inversion == 1 && selectedHandFormula == nil {
-            if selectedChord == "maj7" { return "Sixth substitution (preferred)" }
-            if selectedChord == "minmaj7" { return "Minor-sixth substitution (preferred)" }
-        }
         if let labels = formulas[selectedChord]?.LHVoicingLabels, labels.indices.contains(inversion) {
             return labels[inversion]
         }
@@ -892,9 +828,9 @@ struct ContentView: View {
                     chooseRightHandOption("LH Shell")
                 } label: {
                     if selectedScale == "LH Shell" {
-                        Label("Root-based LH shell", systemImage: "checkmark")
+                        Label("LH Shell", systemImage: "checkmark")
                     } else {
-                        Text("Root-based LH shell")
+                        Text("LH Shell")
                     }
                 }
                 }
@@ -960,9 +896,9 @@ struct ContentView: View {
             ["min9", "min11", "min7", "min13", "min(add9)", "min"],
             ["min6", "min6/9", "minmaj7", "minmaj9"],
             ["9", "13", "7", "13(9)", "9(13)", "7(#11)", "9(#11)", "13(#11)"],
-            ["7(#9)", "7(b9)", "7(#9, #5)", "7(b9, b5)", "7alt", "7(b9, #5)", "7(#9, #11)", "13(b9)", "7(b13)", "9(b13)", "7(b9, #11)", "7(b9, b13)", "7(#5)", "7(b5)", "9(#5)", "9(#11, #5)"],
+            ["7(#9)", "7(b9)", "7(#9, #5)", "7(b9, b5)", "7alt", "7(b9, #5)", "7(#9, #11)", "13(b9)", "7(b13)", "9(b13)", "7(#5)", "7(b5)", "9(#5)", "9(#11, #5)"],
             ["min7b5", "min9b5", "min11b5"],
-            ["sus4", "sus4(add9)", "7sus4", "9sus4", "13sus4", "7sus4(b9)"],
+            ["sus4", "sus4(add9)", "7sus4", "9sus4", "13sus4"],
             ["aug", "maj7(#5)"], ["dim", "dim7"]
         ]
         guard let family = families.first(where: { $0.contains(selectedChord) }) else { return [] }
@@ -1149,7 +1085,7 @@ struct ContentView: View {
             }
             .padding(12)
             .frame(maxHeight: .infinity, alignment: .top)
-            .navigationTitle("Same-root colors for " + chordSymbol)
+            .navigationTitle("Substitutes for " + chordSymbol)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showingSubstitutes = false } } }
         }
@@ -1192,7 +1128,7 @@ struct ContentView: View {
     private var bankKeyboardEdit: BankKeyboardEdit {
         BankKeyboardEdit(cardID: editingBankChordID, root: selectedRoot, chord: selectedChord,
                          inversion: selectedInversion, option: selectedScale, rootEnabled: rootEnabled,
-                         recalled: recalledBankChord, preferences: preferences, bassNote: selectedBass < 0 ? nil : selectedBass)
+                         recalled: recalledBankChord)
     }
 
     private func synchronizeEditingBankChord() {
@@ -1218,12 +1154,7 @@ struct ContentView: View {
                                left: leftHandNotes.intersection(chordPlaybackNotes),
                                right: rightHandNotes.intersection(chordPlaybackNotes),
                                voiceLed: activeBankVoicing?.voiceLed ?? false,
-                               movementSummary: activeBankVoicing?.movementSummary,
-                               bassNote: activeBankVoicing?.bassNote ?? (selectedBass < 0 ? nil : selectedBass),
-                               harmonicIdentity: activeBankVoicing?.soundingChord ?? JazzTheory.soundingQuality(selectedChord, inversion: selectedInversion, fixed: selectedHandFormula != nil),
-                               melodyNote: preferences.topNote,
-                               annotation: activeBankVoicing?.annotation ?? (usesMajorSixSubstitution || usesMinorSixSubstitution
-                                   ? "Preferred sixth substitution; not a literal seventh-chord inversion." : selectedHandFormula?.explanation))
+                               movementSummary: activeBankVoicing?.movementSummary)
         return saved.left.isEmpty ? nil : saved
     }
 
@@ -1245,8 +1176,6 @@ struct ContentView: View {
 
     private func recallChord(_ saved: SavedChord) {
         guard formulas[saved.chord] != nil, (0..<12).contains(saved.root),
-              saved.bassNote.map({ (0..<12).contains($0) }) ?? true,
-              saved.melodyNote.map({ (0..<totalNotes).contains($0) }) ?? true,
               saved.notes.allSatisfy({ (0..<totalNotes).contains($0) }) else {
             bankError = "This saved chord is unavailable."; return
         }
@@ -1257,8 +1186,6 @@ struct ContentView: View {
         selectedInversion = saved.inversion
         selectedScale = saved.option
         rootEnabled = saved.rootEnabled
-        selectedBass = saved.bassNote ?? -1
-        if preferences.topNote != saved.melodyNote { recallingPreferences = true; preferences.topNote = saved.melodyNote }
         recalledBankChord = saved
         editingBankChordID = saved.id
         lastBankKeyboardEdit = bankKeyboardEdit
@@ -1273,9 +1200,7 @@ struct ContentView: View {
                   ChordTonePolicy.allows(chord.right, chord: chord.chord, root: chord.root) else { return }
             let key = chord.chord + "|" + chord.option + "|" + chord.left.map { $0 % 12 }.sorted().description + "|" + chord.right.map { $0 % 12 }.sorted().description
             guard seen.insert(key).inserted else { return }
-            result.append(VoiceLeadingCandidate(chord: chord, intervals: intervals ?? formula.LHIntervals,
-                                                degrees: degrees ?? formula.LHDegrees,
-                                                preserveShape: formula.HandVoicings?.contains { $0.name == chord.option } == true))
+            result.append(VoiceLeadingCandidate(chord: chord, intervals: intervals ?? formula.LHIntervals, degrees: degrees ?? formula.LHDegrees))
         }
         if let formula = formulas[target.chord] {
             let hand = formula.HandVoicings?.first { $0.name == target.option }
@@ -1302,31 +1227,24 @@ struct ContentView: View {
                     guard !left.isEmpty, right.isEmpty || right.min()! > left.max()!,
                           left.union(right).allSatisfy({ (0..<totalNotes).contains($0) }) else { continue }
                     var candidate = target
-                    candidate.chord = name; candidate.harmonicIdentity = JazzTheory.soundingQuality(name, inversion: inversion, fixed: false); candidate.inversion = inversion; candidate.option = option
+                    candidate.chord = name; candidate.inversion = inversion; candidate.option = option
                     candidate.left = left; candidate.right = right
-                    candidate.title = JazzTheory.symbol(root: target.root, chord: candidate.soundingChord, bass: candidate.bassNote)
+                    let suffix = name == "maj" ? "" : name.replacingOccurrences(of: "min", with: "m")
+                    candidate.title = roots[target.root].replacingOccurrences(of: "b", with: "♭") + suffix.replacingOccurrences(of: "#", with: "♯").replacingOccurrences(of: "b", with: "♭")
                     add(candidate, formula: formula)
                 }
             }
             for hand in formula.HandVoicings ?? [] {
                 guard let hands = handVoicing(hand, root: target.root) else { continue }
                 var candidate = target
-                candidate.chord = name; candidate.harmonicIdentity = name; candidate.option = hand.name; candidate.inversion = 0
+                candidate.chord = name; candidate.option = hand.name; candidate.inversion = 0
                 candidate.left = hands.left; candidate.right = hands.right
-                candidate.title = JazzTheory.symbol(root: target.root, chord: candidate.soundingChord, bass: candidate.bassNote)
+                let suffix = name == "maj" ? "" : name.replacingOccurrences(of: "min", with: "m")
+                candidate.title = roots[target.root].replacingOccurrences(of: "b", with: "♭") + suffix.replacingOccurrences(of: "#", with: "♯").replacingOccurrences(of: "b", with: "♭")
                 add(candidate, formula: formula, intervals: hand.LHIntervals, degrees: hand.LHDegrees)
             }
         }
         return result
-    }
-
-    private func requestedVoiceLeadingCandidates(for target: SavedChord, fixed: SavedChord) -> [VoiceLeadingCandidate] {
-        if voiceLeadingMode == "Preserve exact chord", let formula = formulas[target.soundingChord] {
-            let hand = formula.HandVoicings?.first { $0.name == target.option }
-            return [VoiceLeadingCandidate(chord: target, intervals: hand?.LHIntervals ?? formula.LHIntervals,
-                                          degrees: hand?.LHDegrees ?? formula.LHDegrees, preserveShape: hand != nil)]
-        }
-        return flexibleVoiceLeadingCandidates(for: target, fixed: fixed)
     }
 
     private func voiceLeadChord(at index: Int, towardLeft: Bool = false) {
@@ -1335,27 +1253,19 @@ struct ContentView: View {
         let targetIndex = towardLeft ? index - 1 : index
         let fixedIndex = towardLeft ? index : index - 1
         let target = snapshot[targetIndex], fixed = snapshot[fixedIndex]
-        let candidates = requestedVoiceLeadingCandidates(for: target, fixed: fixed)
-        var requested = preferences
-        requested.topNote = target.melodyNote ?? preferences.topNote
-        let fitPreferences = requested
+        let candidates = flexibleVoiceLeadingCandidates(for: target, fixed: fixed)
         voiceLeadingBusy = true
         chordAudio.stop()
         Task {
             let adjusted = await Task.detached(priority: .userInitiated) {
-                ChordVoiceLeading.best(from: fixed, candidates: candidates, original: target, preferences: fitPreferences)
+                ChordVoiceLeading.best(from: fixed, candidates: candidates, original: target)
             }.value
             voiceLeadingBusy = false
             // Ignore a result if either card or the bank changed while it was calculated.
             guard savedChords == snapshot else { return }
-            guard var adjusted else {
+            guard let adjusted else {
                 bankError = "No compatible voicing fits this transition. The saved chord is unchanged."; return
             }
-            if adjusted.soundingChord != target.soundingChord {
-                adjusted.annotation = "Harmony changed: " + JazzTheory.symbol(root: target.root, chord: target.soundingChord)
-                    + " → " + JazzTheory.symbol(root: adjusted.root, chord: adjusted.soundingChord)
-            }
-            adjusted.melodyNote = fitPreferences.topNote
             var chords = snapshot; chords[targetIndex] = adjusted
             if writeChordBank(chords) { bankUndo[target.id] = target }
         }
@@ -1429,14 +1339,7 @@ struct ContentView: View {
             var bank = try JSONDecoder().decode(ChordBankFile.self, from: Data(contentsOf: url))
             guard !bank.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                   Set(bank.chords.map(\.id)).count == bank.chords.count,
-                  (bank.schemaVersion ?? 1) <= 2,
-                  bank.chords.allSatisfy({ chord in
-                      formulas[chord.chord] != nil && (0..<12).contains(chord.root) && !chord.left.isEmpty
-                          && (chord.bassNote.map { (0..<12).contains($0) } ?? true)
-                          && (chord.melodyNote.map { (0..<totalNotes).contains($0) } ?? true)
-                          && (chord.harmonicIdentity.map { formulas[$0] != nil } ?? true)
-                          && chord.notes.allSatisfy { (0..<totalNotes).contains($0) }
-                  }) else {
+                  bank.chords.allSatisfy({ formulas[$0.chord] != nil && (0..<12).contains($0.root) && !$0.left.isEmpty && $0.notes.allSatisfy { (0..<totalNotes).contains($0) } }) else {
                 throw CocoaError(.fileReadCorruptFile)
             }
             bank.id = UUID()
@@ -1555,11 +1458,7 @@ struct ContentView: View {
 
     private var continuationChoices: [ChordContinuation] {
         guard let source = savedChords.last else { return [] }
-        return JazzTheory.contextChoices(after: source.soundingChord, root: source.root,
-                                         context: HarmonicContext(key: contextKey < 0 ? nil : contextKey,
-                                                                  setting: harmonicSetting,
-                                                                  destination: destinationRoot < 0 ? nil : destinationRoot),
-                                         quality: destinationQuality)
+        return ChordContinuation.choices(after: source.chord)
     }
 
     private func continuationSymbol(_ choice: ChordContinuation) -> String {
@@ -1588,9 +1487,6 @@ struct ContentView: View {
                                 option: drop == nil ? "" : "Suggested voicing", rootEnabled: source.rootEnabled,
                                 left: drop?.left ?? Set(close), right: drop?.right ?? [])
         }
-        target.harmonicIdentity = choice.chord
-        target.bassNote = choice.slide ? source.bassNote.map { ($0 + choice.offset + 12) % 12 } : nil
-        target.annotation = choice.label + ". Suggestions depend on key, melody and harmonic role."
         target.title = continuationSymbol(choice)
         return ChordVoiceLeading.lead(from: source, to: target, intervals: formula.LHIntervals, degrees: formula.LHDegrees)
     }
@@ -1767,13 +1663,6 @@ struct ContentView: View {
                 } label: { Image(systemName: "trash") }
                 .accessibilityLabel("Remove saved chord \(index + 1)")
             }
-            if saved.soundingChord != saved.chord {
-                Text("Sounds as " + JazzTheory.symbol(root: saved.root, chord: saved.soundingChord))
-                    .font(.caption).foregroundStyle(.orange)
-            }
-            if let annotation = saved.annotation {
-                Text(annotation).font(.caption2).foregroundStyle(.secondary).lineLimit(3)
-            }
             if let summary = saved.movementSummary {
                 Text(summary).font(.caption2).foregroundStyle(.secondary).lineLimit(2)
             }
@@ -1836,9 +1725,6 @@ struct ContentView: View {
                     }.accessibilityLabel("Close Chord Bank")
                 }
                 ToolbarItem(placement: .topBarLeading) { bankFileMenu }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Theory", systemImage: "music.note.list") { showingTheory = true }
-                }
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button { restoreBankHistory(redo: false) } label: {
                         Label("Undo", systemImage: "arrow.uturn.backward")
@@ -2132,17 +2018,14 @@ struct ContentView: View {
         .safeAreaInset(edge: .top, spacing: 0) {
             if usesMajorSixSubstitution || usesMinorSixSubstitution {
                 Text(usesMinorSixSubstitution
-                     ? "Voiced as minor sixth · preferred substitution, not an inversion"
-                     : "Voiced as major sixth · preferred substitution, not an inversion")
+                     ? "changed to minor six to avoid dissonance on top of chord"
+                     : "changed to major six to avoid dissonance on top of chord")
                     .font(.system(size: 14))
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 72)
                     .frame(maxWidth: .infinity, minHeight: 48)
                     .background(.black)
-            } else if !formulas.isEmpty && performanceHands == nil {
-                Text(preferences.guidance).font(.caption).foregroundStyle(.orange)
-                    .padding(.horizontal, 72).frame(maxWidth: .infinity, minHeight: 48).background(.black)
             }
         }
         .overlay(alignment: .bottom) {
@@ -2155,7 +2038,7 @@ struct ContentView: View {
                 Button("Add to Bank", systemImage: "plus.rectangle.on.rectangle") { saveCurrentChord() }
                     .buttonStyle(.bordered)
                     .font(.system(size: 15, weight: .semibold))
-                    .disabled(formulas[selectedChord] == nil || leftHandNotes.isEmpty)
+                    .disabled(formulas[selectedChord] == nil)
                     .accessibilityHint("Adds the current chord and opens the Chord Bank")
             Button {
                 chordAudio.play(keyIndices: chordPlaybackNotes)
@@ -2167,7 +2050,7 @@ struct ContentView: View {
                     .background(chordAudio.isPlaying ? Color.blue : Color.blue.opacity(0.8), in: Circle())
             }
             .buttonStyle(.plain)
-            .disabled(formulas[selectedChord] == nil || leftHandNotes.isEmpty)
+            .disabled(formulas[selectedChord] == nil)
             .accessibilityLabel("Play chord")
             .accessibilityHint("Plays the bass and chord voicing, without scale notes")
             }
@@ -2191,11 +2074,6 @@ struct ContentView: View {
                 .padding(.leading, 18)
                 .padding(.bottom, 24)
         }
-        .overlay(alignment: .topTrailing) {
-            Button("Theory & Practice", systemImage: "music.note.list") { showingTheory = true }
-                .buttonStyle(.bordered).padding(12)
-        }
-        .sheet(isPresented: $showingTheory, onDismiss: { chordAudio.stop() }) { theoryToolsSheet }
         .sheet(isPresented: $showingSubstitutes, onDismiss: { chordAudio.stop() }) {
             substitutesSheet
         }
@@ -2253,15 +2131,7 @@ struct ContentView: View {
         }
         .onDisappear { synchronizeEditingBankChord(); chordAudio.suspend() }
         .onAppear {
-            if let stored = try? JSONDecoder().decode(VoicingPreferences.self, from: preferenceData) {
-                preferences = stored; rootEnabled = stored.role != "With bassist"
-            }
             loadChordFormulas()
-            #if DEBUG
-            if CommandLine.arguments.contains("--theory-preview") { selectedScale = "Barron"; showingTheory = true }
-            if CommandLine.arguments.contains("--practice-preview") { buildPracticePreview(); showingTheory = true }
-            if CommandLine.arguments.contains("--play-preview") { playPracticePreview() }
-            #endif
         }
         .onChange(of: selectedChord) { _, _ in
             chordAudio.stop()
@@ -2284,21 +2154,6 @@ struct ContentView: View {
             selectValidInversion()
             normalizeRightHandSelection()
         }
-        .onChange(of: preferences) { _, _ in
-            chordAudio.stop()
-            preferenceData = (try? JSONEncoder().encode(preferences)) ?? preferenceData
-            if recallingPreferences { recallingPreferences = false; return }
-            recalledBankChord = nil
-        }
-        .onChange(of: selectedBass) { _, _ in
-            chordAudio.stop()
-            if let saved = activeBankVoicing, saved.bassNote == (selectedBass < 0 ? nil : selectedBass) { return }
-            recalledBankChord = nil
-        }
-        .onChange(of: contextKey) { _, _ in continuationChoice = continuationChoices.first?.id ?? "" }
-        .onChange(of: harmonicSetting) { _, _ in continuationChoice = continuationChoices.first?.id ?? "" }
-        .onChange(of: destinationRoot) { _, _ in continuationChoice = continuationChoices.first?.id ?? "" }
-        .onChange(of: destinationQuality) { _, _ in continuationChoice = continuationChoices.first?.id ?? "" }
         .onChange(of: rootEnabled) { _, _ in
             chordAudio.stop()
         }
@@ -2411,271 +2266,4 @@ struct ContentView: View {
 
 #Preview(traits: .landscapeLeft) {
     ContentView(initialChord: "maj7(#5)")
-}
-
-// MARK: - Theory and practice tools
-extension ContentView {
-    private var theoryToolsSheet: some View {
-        NavigationStack {
-            Form {
-                if CommandLine.arguments.contains("--practice-preview") { practiceToolsSection }
-                theoryExplanationSection
-                performancePreferencesSection
-                voicingLibrarySection
-                harmonicContextSection
-                scaleExplanationSection
-                if !CommandLine.arguments.contains("--practice-preview") { practiceToolsSection }
-            }
-            .navigationTitle("Theory & Practice")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { chordAudio.stop(); showingTheory = false }
-                }
-            }
-            .onChange(of: preferences.role) { _, role in rootEnabled = role != "With bassist" }
-            .onChange(of: preferences) { _, _ in practicePreview = [] }
-            .onChange(of: practiceTemplate) { _, _ in chordAudio.stop(); practicePreview = [] }
-            .onChange(of: practiceKey) { _, _ in chordAudio.stop(); practicePreview = [] }
-            .onChange(of: practiceBPM) { _, _ in chordAudio.stop() }
-            .onChange(of: practiceRepeat) { _, _ in chordAudio.stop() }
-        }
-        .preferredColorScheme(.dark)
-        .presentationDetents([.large])
-    }
-
-    private var theoryExplanationSection: some View {
-        Section("Current harmony · " + chordSymbol) {
-            if let theory = formulas[selectedChord]?.Theory {
-                Text(theory.explanation)
-                LabeledContent("Family", value: ["minorMajor": "Minor-major", "halfDiminished": "Half diminished"][theory.family] ?? theory.family.capitalized)
-                LabeledContent("Defining colors", value: degreeNames(theory.defining))
-                LabeledContent("Optional / implied", value: degreeNames(theory.optional))
-                let omitted = ChordTonePolicy.missingDefiningTones(leftHandNotes.union(rightHandNotes), root: selectedRoot, theory: theory)
-                if !omitted.isEmpty {
-                    Text("This partial voicing implies: " + degreeNames(Array(omitted))).font(.caption)
-                }
-                if !theory.contextual.isEmpty {
-                    Text("Natural 11 can rub against a major third. Register, duration and melody decide whether it belongs; it is not a universal ban.")
-                        .font(.caption).foregroundStyle(.secondary)
-                }
-                if let url = theory.sources.first.flatMap(URL.init(string:)) {
-                    Link("Theory reference", destination: url)
-                }
-            }
-            if usesMajorSixSubstitution || usesMinorSixSubstitution {
-                Text("Your preferred sixth substitution is active. The saved bank records the selected chord and the actual sixth harmony separately.")
-            }
-            if let option = selectedHandFormula {
-                Text(option.explanation ?? "A fixed hand arrangement; its geometry is retained.")
-            }
-            if performanceHands == nil {
-                Label(preferences.guidance, systemImage: "exclamationmark.triangle")
-                    .foregroundStyle(.orange)
-            } else {
-                LabeledContent("LH · low to high", value: leftHandNotes.sorted().map(JazzTheory.note).joined(separator: " · "))
-                let isScale = (chordScales[selectedChord] ?? []).contains { $0.name == selectedScale }
-                if !isScale && !rightHandNotes.isEmpty {
-                    LabeledContent("RH · low to high", value: rightHandNotes.sorted().map(JazzTheory.note).joined(separator: " · "))
-                }
-                Button("Hear current chord", systemImage: "play.fill") { chordAudio.play(keyIndices: chordPlaybackNotes) }
-            }
-        }
-    }
-
-    private func degreeNames(_ pitches: [Int]) -> String {
-        let labels = ["1", "♭9", "9", "♭3 / ♯9", "3", "11", "♯11 / ♭5", "5", "♭13 / ♯5", "6 / 13", "♭7", "7"]
-        let formula = formulas[selectedChord]
-        let leftIntervals: [Int] = formula?.LHIntervals ?? []
-        let leftDegrees: [String] = formula?.LHDegrees ?? []
-        let rightIntervals: [Int] = formula?.RHChordIntervals ?? []
-        let rightDegrees: [String] = formula?.RHChordDegrees ?? []
-        let pairs: [(Int, String)] = Array(zip(leftIntervals, leftDegrees)) + Array(zip(rightIntervals, rightDegrees))
-        let names: [String] = pitches.sorted().map { pitch -> String in
-            guard let degree = pairs.first(where: { ($0.0 % 12 + 12) % 12 == pitch })?.1,
-                  let number = Int(degree.filter(\.isNumber)) else { return labels[(pitch % 12 + 12) % 12] }
-            let normalized = [9,11,13].contains(number) ? number : (number - 1) % 7 + 1
-            return degree.filter { !$0.isNumber }.replacingOccurrences(of: "b", with: "♭").replacingOccurrences(of: "#", with: "♯") + String(normalized)
-        }
-        return names.joined(separator: " · ")
-    }
-
-    private var performancePreferencesSection: some View {
-        Section("Melody, bass & playability") {
-            Picker("Keep highest note", selection: Binding(get: { preferences.topNote ?? -1 }, set: { preferences.topNote = $0 < 0 ? nil : $0 })) {
-                Text("No fixed melody").tag(-1)
-                ForEach(12..<60, id: \.self) { Text(JazzTheory.note($0)).tag($0) }
-            }
-            Picker("Bass", selection: $selectedBass) {
-                Text("Chord root").tag(-1)
-                ForEach(roots.indices, id: \.self) { Text(roots[$0].replacingOccurrences(of: "b", with: "♭")).tag($0) }
-            }
-            Toggle("Play separate bass", isOn: $rootEnabled)
-            Picker("Playing with", selection: $preferences.role) {
-                Text("Solo piano").tag("Solo piano")
-                Text("Bassist").tag("With bassist")
-            }
-            Picker("LH maximum span", selection: $preferences.leftSpan) {
-                Text("Existing range").tag(23); Text("Octave").tag(12); Text("Tenth").tag(16)
-            }
-            Picker("RH maximum span", selection: $preferences.rightSpan) {
-                Text("Unrestricted").tag(59); Text("Octave").tag(12); Text("Tenth").tag(16)
-            }
-            Picker("LH register", selection: $preferences.register) {
-                ForEach(["Current", "Lower", "Higher"], id: \.self) { Text($0).tag($0) }
-            }
-            Picker("Density", selection: $preferences.density) {
-                ForEach(["Any", "Sparse", "Rich"], id: \.self) { Text($0 == "Sparse" ? "Sparse · up to 4 hand notes" : $0 == "Rich" ? "Rich · at least 5 hand notes" : $0).tag($0) }
-            }
-            Text("The melody constraint applies to the chord, not a displayed improvisation scale. Named voicings retain their construction; some will not fit a requested melody or span.")
-                .font(.caption).foregroundStyle(.secondary)
-            Button("Reset playability preferences") { preferences = VoicingPreferences(); selectedBass = -1 }
-        }
-    }
-
-    private var voicingLibrarySection: some View {
-        Section("Voicing library") {
-            ForEach(formulas[selectedChord]?.HandVoicings ?? [], id: \.name) { option in
-                let raw = handVoicing(option)
-                let floor = leftHandFloor(bassInterval: option.LHIntervals.min() ?? 0, intervals: option.LHIntervals, degrees: option.LHDegrees)
-                let fit = raw.flatMap { preferences.fit(left: $0.left, right: $0.right, preserveShape: true, minimumLeft: floor) }
-                Button {
-                    chooseRightHandOption(option.name)
-                } label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack { Text(option.name); Spacer(); if selectedScale == option.name { Image(systemName: "checkmark") } }
-                        Text(option.explanation ?? "Fixed hand arrangement")
-                            .font(.caption).foregroundStyle(.secondary)
-                        if fit == nil { Text(raw == nil ? "Outside the instrument's LH register" : "Does not fit the chosen melody, span or density").font(.caption2).foregroundStyle(.orange) }
-                    }
-                }.disabled(fit == nil)
-            }
-            Text("LH Shell in the main menu is the existing root-based arrangement. Guide-tone shell here is the third and seventh. Locked hands doubles the melody below; Drop 2 lowers the second-highest voice instead.")
-                .font(.caption).foregroundStyle(.secondary)
-        }
-    }
-
-    private var harmonicContextSection: some View {
-        Section("Voice leading & suggestions") {
-            Picker("Voice leading", selection: $voiceLeadingMode) {
-                Text("Preserve exact chord").tag("Preserve exact chord")
-                Text("Allow harmonic alternatives").tag("Allow harmonic alternatives")
-            }
-            Text("Preserve exact chord repositions the saved notes. Harmonic alternatives may change extensions or color; the changed harmony is labeled on the card.")
-                .font(.caption).foregroundStyle(.secondary)
-            Picker("Key center", selection: $contextKey) {
-                Text("Unspecified").tag(-1)
-                ForEach(roots.indices, id: \.self) { Text(roots[$0]).tag($0) }
-            }
-            Picker("Setting", selection: $harmonicSetting) {
-                ForEach(["Tonal", "Blues", "Modal"], id: \.self) { Text($0).tag($0) }
-            }
-            Picker("Destination root", selection: $destinationRoot) {
-                Text("Any").tag(-1)
-                ForEach(roots.indices, id: \.self) { Text(roots[$0]).tag($0) }
-            }
-            Picker("Resolution color", selection: $destinationQuality) {
-                Text("Suggested").tag("Suggested")
-                Text("Major triad").tag("maj"); Text("Major sixth").tag("6")
-                Text("Major seventh").tag("maj7"); Text("Minor triad").tag("min")
-                Text("Minor sixth").tag("min6"); Text("Minor-major seventh").tag("minmaj7")
-            }
-            Text("These controls guide Where next in the Chord Bank. The key center prioritizes home arrivals; destination filters the root. Tonic dominant blues and modal planing have their own suggestions. Same-root color changes in Substitutes are not automatically functional resolutions.")
-                .font(.caption).foregroundStyle(.secondary)
-        }
-    }
-
-    private var scaleExplanationSection: some View {
-        Section("Scale choices · improvisation palettes") {
-            ForEach(chordScales[selectedChord] ?? [], id: \.name) { scale in
-                DisclosureGroup(scale.name + " · " + (scale.usage ?? "Context-dependent")) {
-                    if let targets = scale.targetDegrees, !targets.isEmpty {
-                        Text("Useful targets: " + targets.joined(separator: " · "))
-                    }
-                    Text(scale.caution ?? "Fit the scale to the actual voicing and melody.")
-                        .font(.caption)
-                    Text(scale.degrees.joined(separator: " · ")).font(.caption.monospaced())
-                    Button("Show " + scale.name) { chooseRightHandOption(scale.name) }
-                    if let url = scale.sources?.first.flatMap(URL.init(string:)) { Link("Scale reference", destination: url) }
-                }
-            }
-        }
-    }
-
-    private var practiceToolsSection: some View {
-        Section("Progression practice") {
-            Picker("Progression", selection: $practiceTemplate) {
-                ForEach(JazzPracticeTemplate.all) { Text($0.id).tag($0.id) }
-            }
-            Picker("Transpose to", selection: $practiceKey) {
-                ForEach(roots.indices, id: \.self) { Text(roots[$0]).tag($0) }
-            }
-            Stepper("Tempo · \(practiceBPM) BPM", value: $practiceBPM, in: 30...240, step: 5)
-            Toggle("Repeat progression", isOn: $practiceRepeat)
-            Text(JazzPracticeTemplate.all.first { $0.id == practiceTemplate }?.explanation ?? "")
-            Button("Build preview", systemImage: "wand.and.stars") { buildPracticePreview() }
-            if let message = theoryMessage { Text(message).foregroundStyle(.orange) }
-            if !practicePreview.isEmpty {
-                Text(practicePreview.map(\.title).joined(separator: " → ")).font(.caption)
-                if let step = chordAudio.playingStep, practicePreview.indices.contains(step) {
-                    Text("Playing \(step + 1): \(practicePreview[step].title)").foregroundStyle(.green)
-                }
-                HStack {
-                    Button("Play sequence", systemImage: "play.fill") { playPracticePreview() }
-                    Button("Stop", systemImage: "stop.fill") { chordAudio.stop() }
-                }
-                Button("Append preview to bank", systemImage: "plus.rectangle.on.rectangle") {
-                    guard !practicePreview.isEmpty else { return }
-                    let copies = practicePreview.map { chord in var c = chord; c.id = UUID(); return c }
-                    if writeChordBank(savedChords + copies) { theoryMessage = "Appended \(copies.count) chords. Existing cards were kept." }
-                }
-            }
-            if !savedChords.isEmpty {
-                Button("Play current bank in sequence", systemImage: "play.rectangle") {
-                    chordAudio.playProgression(savedChords.map { ($0.notes, 4.0) }, bpm: practiceBPM, repeating: practiceRepeat)
-                }
-            }
-        }
-    }
-
-    private func buildPracticePreview() {
-        chordAudio.stop(); practicePreview = []; theoryMessage = nil
-        guard let template = JazzPracticeTemplate.all.first(where: { $0.id == practiceTemplate }) else { return }
-        var generated: [SavedChord] = []
-        for step in template.steps {
-            let root = (practiceKey + step.root) % 12
-            guard let formula = formulas[step.chord] else { theoryMessage = "Missing chord formula: " + step.chord; return }
-            let count = formula.LHVoicings?.count ?? min(formula.LHIntervals.count, inversionNames.count)
-            var next: SavedChord?
-            for inversion in 0..<count {
-                // Avoid automatic sixth substitution when the template explicitly requests a seventh.
-                if inversion == 1 && ["maj7", "minmaj7"].contains(step.chord) { continue }
-                guard let notes = voicedChordNotes(inversion: inversion, chord: step.chord, root: root, scale: "") else { continue }
-                var hands: (left: Set<Int>, right: Set<Int>) = (Set(notes), coreRightHandNotes(inversion: inversion, chord: step.chord, root: root))
-                if let drop = makeDropVoicing(notes: notes, positions: [2], chord: step.chord, root: root) { hands = drop }
-                let floor = leftHandFloor(bassInterval: (hands.left.min() ?? root) - root, intervals: formula.LHIntervals, degrees: formula.LHDegrees)
-                guard let fitted = preferences.fit(left: hands.left, right: hands.right, minimumLeft: floor) else { continue }
-                let bass = step.bass.map { (practiceKey + $0) % 12 }
-                next = SavedChord(title: JazzTheory.symbol(root: root, chord: step.chord, bass: bass),
-                                  root: root, chord: step.chord, inversion: inversion, option: "Practice voicing",
-                                  rootEnabled: rootEnabled, left: fitted.left, right: fitted.right,
-                                  bassNote: bass, harmonicIdentity: step.chord, melodyNote: preferences.topNote,
-                                  annotation: template.id)
-                break
-            }
-            guard var chord = next else { theoryMessage = preferences.guidance + " Chord: " + JazzTheory.symbol(root: root, chord: step.chord); return }
-            if let previous = generated.last,
-               let led = ChordVoiceLeading.lead(from: previous, to: chord, intervals: formula.LHIntervals,
-                                                degrees: formula.LHDegrees, preferences: preferences) { chord = led }
-            generated.append(chord)
-        }
-        practicePreview = generated
-    }
-
-    private func playPracticePreview() {
-        guard let template = JazzPracticeTemplate.all.first(where: { $0.id == practiceTemplate }),
-              practicePreview.count == template.steps.count else { return }
-        let events = zip(practicePreview, template.steps).map { ($0.0.notes, $0.1.beats) }
-        chordAudio.playProgression(events, bpm: practiceBPM, repeating: practiceRepeat)
-    }
 }

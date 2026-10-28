@@ -8,9 +8,6 @@ final class ChordAudioPlayer: ObservableObject {
     @Published private(set) var isPlaying = false
     @Published var errorMessage: String?
 
-    @Published private(set) var playingStep: Int?
-    private var progressionTask: Task<Void, Never>?
-
     private var engine: AVAudioEngine?
     private var sampler: AVAudioUnitSampler?
     private var soundingNotes = Set<UInt8>()
@@ -18,33 +15,6 @@ final class ChordAudioPlayer: ObservableObject {
 
     func play(keyIndices: Set<Int>) {
         stop()
-        sound(keyIndices: keyIndices)
-    }
-
-    func playProgression(_ events: [(notes: Set<Int>, beats: Double)], bpm: Int, repeating: Bool = false) {
-        stop()
-        guard !events.isEmpty, (30...240).contains(bpm),
-              events.allSatisfy({ !$0.notes.isEmpty && $0.beats > 0 && $0.beats <= 32 }) else { return }
-        progressionTask = Task { [weak self] in
-            repeat {
-                for (index, event) in events.enumerated() {
-                    guard !Task.isCancelled, let self else { return }
-                    self.playingStep = index
-                    self.sound(keyIndices: event.notes)
-                    // Progression durations, rather than the single-chord preview timer, own release.
-                    self.releaseTask?.cancel(); self.releaseTask = nil
-                    do { try await Task.sleep(for: .seconds(event.beats * 60 / Double(bpm))) }
-                    catch { return }
-                }
-            } while repeating && !Task.isCancelled
-            self?.releaseNotes()
-            self?.playingStep = nil
-            self?.progressionTask = nil
-        }
-    }
-
-    private func sound(keyIndices: Set<Int>) {
-        releaseNotes()
         errorMessage = nil
         // Key index 24 is Middle C (MIDI 60); the keyboard starts at C2.
         let notes = Set(keyIndices.filter { (0..<60).contains($0) }.map { UInt8($0 + 36) })
@@ -77,13 +47,6 @@ final class ChordAudioPlayer: ObservableObject {
     }
 
     func stop() {
-        progressionTask?.cancel()
-        progressionTask = nil
-        playingStep = nil
-        releaseNotes()
-    }
-
-    private func releaseNotes() {
         releaseTask?.cancel()
         releaseTask = nil
         for note in soundingNotes { sampler?.stopNote(note, onChannel: 0) }
