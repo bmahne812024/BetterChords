@@ -59,7 +59,8 @@
         "IV/I",
         "ii/I",
         "7(b9, #11)",
-        "7(b9, b13)"
+        "7(b9, b13)",
+        "maj13(#11)"
       ]
     },
     {
@@ -3589,6 +3590,29 @@
             "sources": [
               "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/"
             ]
+          },
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [
+              14,
+              19
+            ],
+            "RHDegrees": [
+              "9",
+              "12"
+            ],
+            "explanation": "Dominant third and seventh with ninth and fifth; a tritone, major third and fourth.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
           }
         ],
         "Theory": {
@@ -4666,7 +4690,32 @@
             "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
             "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
           ]
-        }
+        },
+        "HandVoicings": [
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              10,
+              16
+            ],
+            "LHDegrees": [
+              "b7",
+              "10"
+            ],
+            "RHIntervals": [
+              21,
+              26
+            ],
+            "RHDegrees": [
+              "13",
+              "16"
+            ],
+            "explanation": "Rootless dominant: tritone followed by fourths, with ninth and thirteenth.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
+          }
+        ]
       },
       {
         "name": "9(#11, #5)",
@@ -4998,7 +5047,32 @@
             "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
             "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
           ]
-        }
+        },
+        "HandVoicings": [
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              10,
+              16
+            ],
+            "LHDegrees": [
+              "b7",
+              "10"
+            ],
+            "RHIntervals": [
+              21,
+              26
+            ],
+            "RHDegrees": [
+              "13",
+              "16"
+            ],
+            "explanation": "Rootless dominant: tritone followed by fourths, with ninth and thirteenth.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
+          }
+        ]
       },
       {
         "name": "maj9",
@@ -5209,6 +5283,29 @@
             "sources": [
               "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/"
             ]
+          },
+          {
+            "name": "Quartal fragment",
+            "LHIntervals": [
+              11,
+              16
+            ],
+            "LHDegrees": [
+              "7",
+              "10"
+            ],
+            "RHIntervals": [
+              26,
+              31
+            ],
+            "RHDegrees": [
+              "16",
+              "19"
+            ],
+            "explanation": "Major seventh and third below ninth and fifth; two fourth dyads, with no added sixth.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
           }
         ],
         "Theory": {
@@ -5409,7 +5506,34 @@
             "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
             "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
           ]
-        }
+        },
+        "HandVoicings": [
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              9,
+              14
+            ],
+            "LHDegrees": [
+              "6",
+              "9"
+            ],
+            "RHIntervals": [
+              19,
+              24,
+              27
+            ],
+            "RHDegrees": [
+              "12",
+              "15",
+              "b17"
+            ],
+            "explanation": "Minor sixth/ninth texture: three fourths topped by a minor third.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
+          }
+        ]
       },
       {
         "name": "minmaj9",
@@ -6056,6 +6180,31 @@
             "sources": [
               "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
             ]
+          },
+          {
+            "name": "So What",
+            "LHIntervals": [
+              9,
+              14
+            ],
+            "LHDegrees": [
+              "6",
+              "9"
+            ],
+            "RHIntervals": [
+              19,
+              24,
+              28
+            ],
+            "RHDegrees": [
+              "12",
+              "15",
+              "17"
+            ],
+            "explanation": "Three perfect fourths followed by a major third; interpret over the selected bass root.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/so-what-chord/"
+            ]
           }
         ],
         "Theory": {
@@ -6454,7 +6603,59 @@
             "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
             "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
           ]
-        }
+        },
+        "HandVoicings": [
+          {
+            "name": "So What",
+            "LHIntervals": [
+              4,
+              9
+            ],
+            "LHDegrees": [
+              "3",
+              "6"
+            ],
+            "RHIntervals": [
+              14,
+              19,
+              23
+            ],
+            "RHDegrees": [
+              "9",
+              "12",
+              "14"
+            ],
+            "explanation": "Three perfect fourths followed by a major third; interpret over the selected bass root.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/so-what-chord/"
+            ]
+          },
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              11,
+              16
+            ],
+            "LHDegrees": [
+              "7",
+              "10"
+            ],
+            "RHIntervals": [
+              21,
+              26,
+              31
+            ],
+            "RHDegrees": [
+              "13",
+              "16",
+              "19"
+            ],
+            "explanation": "Four perfect fourths; rootless major thirteenth color.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
+          }
+        ]
       },
       {
         "name": "maj7(#11)",
@@ -7138,6 +7339,31 @@
               "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
             ],
             "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
+          },
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              3,
+              7
+            ],
+            "LHDegrees": [
+              "b3",
+              "5"
+            ],
+            "RHIntervals": [
+              12,
+              17,
+              22
+            ],
+            "RHDegrees": [
+              "8",
+              "11",
+              "b14"
+            ],
+            "explanation": "Minor eleventh quartal texture; the thirteenth is implied.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
           }
         ],
         "Theory": {
@@ -7556,6 +7782,56 @@
               "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
             ],
             "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
+          },
+          {
+            "name": "So What",
+            "LHIntervals": [
+              7,
+              12
+            ],
+            "LHDegrees": [
+              "5",
+              "8"
+            ],
+            "RHIntervals": [
+              17,
+              22,
+              26
+            ],
+            "RHDegrees": [
+              "11",
+              "b14",
+              "16"
+            ],
+            "explanation": "Three perfect fourths followed by a major third; interpret over the selected bass root.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/so-what-chord/"
+            ]
+          },
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              2,
+              7
+            ],
+            "LHDegrees": [
+              "2",
+              "5"
+            ],
+            "RHIntervals": [
+              12,
+              17,
+              22
+            ],
+            "RHDegrees": [
+              "8",
+              "11",
+              "b14"
+            ],
+            "explanation": "Four perfect fourths; suspended ninth with no third.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
           }
         ],
         "Theory": {
@@ -7748,6 +8024,56 @@
               "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
             ],
             "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
+          },
+          {
+            "name": "So What",
+            "LHIntervals": [
+              7,
+              12
+            ],
+            "LHDegrees": [
+              "5",
+              "8"
+            ],
+            "RHIntervals": [
+              17,
+              22,
+              26
+            ],
+            "RHDegrees": [
+              "11",
+              "b14",
+              "16"
+            ],
+            "explanation": "Three perfect fourths followed by a major third; interpret over the selected bass root.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/so-what-chord/"
+            ]
+          },
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              9,
+              14
+            ],
+            "LHDegrees": [
+              "6",
+              "9"
+            ],
+            "RHIntervals": [
+              19,
+              24,
+              29
+            ],
+            "RHDegrees": [
+              "12",
+              "15",
+              "18"
+            ],
+            "explanation": "Four perfect fourths; sixth/ninth/suspended color with the seventh implied.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
           }
         ],
         "Theory": {
@@ -8889,7 +9215,34 @@
             "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
             "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
           ]
-        }
+        },
+        "HandVoicings": [
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              6,
+              12
+            ],
+            "LHDegrees": [
+              "b5",
+              "8"
+            ],
+            "RHIntervals": [
+              17,
+              22,
+              27
+            ],
+            "RHDegrees": [
+              "11",
+              "b14",
+              "b17"
+            ],
+            "explanation": "Half-diminished texture: a tritone followed by three perfect fourths, retaining flat fifth, flat seventh, minor third and eleventh.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
+          }
+        ]
       },
       {
         "name": "maj7(#5)",
@@ -11417,6 +11770,29 @@
               "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
             ],
             "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
+          },
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              2,
+              7
+            ],
+            "LHDegrees": [
+              "2",
+              "5"
+            ],
+            "RHIntervals": [
+              12,
+              17
+            ],
+            "RHDegrees": [
+              "8",
+              "11"
+            ],
+            "explanation": "Three perfect fourths; suspended fourth and ninth.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
           }
         ],
         "Theory": {
@@ -11715,6 +12091,159 @@
             "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
           ]
         }
+      },
+      {
+        "name": "maj13(#11)",
+        "LHIntervals": [
+          4,
+          9,
+          11,
+          18
+        ],
+        "LHDegrees": [
+          "3",
+          "13",
+          "7",
+          "#11"
+        ],
+        "LHVoicings": [
+          [
+            4,
+            9,
+            11,
+            18
+          ],
+          [
+            11,
+            16,
+            18,
+            21
+          ]
+        ],
+        "LHVoicingLabels": [
+          "Built from 3rd",
+          "Built from 7th"
+        ],
+        "RHExtension": [
+          19,
+          24
+        ],
+        "RHDegrees": [
+          "12",
+          "15"
+        ],
+        "Scales": [
+          {
+            "name": "Lydian",
+            "intervals": [
+              24,
+              26,
+              28,
+              30,
+              31,
+              33,
+              35,
+              36
+            ],
+            "degrees": [
+              "1",
+              "2",
+              "3",
+              "#4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
+            ]
+          }
+        ],
+        "Theory": {
+          "family": "major",
+          "defining": [
+            4,
+            6,
+            9,
+            11
+          ],
+          "optional": [
+            0,
+            2,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "Major thirteenth with raised eleventh: a Lydian tonic color; the ninth and fifth may be omitted.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        },
+        "HandVoicings": [
+          {
+            "name": "So What",
+            "LHIntervals": [
+              11,
+              16
+            ],
+            "LHDegrees": [
+              "7",
+              "10"
+            ],
+            "RHIntervals": [
+              21,
+              26,
+              30
+            ],
+            "RHDegrees": [
+              "13",
+              "16",
+              "#18"
+            ],
+            "explanation": "Three perfect fourths followed by a major third; interpret over the selected bass root.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/so-what-chord/"
+            ]
+          },
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              6,
+              11
+            ],
+            "LHDegrees": [
+              "#4",
+              "7"
+            ],
+            "RHIntervals": [
+              16,
+              21,
+              26
+            ],
+            "RHDegrees": [
+              "10",
+              "13",
+              "16"
+            ],
+            "explanation": "Four perfect fourths; rootless Lydian major thirteenth.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
+          }
+        ]
       }
     ]
   },

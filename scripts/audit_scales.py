@@ -129,6 +129,7 @@ struct Audit {
 let middleCNote = 24
 let totalNotes = 60
 let inversionNames = ["Root position", "First inversion", "Second inversion", "Third inversion", "Fourth inversion"]
+var substitutesUseTwoHands = false
 var selectedRoot = 0
 var rootEnabled = true
 var recalledBankChord: SavedChord?
@@ -386,6 +387,30 @@ a.chooseInversion(1)
 precondition(a.selectedScale.isEmpty && a.rightHandNotes.isEmpty, "Major-7 sixth-substitution must not offer an off-chord RH doubling")
 a.selectedScale = ""
 print("PASS: \(toneChecks) permitted RH options across roots/inversions; every upper structure and RH extension fits its chord symbol; Cmaj9/#11 and inversion-change regressions")
+// Expanded recommendations and exact So What geometry in all twelve keys.
+for root in 0..<12 {
+    a.selectedRoot = root; a.selectedScale = ""; a.selectedInversion = 0
+    for original in ["maj", "maj7", "6/9", "maj9"] {
+        a.selectedChord = original
+        let names = Set(a.substituteChoices.map { $0.chord })
+        precondition(names.contains("sus2") && names.contains("maj13(#11)"))
+    }
+    for original in ["7", "9", "13", "7alt", "7(b9, b13)"] {
+        a.selectedChord = original
+        precondition(a.substituteChoices.contains { $0.chord == "9sus4" })
+    }
+    for chord in ["6/9", "maj13", "maj13(#11)", "9sus4", "13sus4", "min11"] {
+        a.selectedChord = chord; a.substitutesUseTwoHands = true
+        precondition(a.substituteChoices.contains { $0.chord == chord })
+        let shapes = a.substituteArrangements(for: chord, twoHands: true)
+        guard let shape = shapes.first(where: { $0.option == "So What" }) else { fatalError("Missing So What: \(chord) root \(root)") }
+        let notes = shape.left.union(shape.right).sorted()
+        precondition(zip(notes.dropFirst(), notes).map { $0 - $1 } == [5,5,5,4])
+        precondition(ChordTonePolicy.allows(shape.left.union(shape.right), chord: chord, root: root))
+        a.substitutesUseTwoHands = false
+    }
+}
+print("PASS: major sus2/Lydian recommendations, dominant-to-sus and six exact So What shapes in all keys")
 var substitutesChecked = 0
 for chord in decoded.Chords.allChords {
     a.selectedChord=chord.name; a.selectedScale=""; a.selectedInversion=0
@@ -394,7 +419,7 @@ for chord in decoded.Chords.allChords {
         for enabled in [true, false] {
             a.rootEnabled=enabled
             let choices=a.substituteChoices
-            precondition(choices.count <= 3)
+            precondition(choices.count >= 3, "Missing substitution coverage: \(chord.name)")
             precondition(Set(choices.map { $0.chord }).count == choices.count)
             for choice in choices {
                 precondition(choice.chord != chord.name && a.formulas[choice.chord] != nil)

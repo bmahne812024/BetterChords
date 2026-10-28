@@ -17,3 +17,13 @@ Existing diminished resolution behavior from before the Theory & Practice commit
 ## Validation
 
 The chord and scale audit covers formula spellings, pitch sets, transposition, hand separation, available voicings, displayed-note labels and existing bank behavior. The app is also built for the iOS simulator.
+
+## Expanded substitutions — October 27, 2026
+
+The existing Substitutes sheet now offers the full curated choices rather than stopping at three. Every chord has recommendations, including slash/polychord entries. Two-hand mode also includes the current harmony so another arrangement can be selected without changing its symbol.
+
+Major chords offer sus2, suspended add9, sixth/ninth and Lydian colors. Dominants offer suspended alternatives as well as natural and altered tensions. Minor, minor-major, half-diminished, diminished and augmented families have additional related choices. These are optional colors: changes to thirds, fifths, sixths, sevenths or tensions must fit the melody and progression. Brief cautions appear on the existing cards.
+
+So What arrangements are available for 6/9, maj13, the new maj13(#11), 9sus4 and 13sus4, alongside the existing min11 arrangement. Further quartal stacks and fragments cover major, minor, suspended, dominant and half-diminished sounds. The library now contains 67 formulas, 201 scale assignments, 32 distinct scales and 90 named hand arrangements.
+
+Construction references: [So What](https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/so-what-chord/) and [quartal voicings](https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/). The audit checks exact So What intervals in all keys, permitted pitches, chord coverage and preview/Use parity.

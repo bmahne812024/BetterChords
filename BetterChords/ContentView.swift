@@ -891,25 +891,41 @@ struct ContentView: View {
     }
 
     private var substituteChoices: [(chord: String, reason: String, notes: Set<Int>)] {
-        let families: [[String]] = [
-            ["6/9", "maj9", "maj7", "maj13", "6", "add9", "maj", "maj7(#11)", "maj9(#11)"],
-            ["min9", "min11", "min7", "min13", "min(add9)", "min"],
-            ["min6", "min6/9", "minmaj7", "minmaj9"],
-            ["9", "13", "7", "13(9)", "9(13)", "7(#11)", "9(#11)", "13(#11)"],
-            ["7(#9)", "7(b9)", "7(#9, #5)", "7(b9, b5)", "7alt", "7(b9, #5)", "7(#9, #11)", "13(b9)", "7(b13)", "9(b13)", "7(#5)", "7(b5)", "9(#5)", "9(#11, #5)"],
-            ["min7b5", "min9b5", "min11b5"],
-            ["sus4", "sus4(add9)", "7sus4", "9sus4", "13sus4"],
-            ["aug", "maj7(#5)"], ["dim", "dim7"]
-        ]
-        guard let family = families.first(where: { $0.contains(selectedChord) }) else { return [] }
-        return family.filter { $0 != selectedChord }.compactMap { chord -> (chord: String, reason: String, notes: Set<Int>)? in
+        let major = ["6/9", "maj9", "maj7", "maj13", "6", "add9", "maj", "maj7(#11)", "maj9(#11)", "maj13(#11)"]
+        let minor = ["min9", "min11", "min7", "min13", "min(add9)", "min"]
+        let minorMajor = ["min6", "min6/9", "minmaj7", "minmaj9"]
+        let dominant = ["9", "13", "7", "13(9)", "9(13)", "7(#11)", "9(#11)", "13(#11)"]
+        let altered = ["7(#9)", "7(b9)", "7(#9, #5)", "7(b9, b5)", "7alt", "7(b9, #5)", "7(#9, #11)", "13(b9)", "7(b13)", "9(b13)", "7(#5)", "7(b5)", "9(#5)", "9(#11, #5)", "7(b9, #11)", "7(b9, b13)"]
+        let suspended = ["9sus4", "13sus4", "7sus4", "sus4(add9)", "sus4", "sus2"]
+        let halfDiminished = ["min7b5", "min9b5", "min11b5"]
+        let family: [String]
+        switch selectedChord {
+        case let c where major.contains(c): family = major + ["sus2", "sus4(add9)", "II/I", "II over I", "V/I", "V over I"]
+        case let c where minor.contains(c): family = minor + minorMajor + ["sus2", "sus4(add9)", "bIII/I"]
+        case let c where minorMajor.contains(c): family = minorMajor + minor + ["dim7", "bVI/I"]
+        case let c where dominant.contains(c): family = dominant + suspended + altered + ["bVII/I", "ii/I"]
+        case let c where altered.contains(c): family = altered + dominant + suspended + ["7sus4(b9)"]
+        case let c where halfDiminished.contains(c): family = halfDiminished + ["dim", "dim7", "min6", "min11"]
+        case let c where suspended.contains(c): family = suspended + dominant + ["7sus4(b9)", "IV/I", "ii/I", "bVII/I", "add9", "6/9"]
+        case "7sus4(b9)": family = ["7(b9)", "7(b9, b13)", "13(b9)", "7alt"] + suspended
+        case "aug", "maj7(#5)": family = ["aug", "maj7(#5)", "7(#5)", "9(#5)", "7(#9, #5)", "7(b9, #5)", "minmaj7", "minmaj9"]
+        case "dim", "dim7": family = ["dim", "dim7"] + halfDiminished + ["min6", "min6/9"]
+        case "V/I", "V over I": family = ["V/I", "V over I"] + major + ["sus2"]
+        case "II/I", "II over I": family = ["II/I", "II over I", "maj13(#11)", "maj9(#11)", "maj7(#11)", "6/9", "13(#11)"]
+        case "bVI/I": family = ["minmaj7", "minmaj9", "min6", "min6/9", "min", "min9"]
+        case "bIII/I": family = minor + ["bIII/I", "bVII/I"]
+        case "bVII/I", "ii/I", "IV/I": family = suspended + ["IV/I", "ii/I", "bVII/I"] + dominant
+        default: family = []
+        }
+        return family.filter { $0 != selectedChord || substitutesUseTwoHands }.compactMap { chord -> (chord: String, reason: String, notes: Set<Int>)? in
             guard hasValidVoicing(chord: chord, root: selectedRoot, scale: "") else { return nil }
             let count = formulas[chord]?.LHVoicings?.count ?? (chord == "9" ? 2 : (extensionNames.contains(chord) ? 1 : min(chordIntervals[chord]?.count ?? 0, inversionNames.count)))
-            let voicings = (0..<count).compactMap { voicedChordNotes(inversion: $0, chord: chord, scale: "") }
-            guard let notes = voicings.first else { return nil }
-            let pitches = rootEnabled ? Set(notes).union([selectedRoot]) : Set(notes).subtracting([selectedRoot])
+            guard let inversion = (0..<count).first(where: { voicedChordNotes(inversion: $0, chord: chord, scale: "") != nil }),
+                  let notes = voicedChordNotes(inversion: inversion, chord: chord, scale: "") else { return nil }
+            let left = rootEnabled ? Set(notes).union([selectedRoot]) : Set(notes).subtracting([selectedRoot])
+            let pitches = left.union(coreRightHandNotes(inversion: inversion, chord: chord))
             return (chord, substituteReason(chord), pitches)
-        }.prefix(3).map { $0 }
+        }
     }
 
     private func substituteArrangements(for chord: String, twoHands: Bool) -> [SubstituteArrangement] {
@@ -954,6 +970,13 @@ struct ContentView: View {
     }
 
     private func substituteReason(_ chord: String) -> String {
+        if chord == "sus2" { return "Open second replaces the third; check against the melody." }
+        if chord.contains("sus") || ["IV/I", "ii/I", "bVII/I"].contains(chord) {
+            return chord.contains("b9") ? "Darker suspended flat-nine color; changes the tensions." : "Suspended color replaces the third with a fourth (or second); check the melody."
+        }
+        if ["V/I", "V over I", "II/I", "II over I", "bIII/I", "bVI/I"].contains(chord) { return "Upper harmony over the same bass; check the changed colors against the melody." }
+        if ["min6", "min6/9", "minmaj7", "minmaj9"].contains(chord), !["min6", "min6/9", "minmaj7", "minmaj9"].contains(selectedChord) { return "Changes the sixth or seventh color; check the melody and harmonic context." }
+        if ["dim", "dim7", "min7b5", "min9b5", "min11b5", "min11"].contains(chord), ["dim", "dim7", "min7b5", "min9b5", "min11b5"].contains(selectedChord) { return "Related diminished/minor color; changes the fifth, sixth or seventh. Check the context." }
         if chord == "aug" || chord == "dim" { return "A simpler triad; leaves out the seventh." }
         if chord == "maj7(#5)" { return "Adds a major seventh to the augmented triad." }
         if chord == "dim7" { return "Adds a diminished seventh for more tension." }
@@ -1035,6 +1058,7 @@ struct ContentView: View {
                     .accessibilityLabel("Arrangement for " + substituteSymbol(chord))
                 }
             }
+            Text(substituteReason(chord)).font(.caption).foregroundStyle(.secondary)
             if let arrangement {
                 substituteKeyboard(arrangement)
                 HStack {
@@ -1046,8 +1070,14 @@ struct ContentView: View {
                     Button("Use") {
                         chordAudio.stop()
                         recalledBankChord = nil
-                        pendingSubstitute = arrangement
-                        selectedChord = arrangement.chord
+                        if selectedChord == arrangement.chord {
+                            pendingSubstitute = nil
+                            selectedInversion = arrangement.inversion
+                            chooseRightHandOption(arrangement.option)
+                        } else {
+                            pendingSubstitute = arrangement
+                            selectedChord = arrangement.chord
+                        }
                         showingSubstitutes = false
                     }
                     .buttonStyle(.borderedProminent)
