@@ -57,7 +57,9 @@
         "7(b13)",
         "9(b13)",
         "IV/I",
-        "ii/I"
+        "ii/I",
+        "7(b9, #11)",
+        "7(b9, b13)"
       ]
     },
     {
@@ -110,7 +112,8 @@
         "sus4(add9)",
         "7sus4",
         "9sus4",
-        "13sus4"
+        "13sus4",
+        "7sus4(b9)"
       ]
     }
   ],
@@ -150,6 +153,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -173,6 +184,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -192,6 +211,14 @@
               "5",
               "6",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -217,6 +244,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -240,6 +275,14 @@
               "b6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Possible sustained clashes: 4, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -261,6 +304,14 @@
               "5",
               "6",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -280,9 +331,35 @@
             "RHDegrees": [
               "8",
               "10"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
+            ],
+            "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "major",
+          "defining": [
+            4
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "Major harmony can support tonic or predominant roles. Preserve a requested seventh, ninth or raised eleventh; sixth and seventh colors are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "min",
@@ -318,6 +395,14 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -341,6 +426,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -364,6 +457,14 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Possible sustained clashes: b2, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -387,6 +488,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -410,6 +519,14 @@
               "b6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -429,6 +546,14 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -450,6 +575,14 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -473,6 +606,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -492,9 +633,33 @@
             "RHDegrees": [
               "8",
               "b10"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
+            ],
+            "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "minor",
+          "defining": [
+            3
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The minor third establishes the minor color. Sixth, minor-seventh and minor-major-seventh tonic sounds are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "dim",
@@ -532,6 +697,14 @@
               "bb7",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -555,6 +728,14 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Possible sustained clashes: b2. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -578,9 +759,36 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "diminished",
+          "defining": [
+            3,
+            6
+          ],
+          "optional": [
+            0
+          ],
+          "omittable": [
+            0
+          ],
+          "contextual": [],
+          "explanation": "A diminished triad has a minor third and diminished fifth. Do not apply full diminished-seventh symmetry to this three-note chord.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "aug",
@@ -614,6 +822,14 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -637,6 +853,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Possible sustained clashes: 6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -658,9 +882,36 @@
               "#5",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "augmented",
+          "defining": [
+            4,
+            8
+          ],
+          "optional": [
+            0
+          ],
+          "omittable": [
+            0
+          ],
+          "contextual": [],
+          "explanation": "The augmented fifth is part of this sound. A dominant seventh and a major seventh produce different qualities; retain the requested one.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "sus2",
@@ -692,6 +943,12 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -711,6 +968,12 @@
               "5",
               "6",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -734,6 +997,12 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -757,6 +1026,12 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -780,6 +1055,12 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Possible sustained clashes: b3. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -799,9 +1080,33 @@
             "RHDegrees": [
               "8",
               "9"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
+            ],
+            "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "suspended",
+          "defining": [
+            2
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The suspended fourth or second replaces or de-emphasizes the third. The bass and progression determine its role; a flat ninth supplies a distinct Phrygian color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "sus4",
@@ -833,6 +1138,12 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -856,6 +1167,12 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -879,6 +1196,12 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -902,6 +1225,12 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [],
+            "caution": "Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -921,9 +1250,33 @@
             "RHDegrees": [
               "8",
               "11"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
+            ],
+            "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "suspended",
+          "defining": [
+            5
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The suspended fourth or second replaces or de-emphasizes the third. The bass and progression determine its role; a flat ninth supplies a distinct Phrygian color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       }
     ],
     "SeventhChords": [
@@ -963,6 +1316,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -986,6 +1347,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1005,6 +1374,14 @@
               "5",
               "6",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1030,6 +1407,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1051,9 +1436,142 @@
               "5",
               "6",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "HandVoicings": [
+          {
+            "name": "Locked hands · 1",
+            "LHIntervals": [
+              -3
+            ],
+            "LHDegrees": [
+              "6"
+            ],
+            "RHIntervals": [
+              0,
+              4,
+              7,
+              9
+            ],
+            "RHDegrees": [
+              "1",
+              "3",
+              "5",
+              "6"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 2",
+            "LHIntervals": [
+              0
+            ],
+            "LHDegrees": [
+              "8"
+            ],
+            "RHIntervals": [
+              4,
+              7,
+              9,
+              12
+            ],
+            "RHDegrees": [
+              "3",
+              "5",
+              "6",
+              "8"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 3",
+            "LHIntervals": [
+              4
+            ],
+            "LHDegrees": [
+              "10"
+            ],
+            "RHIntervals": [
+              7,
+              9,
+              12,
+              16
+            ],
+            "RHDegrees": [
+              "5",
+              "6",
+              "8",
+              "10"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 4",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "12"
+            ],
+            "RHIntervals": [
+              9,
+              12,
+              16,
+              19
+            ],
+            "RHDegrees": [
+              "6",
+              "8",
+              "10",
+              "12"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          }
+        ],
+        "Theory": {
+          "family": "major",
+          "defining": [
+            4,
+            9
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "Major harmony can support tonic or predominant roles. Preserve a requested seventh, ninth or raised eleventh; sixth and seventh colors are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "min6",
@@ -1091,6 +1609,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Possible sustained clashes: b7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1114,6 +1640,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1137,6 +1671,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Possible sustained clashes: b7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1162,9 +1704,140 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "HandVoicings": [
+          {
+            "name": "Locked hands · 1",
+            "LHIntervals": [
+              -3
+            ],
+            "LHDegrees": [
+              "6"
+            ],
+            "RHIntervals": [
+              0,
+              3,
+              7,
+              9
+            ],
+            "RHDegrees": [
+              "1",
+              "b3",
+              "5",
+              "6"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 2",
+            "LHIntervals": [
+              0
+            ],
+            "LHDegrees": [
+              "8"
+            ],
+            "RHIntervals": [
+              3,
+              7,
+              9,
+              12
+            ],
+            "RHDegrees": [
+              "b3",
+              "5",
+              "6",
+              "8"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 3",
+            "LHIntervals": [
+              3
+            ],
+            "LHDegrees": [
+              "b10"
+            ],
+            "RHIntervals": [
+              7,
+              9,
+              12,
+              15
+            ],
+            "RHDegrees": [
+              "5",
+              "6",
+              "8",
+              "b10"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 4",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "12"
+            ],
+            "RHIntervals": [
+              9,
+              12,
+              15,
+              19
+            ],
+            "RHDegrees": [
+              "6",
+              "8",
+              "b10",
+              "12"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          }
+        ],
+        "Theory": {
+          "family": "minor",
+          "defining": [
+            3,
+            9
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The minor third establishes the minor color. Sixth, minor-seventh and minor-major-seventh tonic sounds are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7",
@@ -1202,6 +1875,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1225,6 +1907,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1250,6 +1941,15 @@
               "b7",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4, 7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1275,6 +1975,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b2. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1294,6 +2003,15 @@
               "5",
               "6",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1315,9 +2033,177 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "HandVoicings": [
+          {
+            "name": "Guide-tone shell",
+            "LHIntervals": [
+              4,
+              10
+            ],
+            "LHDegrees": [
+              "3",
+              "b7"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Third and seventh imply the harmony; bass root is controlled separately.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/three-note-voicings/"
+            ]
+          },
+          {
+            "name": "Powell shell",
+            "LHIntervals": [
+              0,
+              10
+            ],
+            "LHDegrees": [
+              "1",
+              "b7"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Sparse root/seventh accompaniment; the third is implied by context.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/powell-voicings/"
+            ]
+          },
+          {
+            "name": "Locked hands · 1",
+            "LHIntervals": [
+              -2
+            ],
+            "LHDegrees": [
+              "b7"
+            ],
+            "RHIntervals": [
+              0,
+              4,
+              7,
+              10
+            ],
+            "RHDegrees": [
+              "1",
+              "3",
+              "5",
+              "b7"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 2",
+            "LHIntervals": [
+              0
+            ],
+            "LHDegrees": [
+              "8"
+            ],
+            "RHIntervals": [
+              4,
+              7,
+              10,
+              12
+            ],
+            "RHDegrees": [
+              "3",
+              "5",
+              "b7",
+              "8"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 3",
+            "LHIntervals": [
+              4
+            ],
+            "LHDegrees": [
+              "10"
+            ],
+            "RHIntervals": [
+              7,
+              10,
+              12,
+              16
+            ],
+            "RHDegrees": [
+              "5",
+              "b7",
+              "8",
+              "10"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 4",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "12"
+            ],
+            "RHIntervals": [
+              10,
+              12,
+              16,
+              19
+            ],
+            "RHDegrees": [
+              "b7",
+              "8",
+              "10",
+              "12"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          }
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "maj7",
@@ -1355,6 +2241,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1378,6 +2273,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1403,6 +2307,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1422,9 +2335,196 @@
               "5",
               "6",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "HandVoicings": [
+          {
+            "name": "Guide-tone shell",
+            "LHIntervals": [
+              4,
+              11
+            ],
+            "LHDegrees": [
+              "3",
+              "7"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Third and seventh imply the harmony; bass root is controlled separately.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/three-note-voicings/"
+            ]
+          },
+          {
+            "name": "Powell shell",
+            "LHIntervals": [
+              0,
+              11
+            ],
+            "LHDegrees": [
+              "1",
+              "7"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Sparse root/seventh accompaniment; the third is implied by context.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/powell-voicings/"
+            ]
+          },
+          {
+            "name": "Monk fragment",
+            "LHIntervals": [
+              11,
+              12,
+              16
+            ],
+            "LHDegrees": [
+              "7",
+              "8",
+              "10"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "A lower semitone and a third above create an intentionally partial, ambiguous color.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/monk-voicings/"
+            ]
+          },
+          {
+            "name": "Locked hands · 1",
+            "LHIntervals": [
+              -1
+            ],
+            "LHDegrees": [
+              "7"
+            ],
+            "RHIntervals": [
+              0,
+              4,
+              7,
+              11
+            ],
+            "RHDegrees": [
+              "1",
+              "3",
+              "5",
+              "7"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 2",
+            "LHIntervals": [
+              0
+            ],
+            "LHDegrees": [
+              "8"
+            ],
+            "RHIntervals": [
+              4,
+              7,
+              11,
+              12
+            ],
+            "RHDegrees": [
+              "3",
+              "5",
+              "7",
+              "8"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 3",
+            "LHIntervals": [
+              4
+            ],
+            "LHDegrees": [
+              "10"
+            ],
+            "RHIntervals": [
+              7,
+              11,
+              12,
+              16
+            ],
+            "RHDegrees": [
+              "5",
+              "7",
+              "8",
+              "10"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 4",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "12"
+            ],
+            "RHIntervals": [
+              11,
+              12,
+              16,
+              19
+            ],
+            "RHDegrees": [
+              "7",
+              "8",
+              "10",
+              "12"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          }
+        ],
+        "Theory": {
+          "family": "major",
+          "defining": [
+            4,
+            11
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "Major harmony can support tonic or predominant roles. Preserve a requested seventh, ninth or raised eleventh; sixth and seventh colors are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "min7",
@@ -1462,6 +2562,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1485,6 +2594,15 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1508,6 +2626,15 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b2, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1527,6 +2654,15 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1548,6 +2684,15 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1573,6 +2718,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 3. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1596,9 +2750,175 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "HandVoicings": [
+          {
+            "name": "Guide-tone shell",
+            "LHIntervals": [
+              3,
+              10
+            ],
+            "LHDegrees": [
+              "b3",
+              "b7"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Third and seventh imply the harmony; bass root is controlled separately.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/three-note-voicings/"
+            ]
+          },
+          {
+            "name": "Powell shell",
+            "LHIntervals": [
+              0,
+              10
+            ],
+            "LHDegrees": [
+              "1",
+              "b7"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Sparse root/seventh accompaniment; the third is implied by context.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/powell-voicings/"
+            ]
+          },
+          {
+            "name": "Locked hands · 1",
+            "LHIntervals": [
+              -2
+            ],
+            "LHDegrees": [
+              "b7"
+            ],
+            "RHIntervals": [
+              0,
+              3,
+              7,
+              10
+            ],
+            "RHDegrees": [
+              "1",
+              "b3",
+              "5",
+              "b7"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 2",
+            "LHIntervals": [
+              0
+            ],
+            "LHDegrees": [
+              "8"
+            ],
+            "RHIntervals": [
+              3,
+              7,
+              10,
+              12
+            ],
+            "RHDegrees": [
+              "b3",
+              "5",
+              "b7",
+              "8"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 3",
+            "LHIntervals": [
+              3
+            ],
+            "LHDegrees": [
+              "b10"
+            ],
+            "RHIntervals": [
+              7,
+              10,
+              12,
+              15
+            ],
+            "RHDegrees": [
+              "5",
+              "b7",
+              "8",
+              "b10"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          },
+          {
+            "name": "Locked hands · 4",
+            "LHIntervals": [
+              7
+            ],
+            "LHDegrees": [
+              "12"
+            ],
+            "RHIntervals": [
+              10,
+              12,
+              15,
+              19
+            ],
+            "RHDegrees": [
+              "b7",
+              "8",
+              "b10",
+              "12"
+            ],
+            "explanation": "Close four-note harmony with the melody doubled one octave below. Fixed hand arrangement, not drop 2.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/four-way-close/"
+            ]
+          }
+        ],
+        "Theory": {
+          "family": "minor",
+          "defining": [
+            3,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The minor third establishes the minor color. Sixth, minor-seventh and minor-major-seventh tonic sounds are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "minmaj7",
@@ -1636,6 +2956,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3",
+              "7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1661,9 +2990,94 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b3",
+              "7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "HandVoicings": [
+          {
+            "name": "Guide-tone shell",
+            "LHIntervals": [
+              3,
+              11
+            ],
+            "LHDegrees": [
+              "b3",
+              "7"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Third and seventh imply the harmony; bass root is controlled separately.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/three-note-voicings/"
+            ]
+          },
+          {
+            "name": "Powell shell",
+            "LHIntervals": [
+              0,
+              11
+            ],
+            "LHDegrees": [
+              "1",
+              "7"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Sparse root/seventh accompaniment; the third is implied by context.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/powell-voicings/"
+            ]
+          },
+          {
+            "name": "Monk fragment",
+            "LHIntervals": [
+              11,
+              12,
+              15
+            ],
+            "LHDegrees": [
+              "7",
+              "8",
+              "b10"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "A lower semitone and a third above create an intentionally partial, ambiguous color.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/monk-voicings/"
+            ]
+          }
+        ],
+        "Theory": {
+          "family": "minorMajor",
+          "defining": [
+            3,
+            11
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "Minor-major harmony combines a minor third with a major seventh. Your preferred minor-sixth substitution remains available and explicitly labeled.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "min7b5",
@@ -1701,6 +3115,15 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1724,6 +3147,15 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b2. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1747,6 +3179,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b2. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -1770,9 +3211,33 @@
               "b3",
               "b5",
               "b7"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "halfDiminished",
+          "defining": [
+            3,
+            6,
+            10
+          ],
+          "optional": [
+            0
+          ],
+          "omittable": [
+            0
+          ],
+          "contextual": [],
+          "explanation": "Half diminished contains a minor third, diminished fifth and minor seventh. It does not have the fourfold symmetry of a fully diminished seventh.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "dim7",
@@ -1812,9 +3277,38 @@
               "bb7",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3",
+              "bb7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "diminished",
+          "defining": [
+            3,
+            6,
+            9
+          ],
+          "optional": [
+            0
+          ],
+          "omittable": [
+            0
+          ],
+          "contextual": [],
+          "explanation": "A fully diminished seventh repeats by minor thirds. It may resolve through leading-tone or common-tone interpretations.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       }
     ],
     "Extensions": [
@@ -1860,6 +3354,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1883,6 +3386,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1908,6 +3420,15 @@
               "b7",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4, 7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1929,6 +3450,15 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1952,6 +3482,15 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -1971,6 +3510,15 @@
               "5",
               "6",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -1994,9 +3542,79 @@
               "5",
               "b7",
               "9"
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
+          },
+          {
+            "name": "Rootless · 3rd low",
+            "LHIntervals": [
+              4,
+              7,
+              10,
+              14
+            ],
+            "LHDegrees": [
+              "3",
+              "5",
+              "b7",
+              "9"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Four-note rootless ninth voicing. The separate bass is optional.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/"
+            ]
+          },
+          {
+            "name": "Rootless · 7th low",
+            "LHIntervals": [
+              10,
+              14,
+              16,
+              19
+            ],
+            "LHDegrees": [
+              "b7",
+              "9",
+              "10",
+              "12"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Seventh-low ordering of the same ninth-chord pitch classes.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            2,
+            4,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7(#9)",
@@ -2058,6 +3676,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2081,6 +3708,15 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -2104,7 +3740,11 @@
               "b3",
               "5",
               "b7"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           },
           {
             "name": "UST Im",
@@ -2125,9 +3765,37 @@
               "1",
               "b3",
               "5"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            3,
+            4,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7(b9)",
@@ -2189,6 +3857,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2212,6 +3889,15 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2235,9 +3921,42 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            1,
+            4,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7(#9, #5)",
@@ -2301,6 +4020,15 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -2324,9 +4052,36 @@
               "b6",
               "8",
               "b10"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            3,
+            4,
+            8,
+            10
+          ],
+          "optional": [
+            0
+          ],
+          "omittable": [
+            0
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7(b9, b5)",
@@ -2392,6 +4147,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: 5. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2415,6 +4179,15 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -2438,9 +4211,36 @@
               "#4",
               "#6",
               "#8"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            1,
+            4,
+            6,
+            10
+          ],
+          "optional": [
+            0
+          ],
+          "omittable": [
+            0
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "13",
@@ -2486,6 +4286,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b7",
+              "13"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2509,6 +4318,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b7",
+              "13"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2534,6 +4352,15 @@
               "b7",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b7",
+              "13"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4, 7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2559,6 +4386,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b7",
+              "13"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -2582,9 +4418,105 @@
               "6",
               "8",
               "10"
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
+          },
+          {
+            "name": "Rootless · 3rd low",
+            "LHIntervals": [
+              4,
+              9,
+              10,
+              14
+            ],
+            "LHDegrees": [
+              "3",
+              "13",
+              "b7",
+              "9"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Rootless dominant thirteenth with ninth; fifth and natural eleventh omitted.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/"
+            ]
+          },
+          {
+            "name": "Rootless · 7th low",
+            "LHIntervals": [
+              10,
+              14,
+              16,
+              21
+            ],
+            "LHDegrees": [
+              "b7",
+              "9",
+              "10",
+              "13"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Seventh-low dominant thirteenth, retaining ninth and thirteenth.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/"
+            ]
+          },
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              10,
+              16
+            ],
+            "LHDegrees": [
+              "b7",
+              "10"
+            ],
+            "RHIntervals": [
+              21,
+              26,
+              31
+            ],
+            "RHDegrees": [
+              "13",
+              "16",
+              "19"
+            ],
+            "explanation": "Functional tritone below fourths, retaining the dominant guide tones and thirteenth.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            9,
+            10
+          ],
+          "optional": [
+            0,
+            2,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "13(9)",
@@ -2632,6 +4564,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b7",
+              "13"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2655,6 +4596,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b7",
+              "13"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2680,9 +4630,43 @@
               "b7",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b7",
+              "13"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4, 7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            9,
+            10
+          ],
+          "optional": [
+            0,
+            2,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "9(#11, #5)",
@@ -2736,9 +4720,39 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            8,
+            10
+          ],
+          "optional": [
+            2,
+            6
+          ],
+          "omittable": [],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "9(#5)",
@@ -2774,6 +4788,15 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2797,9 +4820,37 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            2,
+            4,
+            8,
+            10
+          ],
+          "optional": [],
+          "omittable": [],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "9(13)",
@@ -2845,6 +4896,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2868,6 +4928,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2893,9 +4962,43 @@
               "b7",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4, 7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            9,
+            10
+          ],
+          "optional": [
+            0,
+            2,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "maj9",
@@ -2933,6 +5036,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Possible sustained clashes: 1, 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2956,6 +5068,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Possible sustained clashes: 1. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -2981,6 +5102,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 1, 4, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3000,6 +5130,15 @@
               "5",
               "6",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Possible sustained clashes: 1. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -3023,9 +5162,77 @@
               "5",
               "7",
               "9"
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
+          },
+          {
+            "name": "Rootless · 3rd low",
+            "LHIntervals": [
+              4,
+              7,
+              11,
+              14
+            ],
+            "LHDegrees": [
+              "3",
+              "5",
+              "7",
+              "9"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Four-note rootless ninth voicing. The separate bass is optional.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/"
+            ]
+          },
+          {
+            "name": "Rootless · 7th low",
+            "LHIntervals": [
+              11,
+              14,
+              16,
+              19
+            ],
+            "LHDegrees": [
+              "7",
+              "9",
+              "10",
+              "12"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Seventh-low ordering of the same ninth-chord pitch classes.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "major",
+          "defining": [
+            2,
+            4,
+            11
+          ],
+          "optional": [
+            7
+          ],
+          "omittable": [
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "Major harmony can support tonic or predominant roles. Preserve a requested seventh, ninth or raised eleventh; sixth and seventh colors are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "min6/9",
@@ -3077,6 +5284,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Possible sustained clashes: b7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3100,6 +5315,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3123,6 +5346,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Possible sustained clashes: b7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3148,9 +5379,37 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "minor",
+          "defining": [
+            2,
+            3,
+            9
+          ],
+          "optional": [
+            7
+          ],
+          "omittable": [
+            7
+          ],
+          "contextual": [],
+          "explanation": "The minor third establishes the minor color. Sixth, minor-seventh and minor-major-seventh tonic sounds are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "minmaj9",
@@ -3188,6 +5447,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3",
+              "7"
+            ],
+            "caution": "Possible sustained clashes: 1. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3211,6 +5479,15 @@
               "b6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "7"
+            ],
+            "caution": "Possible sustained clashes: 1, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3236,6 +5513,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b3",
+              "7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 1, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -3259,9 +5545,33 @@
               "5",
               "7",
               "9"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "minorMajor",
+          "defining": [
+            2,
+            3,
+            11
+          ],
+          "optional": [
+            7
+          ],
+          "omittable": [
+            7
+          ],
+          "contextual": [],
+          "explanation": "Minor-major harmony combines a minor third with a major seventh. Your preferred minor-sixth substitution remains available and explicitly labeled.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "min9",
@@ -3299,6 +5609,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3322,6 +5641,15 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3341,6 +5669,15 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3362,6 +5699,15 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3387,6 +5733,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 3. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3410,6 +5765,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -3433,9 +5797,75 @@
               "5",
               "b7",
               "9"
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
+          },
+          {
+            "name": "Rootless · 3rd low",
+            "LHIntervals": [
+              3,
+              7,
+              10,
+              14
+            ],
+            "LHDegrees": [
+              "b3",
+              "5",
+              "b7",
+              "9"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Four-note rootless ninth voicing. The separate bass is optional.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/"
+            ]
+          },
+          {
+            "name": "Rootless · 7th low",
+            "LHIntervals": [
+              10,
+              14,
+              15,
+              19
+            ],
+            "LHDegrees": [
+              "b7",
+              "9",
+              "b10",
+              "12"
+            ],
+            "RHIntervals": [],
+            "RHDegrees": [],
+            "explanation": "Seventh-low ordering of the same ninth-chord pitch classes.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/rootless-voicings/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "minor",
+          "defining": [
+            2,
+            3,
+            10
+          ],
+          "optional": [
+            7
+          ],
+          "omittable": [
+            7
+          ],
+          "contextual": [],
+          "explanation": "The minor third establishes the minor color. Sixth, minor-seventh and minor-major-seventh tonic sounds are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "6/9",
@@ -3499,6 +5929,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3522,6 +5960,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3541,6 +5987,14 @@
               "5",
               "6",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3566,9 +6020,68 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "HandVoicings": [
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              4,
+              9
+            ],
+            "LHDegrees": [
+              "3",
+              "6"
+            ],
+            "RHIntervals": [
+              14,
+              19,
+              24
+            ],
+            "RHDegrees": [
+              "9",
+              "12",
+              "15"
+            ],
+            "explanation": "Five-note quartal sixth/ninth color.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
+            ]
+          }
+        ],
+        "Theory": {
+          "family": "major",
+          "defining": [
+            2,
+            4,
+            9
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "Major harmony can support tonic or predominant roles. Preserve a requested seventh, ninth or raised eleventh; sixth and seventh colors are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "add9",
@@ -3628,6 +6141,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3651,6 +6172,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3670,6 +6199,14 @@
               "5",
               "6",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3693,6 +6230,14 @@
               "b6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Possible sustained clashes: 4, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -3714,9 +6259,36 @@
               "9",
               "10",
               "15"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
+            ],
+            "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "major",
+          "defining": [
+            2,
+            4
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "Major harmony can support tonic or predominant roles. Preserve a requested seventh, ninth or raised eleventh; sixth and seventh colors are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "maj13",
@@ -3780,6 +6352,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "3",
+              "13"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3803,6 +6384,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "13"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -3828,9 +6418,43 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3",
+              "13"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "major",
+          "defining": [
+            4,
+            9,
+            11
+          ],
+          "optional": [
+            0,
+            2,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "Major harmony can support tonic or predominant roles. Preserve a requested seventh, ninth or raised eleventh; sixth and seventh colors are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "maj7(#11)",
@@ -3890,9 +6514,42 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "major",
+          "defining": [
+            4,
+            6,
+            11
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "Major harmony can support tonic or predominant roles. Preserve a requested seventh, ninth or raised eleventh; sixth and seventh colors are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "maj9(#11)",
@@ -3956,6 +6613,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -3979,9 +6645,38 @@
               "7",
               "9",
               "#11"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "major",
+          "defining": [
+            4,
+            6,
+            11
+          ],
+          "optional": [
+            0,
+            2,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "Major harmony can support tonic or predominant roles. Preserve a requested seventh, ninth or raised eleventh; sixth and seventh colors are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "min11",
@@ -4045,6 +6740,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4068,6 +6772,15 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4093,6 +6806,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 3. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -4116,7 +6838,11 @@
               "b7",
               "9",
               "11"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           },
           {
             "name": "So What",
@@ -4137,9 +6863,115 @@
               "b7",
               "b10",
               "12"
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/so-what-chord/"
+            ],
+            "explanation": "A five-note arrangement: three perfect fourths followed by a major third."
+          },
+          {
+            "name": "Barron",
+            "LHIntervals": [
+              0,
+              7,
+              14
+            ],
+            "LHDegrees": [
+              "1",
+              "5",
+              "9"
+            ],
+            "RHIntervals": [
+              15,
+              22,
+              29
+            ],
+            "RHDegrees": [
+              "b10",
+              "b14",
+              "18"
+            ],
+            "explanation": "Six-note minor eleventh; 1–5–9 below ♭3–♭7–11, with eleventh highest.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/barron-chord/"
+            ]
+          },
+          {
+            "name": "Hancock",
+            "LHIntervals": [
+              0,
+              7,
+              15
+            ],
+            "LHDegrees": [
+              "1",
+              "5",
+              "b10"
+            ],
+            "RHIntervals": [
+              17,
+              22,
+              26
+            ],
+            "RHDegrees": [
+              "11",
+              "b14",
+              "16"
+            ],
+            "explanation": "Six-note minor eleventh; 1–5–♭3 below 11–♭7–9, with ninth highest.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/hancock-chord/"
+            ]
+          },
+          {
+            "name": "Quartal",
+            "LHIntervals": [
+              7,
+              12
+            ],
+            "LHDegrees": [
+              "5",
+              "8"
+            ],
+            "RHIntervals": [
+              17,
+              22,
+              27
+            ],
+            "RHDegrees": [
+              "11",
+              "b14",
+              "b17"
+            ],
+            "explanation": "Five stacked perfect fourths imply minor eleventh; the optional ninth is omitted.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/quartal-voicings/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "minor",
+          "defining": [
+            3,
+            5,
+            10
+          ],
+          "optional": [
+            0,
+            2,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The minor third establishes the minor color. Sixth, minor-seventh and minor-major-seventh tonic sounds are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "min13",
@@ -4203,6 +7035,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3",
+              "13"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4228,6 +7069,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b3",
+              "13"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 3. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4251,6 +7101,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "13"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -4274,9 +7133,36 @@
               "2",
               "4",
               "6"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "minor",
+          "defining": [
+            3,
+            9,
+            10
+          ],
+          "optional": [
+            0,
+            2,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The minor third establishes the minor color. Sixth, minor-seventh and minor-major-seventh tonic sounds are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7sus4",
@@ -4336,6 +7222,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4361,6 +7255,14 @@
               "b7",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4384,6 +7286,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4403,6 +7313,14 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -4424,9 +7342,34 @@
               "8",
               "11",
               "b14"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
+            ],
+            "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "suspended",
+          "defining": [
+            5,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The suspended fourth or second replaces or de-emphasizes the third. The bass and progression determine its role; a flat ninth supplies a distinct Phrygian color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "9sus4",
@@ -4486,6 +7429,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4511,6 +7462,14 @@
               "b7",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4534,6 +7493,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b3. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4553,6 +7520,14 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -4576,9 +7551,35 @@
               "11",
               "b14",
               "16"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
+            ],
+            "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "suspended",
+          "defining": [
+            2,
+            5,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The suspended fourth or second replaces or de-emphasizes the third. The bass and progression determine its role; a flat ninth supplies a distinct Phrygian color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "13sus4",
@@ -4642,6 +7643,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "13",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4667,6 +7677,15 @@
               "b7",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "13",
+              "b7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4690,6 +7709,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "13",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b3. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -4715,9 +7743,36 @@
               "b14",
               "16",
               "20"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
+            ],
+            "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "suspended",
+          "defining": [
+            5,
+            9,
+            10
+          ],
+          "optional": [
+            0,
+            2,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The suspended fourth or second replaces or de-emphasizes the third. The bass and progression determine its role; a flat ninth supplies a distinct Phrygian color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7(#11)",
@@ -4777,6 +7832,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4798,6 +7862,15 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4823,6 +7896,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4846,9 +7928,42 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            6,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "9(#11)",
@@ -4912,6 +8027,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -4933,9 +8057,43 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            6,
+            10
+          ],
+          "optional": [
+            0,
+            2,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "13(#11)",
@@ -5001,6 +8159,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "13"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -5026,6 +8193,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "13"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -5049,9 +8225,39 @@
               "2",
               "#4",
               "6"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            6,
+            9,
+            10
+          ],
+          "optional": [
+            0,
+            2,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7(b9, #5)",
@@ -5115,6 +8321,15 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -5138,6 +8353,15 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -5161,9 +8385,36 @@
               "b2",
               "b4",
               "b6"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            1,
+            4,
+            8,
+            10
+          ],
+          "optional": [
+            0
+          ],
+          "omittable": [
+            0
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7(#9, #11)",
@@ -5229,6 +8480,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -5252,6 +8512,15 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -5275,9 +8544,38 @@
               "b3",
               "b5",
               "b7"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            3,
+            4,
+            6,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "13(b9)",
@@ -5343,6 +8641,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "13"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -5366,9 +8673,38 @@
               "6",
               "#8",
               "10"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            1,
+            4,
+            9,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "min9b5",
@@ -5424,9 +8760,35 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "halfDiminished",
+          "defining": [
+            2,
+            3,
+            6,
+            10
+          ],
+          "optional": [],
+          "omittable": [],
+          "contextual": [],
+          "explanation": "Half diminished contains a minor third, diminished fifth and minor seventh. It does not have the fourfold symmetry of a fully diminished seventh.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "min11b5",
@@ -5494,9 +8856,40 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "halfDiminished",
+          "defining": [
+            3,
+            5,
+            6,
+            10
+          ],
+          "optional": [
+            0,
+            2
+          ],
+          "omittable": [
+            0
+          ],
+          "contextual": [],
+          "explanation": "Half diminished contains a minor third, diminished fifth and minor seventh. It does not have the fourfold symmetry of a fully diminished seventh.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "maj7(#5)",
@@ -5569,6 +8962,15 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Possible sustained clashes: 1, 6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -5590,6 +8992,15 @@
               "#5",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "7"
+            ],
+            "caution": "Possible sustained clashes: 1. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -5613,9 +9024,29 @@
               "3",
               "#5",
               "7"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "augmented",
+          "defining": [
+            4,
+            8,
+            11
+          ],
+          "optional": [],
+          "omittable": [],
+          "contextual": [],
+          "explanation": "The augmented fifth is part of this sound. A dominant seventh and a major seventh produce different qualities; retain the requested one.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "V/I",
@@ -5688,6 +9119,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "7"
+            ],
+            "caution": "Possible sustained clashes: 1. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -5711,6 +9150,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "7"
+            ],
+            "caution": "Possible sustained clashes: 1. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -5736,6 +9183,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "7"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 1, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -5759,9 +9214,36 @@
               "b6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "7"
+            ],
+            "caution": "Possible sustained clashes: 1, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "slash",
+          "defining": [
+            2,
+            11
+          ],
+          "optional": [
+            7
+          ],
+          "omittable": [
+            7
+          ],
+          "contextual": [],
+          "explanation": "The upper structure and lower bass or chord have separate roles. Slash presets use one bass note; full polychords retain the lower triad.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "V over I",
@@ -5834,6 +9316,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -5857,6 +9347,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -5882,6 +9380,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Passing-tone oriented",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Use added chromatic notes as approaches rather than equally stable targets. Possible sustained clashes: 4, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -5905,9 +9411,41 @@
               "b6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Possible sustained clashes: 4, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4
+          ],
+          "optional": [
+            0,
+            2,
+            7,
+            11
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "II/I",
@@ -5980,6 +9518,12 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [],
+            "caution": "Possible sustained clashes: 5. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6003,9 +9547,31 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [],
+            "caution": "Possible sustained clashes: 5, b7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "slash",
+          "defining": [
+            2,
+            6,
+            9
+          ],
+          "optional": [],
+          "omittable": [],
+          "contextual": [],
+          "explanation": "The upper structure and lower bass or chord have separate roles. Slash presets use one bass note; full polychords retain the lower triad.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "II over I",
@@ -6078,6 +9644,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6101,9 +9675,42 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4
+          ],
+          "optional": [
+            0,
+            2,
+            6,
+            7,
+            9
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "bVI/I",
@@ -6166,6 +9773,12 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6189,6 +9802,12 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [],
+            "caution": "Possible sustained clashes: b2. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6212,9 +9831,34 @@
               "b6",
               "7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "slash",
+          "defining": [
+            3,
+            8
+          ],
+          "optional": [
+            0
+          ],
+          "omittable": [
+            0
+          ],
+          "contextual": [],
+          "explanation": "The upper structure and lower bass or chord have separate roles. Slash presets use one bass note; full polychords retain the lower triad.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "bVII/I",
@@ -6277,6 +9921,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6300,6 +9952,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b3. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6323,9 +9983,33 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b3. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "slash",
+          "defining": [
+            2,
+            5,
+            10
+          ],
+          "optional": [],
+          "omittable": [],
+          "contextual": [],
+          "explanation": "The upper structure and lower bass or chord have separate roles. Slash presets use one bass note; full polychords retain the lower triad.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "bIII/I",
@@ -6388,6 +10072,15 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6411,6 +10104,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6434,9 +10136,37 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "slash",
+          "defining": [
+            3,
+            10
+          ],
+          "optional": [
+            7
+          ],
+          "omittable": [
+            7
+          ],
+          "contextual": [],
+          "explanation": "The upper structure and lower bass or chord have separate roles. Slash presets use one bass note; full polychords retain the lower triad.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7(#5)",
@@ -6486,6 +10216,15 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6509,9 +10248,36 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            8,
+            10
+          ],
+          "optional": [],
+          "omittable": [],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7(b5)",
@@ -6561,6 +10327,15 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6584,6 +10359,15 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: 5. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6607,9 +10391,36 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            6,
+            10
+          ],
+          "optional": [],
+          "omittable": [],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7alt",
@@ -6665,6 +10476,15 @@
               "#5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b13"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -6688,9 +10508,32 @@
               "b6",
               "8",
               "b10"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/upper-structures/"
+            ],
+            "explanation": "A guide-tone foundation under an upper triad, retaining the selected chord color."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            3,
+            4,
+            8,
+            10
+          ],
+          "optional": [],
+          "omittable": [],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "7(b13)",
@@ -6746,6 +10589,15 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b13"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6769,9 +10621,40 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b13"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            8,
+            10
+          ],
+          "optional": [
+            7
+          ],
+          "omittable": [
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "9(b13)",
@@ -6827,9 +10710,38 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b13"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            4,
+            8,
+            10
+          ],
+          "optional": [
+            2
+          ],
+          "omittable": [],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "min(add9)",
@@ -6885,6 +10797,14 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6908,6 +10828,14 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -6931,6 +10859,14 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [
+              "b3"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -6952,9 +10888,34 @@
               "9",
               "b10",
               "15"
-            ]
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
+            ],
+            "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
           }
-        ]
+        ],
+        "Theory": {
+          "family": "minor",
+          "defining": [
+            2,
+            3
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The minor third establishes the minor color. Sixth, minor-seventh and minor-major-seventh tonic sounds are distinct choices.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "IV/I",
@@ -7018,6 +10979,12 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -7041,6 +11008,12 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Possible sustained clashes: b7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -7064,9 +11037,34 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Possible sustained clashes: b7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "slash",
+          "defining": [
+            5,
+            9
+          ],
+          "optional": [
+            0
+          ],
+          "omittable": [
+            0
+          ],
+          "contextual": [],
+          "explanation": "The upper structure and lower bass or chord have separate roles. Slash presets use one bass note; full polychords retain the lower triad.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "ii/I",
@@ -7130,6 +11128,12 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -7153,6 +11157,12 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Possible sustained clashes: b7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -7176,9 +11186,31 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Possible sustained clashes: b3, b7. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "slash",
+          "defining": [
+            2,
+            5,
+            9
+          ],
+          "optional": [],
+          "omittable": [],
+          "contextual": [],
+          "explanation": "The upper structure and lower bass or chord have separate roles. Slash presets use one bass note; full polychords retain the lower triad.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       },
       {
         "name": "sus4(add9)",
@@ -7241,6 +11273,12 @@
               "6",
               "7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -7264,6 +11302,12 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -7287,6 +11331,12 @@
               "6",
               "b7",
               "8"
+            ],
+            "usage": "Conventional",
+            "targetDegrees": [],
+            "caution": "Possible sustained clashes: b3. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -7310,6 +11360,12 @@
               "b6",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [],
+            "caution": "Possible sustained clashes: b3, b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           },
           {
@@ -7329,6 +11385,12 @@
               "5",
               "b7",
               "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
         ],
@@ -7350,10 +11412,311 @@
               "9",
               "11",
               "15"
+            ],
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/open-voicings/"
+            ],
+            "explanation": "An open hand arrangement spread across registers, retaining the selected chord tones."
+          }
+        ],
+        "Theory": {
+          "family": "suspended",
+          "defining": [
+            2,
+            5
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The suspended fourth or second replaces or de-emphasizes the third. The bass and progression determine its role; a flat ninth supplies a distinct Phrygian color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
+      },
+      {
+        "name": "7sus4(b9)",
+        "LHIntervals": [
+          5,
+          7,
+          10,
+          13
+        ],
+        "LHDegrees": [
+          "4",
+          "5",
+          "b7",
+          "b9"
+        ],
+        "RHExtension": [
+          24,
+          29
+        ],
+        "RHDegrees": [
+          "15",
+          "18"
+        ],
+        "Scales": [
+          {
+            "name": "Phrygian",
+            "intervals": [
+              24,
+              25,
+              27,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "b2",
+              "b3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Possible sustained clashes: b6. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
+            ]
+          },
+          {
+            "name": "Dorian b2",
+            "intervals": [
+              24,
+              25,
+              27,
+              29,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "b2",
+              "b3",
+              "4",
+              "5",
+              "6",
+              "b7",
+              "1"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
             ]
           }
-        ]
+        ],
+        "Theory": {
+          "family": "suspended",
+          "defining": [
+            1,
+            5,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [],
+          "explanation": "The suspended fourth or second replaces or de-emphasizes the third. The bass and progression determine its role; a flat ninth supplies a distinct Phrygian color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
+      },
+      {
+        "name": "7(b9, #11)",
+        "LHIntervals": [
+          4,
+          6,
+          10,
+          13
+        ],
+        "LHDegrees": [
+          "3",
+          "#11",
+          "b7",
+          "b9"
+        ],
+        "RHExtension": [
+          19,
+          24
+        ],
+        "RHDegrees": [
+          "12",
+          "15"
+        ],
+        "Scales": [
+          {
+            "name": "half-whole diminished",
+            "intervals": [
+              24,
+              25,
+              27,
+              28,
+              30,
+              31,
+              33,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "b2",
+              "#2",
+              "3",
+              "#4",
+              "5",
+              "6",
+              "b7",
+              "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b7"
+            ],
+            "caution": "Fit this palette to the melody, bass and next chord; it is not a mandatory scale.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
+            ]
+          }
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            1,
+            4,
+            6,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
+      },
+      {
+        "name": "7(b9, b13)",
+        "LHIntervals": [
+          4,
+          8,
+          10,
+          13
+        ],
+        "LHDegrees": [
+          "3",
+          "b13",
+          "b7",
+          "b9"
+        ],
+        "RHExtension": [
+          19,
+          24
+        ],
+        "RHDegrees": [
+          "12",
+          "15"
+        ],
+        "Scales": [
+          {
+            "name": "Phrygian Dominant",
+            "intervals": [
+              24,
+              25,
+              28,
+              29,
+              31,
+              32,
+              34,
+              36
+            ],
+            "degrees": [
+              "1",
+              "b2",
+              "3",
+              "4",
+              "5",
+              "b6",
+              "b7",
+              "8"
+            ],
+            "usage": "Colorful alternative",
+            "targetDegrees": [
+              "3",
+              "b13"
+            ],
+            "caution": "Possible sustained clashes: 4. Resolve or voice them intentionally.",
+            "sources": [
+              "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-scales/selecting-scales/"
+            ]
+          }
+        ],
+        "Theory": {
+          "family": "dominant",
+          "defining": [
+            1,
+            4,
+            8,
+            10
+          ],
+          "optional": [
+            0,
+            7
+          ],
+          "omittable": [
+            0,
+            7
+          ],
+          "contextual": [
+            5
+          ],
+          "explanation": "The major third and minor seventh establish dominant quality. Its role may be V7, a secondary dominant, a blues tonic or a nonfunctional color.",
+          "sources": [
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chords/extensions-alterations/",
+            "https://www.thejazzpianosite.com/jazz-piano-lessons/jazz-chord-voicings/"
+          ]
+        }
       }
     ]
-  }
+  },
+  "SchemaVersion": 2
 }

@@ -1,9 +1,9 @@
 # Jazz theory revision proposal
 
 Date: October 27, 2026
-Status: Proposed; implementation awaits approval of specific items.
+Status: All items approved by the user and implemented on October 27, 2026. See JazzTheoryImplementation.md for behavior and validation.
 
-Prepared using the jazz-theory skill and a read-only review of the app source and chord data. No simulator verification was performed for this review. Saving this proposal does not approve implementation.
+Prepared using the jazz-theory skill and a read-only review of the app source and chord data. No simulator verification was performed for this review. The user subsequently approved implementation of all items.
 
 ## Current foundation
 
@@ -34,7 +34,7 @@ The library contains 63 chord formulas and 196 chord–scale pairings. Existing 
 2. Melody controls and expanded voicings, followed by playability and scale explanations.
 3. Contextual suggestions, selected chord additions, and progression/practice tools.
 
-No phase is approved for implementation yet. The user may approve individual IDs or a phase.
+All phases were approved by the user with “Make all changes.”
 
 ## Evidence and references
 

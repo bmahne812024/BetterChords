@@ -64,7 +64,15 @@ nonisolated enum ChordTonePolicy {
         "IV/I": [0, 5, 9],
         "ii/I": [0, 2, 5, 9],
         "sus4(add9)": [0, 2, 5, 7],
+        "7sus4(b9)": [0, 1, 5, 7, 10],
+        "7(b9, #11)": [0, 1, 4, 6, 7, 10],
+        "7(b9, b13)": [0, 1, 4, 7, 8, 10],
     ]
+
+    // Optional and contextual tones are not required just because they are allowed.
+    static func missingDefiningTones(_ notes: Set<Int>, root: Int, theory: ChordTheoryMetadata) -> Set<Int> {
+        Set(theory.defining).subtracting(notes.map { ($0 - root + 120) % 12 })
+    }
 
     static func allows(_ notes: Set<Int>, chord: String, root: Int) -> Bool {
         guard let allowed = pitches[chord] else { return false }

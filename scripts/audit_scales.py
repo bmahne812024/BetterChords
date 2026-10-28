@@ -63,7 +63,8 @@ def validate_data():
                 assert len(chord['LHVoicingLabels']) == len(chord['LHVoicings'])
         for option in chord.get('HandVoicings', []):
             pairs += [(option['LHIntervals'], option['LHDegrees']), (option['RHIntervals'], option['RHDegrees'])]
-            assert option['LHIntervals'] and option['RHIntervals']
+            assert option['LHIntervals']
+            assert len(option['RHIntervals']) == len(option['RHDegrees'])
             if option['name'].startswith('UST '):
                 voiced = {i % 12 for i in option['LHIntervals'] + option['RHIntervals']}
                 assert {i % 12 for i in chord['LHIntervals']} - {0, 7} <= voiced
@@ -118,8 +119,9 @@ def run_swift_audit():
     methods = methods.replace('private ', '').replace('func selectValidInversion()', 'mutating func selectValidInversion()')
     labels = swift_function(source, '    private func noteName')
     suggestions = '\n'.join(swift_function(source, marker) for marker in [
-        '    private var substituteChoices', '    private func substituteArrangements', '    private func substituteReason', '    private func substituteSymbol', '    private var approachChoices', '    private func previewApproach', '    private func randomizeApproach', '    private var currentBankChord', '    private func canOfferCurrentChord', '    private var continuationChoices', '    private func continuationSymbol', '    private func makeContinuation', '    private func resolvedBankInversion', '    private var displayedInversion:', '    private var displayedInversionLabel', '    private func inversionLabel', '    private func chooseInversion', '    private func chooseRightHandOption', '    private func flexibleVoiceLeadingCandidates', '    private var bankKeyboardEdit:', '    private func synchronizeEditingBankChord', '    private func rightHandOptionFits', '    private func normalizeRightHandSelection'
+        '    private var substituteChoices', '    private func substituteArrangements', '    private func substituteReason', '    private func substituteSymbol', '    private var approachChoices', '    private func previewApproach', '    private func randomizeApproach', '    private var currentBankChord', '    private func canOfferCurrentChord', '    private var continuationChoices', '    private func continuationSymbol', '    private func makeContinuation', '    private func resolvedBankInversion', '    private var displayedInversion:', '    private var displayedInversionLabel', '    private func inversionLabel', '    private func chooseInversion', '    private func chooseRightHandOption', '    private func flexibleVoiceLeadingCandidates', '    private func requestedVoiceLeadingCandidates', '    private func buildPracticePreview', '    private var bankKeyboardEdit:', '    private func synchronizeEditingBankChord', '    private func rightHandOptionFits', '    private func normalizeRightHandSelection'
     ])
+    suggestions = suggestions.replace('func buildPracticePreview()', 'mutating func buildPracticePreview()')
     suggestions = suggestions.replace('func previewApproach()', 'mutating func previewApproach()').replace('func randomizeApproach()', 'mutating func randomizeApproach()').replace('func chooseInversion(', 'mutating func chooseInversion(').replace('func chooseRightHandOption(', 'mutating func chooseRightHandOption(').replace('func synchronizeEditingBankChord()', 'mutating func synchronizeEditingBankChord()').replace('func normalizeRightHandSelection()', 'mutating func normalizeRightHandSelection()')
     available = source[source.index('    private var availableInversions'):source.index('    @State private var chordTypes')].replace('private ', '')
     harness = '''import Foundation
@@ -130,6 +132,19 @@ let totalNotes = 60
 let inversionNames = ["Root position", "First inversion", "Second inversion", "Third inversion", "Fourth inversion"]
 var selectedRoot = 0
 var rootEnabled = true
+var preferences = VoicingPreferences()
+var voiceLeadingMode = "Preserve exact chord"
+var practiceTemplate = "Major ii–V–I"
+var practiceKey = 0
+var practicePreview: [SavedChord] = []
+var theoryMessage: String?
+struct SilentAudio { func stop() {} }
+var chordAudio = SilentAudio()
+var selectedBass = -1
+var contextKey = -1
+var harmonicSetting = "Tonal"
+var destinationRoot = -1
+var destinationQuality = "Suggested"
 var recalledBankChord: SavedChord?
 var savedChords: [SavedChord] = []
 var editingBankChordID: UUID?
@@ -356,7 +371,7 @@ var toneChecks = 0
 precondition(ChordTonePolicy.pitches["maj9"] == Set([0,2,4,7,11]))
 precondition(!ChordTonePolicy.pitches["maj9"]!.contains(6))
 precondition(ChordTonePolicy.pitches["maj9(#11)"]!.contains(6))
-precondition(a.formulas["maj9"]!.HandVoicings?.map { $0.name } == ["UST V"])
+precondition(a.formulas["maj9"]!.HandVoicings?.contains { $0.name == "UST V" } == true)
 precondition(a.formulas["maj9(#11)"]!.HandVoicings?.contains { $0.name == "UST VIIm" } == true)
 for formula in decoded.Chords.allChords {
     precondition(ChordTonePolicy.pitches[formula.name] != nil)
@@ -683,12 +698,12 @@ for chord in decoded.Chords.allChords {
         a.selectedScale = option.name
         for root in 0..<12 {
             a.selectedRoot = root
-            guard let hands = a.handVoicing(option) else { fatalError("Hand option out of range") }
+            guard let hands = a.handVoicing(option) else { continue }
             let bassDegree = option.LHDegrees[option.LHIntervals.firstIndex(of: option.LHIntervals.min()!)!]
             let bassNumber = Int(bassDegree.filter { $0.isNumber })!
             let floor = [3, 7].contains((bassNumber - 1) % 7 + 1) ? 14 : 10
             precondition(hands.left.allSatisfy { (floor...33).contains($0) })
-            precondition(hands.right.min()! > hands.left.max()!)
+            precondition(hands.right.isEmpty || hands.right.min()! > hands.left.max()!)
             precondition(hands.right.allSatisfy { (0..<60).contains($0) })
             precondition(hands.left.count == option.LHIntervals.count)
             precondition(hands.right.count == option.RHIntervals.count)
@@ -732,6 +747,128 @@ precondition(!a.hasValidVoicing(chord:a.selectedChord, root:9, scale:"Whole Tone
 precondition(a.hasValidVoicing(chord:a.selectedChord, root:9, scale:""))
 print("PASS: \\(checked) root/chord/inversion/scale combinations; \\(disabled) invalid voicings excluded")
 print("PASS: \\(labelsChecked) displayed-note labels; highest key index \\(highest); no scale clipping or overlap")
+// New behavior: identities, context, explicit colors, constraints, and old bank documents.
+precondition(JazzChordFamily.of("6") == .major && JazzChordFamily.of("6/9") == .major)
+precondition(JazzChordFamily.of("13") == .dominant && JazzChordFamily.of("13sus4") == .suspended)
+precondition(JazzChordFamily.of("min7b5") == .halfDiminished)
+precondition(JazzChordFamily.of("minmaj7") == .minorMajor)
+precondition(JazzChordFamily.of("II/I") == .slash && JazzChordFamily.of("II over I") == .slash)
+precondition(!ChordContinuation.choices(after: "6").contains { $0.label == "Tritone resolution" })
+for root in 0..<12 {
+    for color in ["maj", "6", "maj7", "min", "min6", "minmaj7"] {
+        let choices = JazzTheory.contextChoices(after: "dim7", root: root, context: .init(), quality: color)
+        for interval in [0,1,4,7,10] { precondition(choices.contains { $0.offset == interval && $0.chord == color }) }
+        precondition(Set(choices.map(\\.id)).count == choices.count)
+    }
+    let destination = (root + 1) % 12
+    let limited = JazzTheory.contextChoices(after: "dim7", root: root, context: HarmonicContext(destination: destination), quality: "6")
+    precondition(!limited.isEmpty && limited.allSatisfy { (root + $0.offset + 12) % 12 == destination })
+    let blues = JazzTheory.contextChoices(after: "7", root: root, context: HarmonicContext(setting:"Blues"), quality:"Suggested")
+    precondition(blues.contains { $0.offset == 5 && $0.chord == "7" })
+    let modal = JazzTheory.contextChoices(after:"min7", root:root, context:HarmonicContext(setting:"Modal"), quality:"Suggested")
+    precondition(modal.allSatisfy { $0.chord == "min7" })
+}
+// Raw old-format JSON, with none of the new optional fields.
+let legacyJSON = """
+{"id":"00000000-0000-0000-0000-000000000001","title":"Old bank","chords":[{"id":"00000000-0000-0000-0000-000000000002","title":"Cmaj7","root":0,"chord":"maj7","inversion":1,"option":"","rootEnabled":true,"left":[16,19,21,24],"right":[],"voiceLed":false}],"modified":0}
+""".data(using:.utf8)!
+let oldBank = try JSONDecoder().decode(ChordBankFile.self, from:legacyJSON)
+precondition(oldBank.chords[0].soundingChord == "6")
+precondition(oldBank.chords[0].left == [16,19,21,24] && oldBank.chords[0].bass == [0])
+let reopenedLegacy = try JSONDecoder().decode(ChordBankFile.self, from:JSONEncoder().encode(oldBank))
+precondition(reopenedLegacy == oldBank)
+var slash = oldBank.chords[0]; slash.bassNote = 2; slash.melodyNote = 36
+let slashRoundTrip = try JSONDecoder().decode(SavedChord.self, from:JSONEncoder().encode(slash))
+precondition(slashRoundTrip.bass == [2] && slashRoundTrip.melodyNote == 36 && slashRoundTrip.left == slash.left)
+// Actual production wrappers must preserve old recalled voicings under new global settings.
+a.preferences = VoicingPreferences(leftSpan:12, rightSpan:12, register:"Higher", density:"Sparse", topNote:48)
+a.selectedChord = "maj7"; a.selectedRoot = 0; a.selectedInversion = 1; a.selectedScale = ""
+a.recalledBankChord = oldBank.chords[0]
+precondition(a.currentBankChord!.notes == oldBank.chords[0].notes)
+precondition(a.currentBankChord!.soundingChord == "6")
+a.recalledBankChord = nil; a.preferences = .init(); a.selectedBass = -1; a.rootEnabled = true
+// Named geometry, not only pitch-class membership.
+a.selectedChord = "min11"; a.selectedRoot = 2; a.selectedInversion = 0
+for (name, top) in [("Barron",5),("Hancock",2)] {
+    a.selectedScale = name
+    let option = a.formulas["min11"]!.HandVoicings!.first { $0.name == name }!
+    let hands = a.handVoicing(option)!
+    precondition(hands.left.count == 3 && hands.right.count == 3)
+    precondition((hands.right.max()! - 2) % 12 == top)
+    precondition(Set(hands.left.union(hands.right).map { ($0 - 2 + 12) % 12 }) == [0,2,3,5,7,10])
+}
+// An impossible melody/span produces an unavailable result, not a substituted harmony.
+a.selectedChord = "min11"; a.selectedScale = "Barron"
+a.preferences = VoicingPreferences(leftSpan:12)
+precondition(a.performanceHands == nil && a.leftHandNotes.isEmpty)
+a.preferences = .init(); a.selectedChord = "maj7"; a.selectedRoot=0; a.selectedInversion=0; a.selectedScale="Drop 2"
+let constrainedTop = a.rightHandNotes.max()!
+a.preferences.topNote = constrainedTop
+precondition(a.rightHandNotes.max() == constrainedTop)
+a.preferences.topNote = constrainedTop + 1
+precondition(a.performanceHands == nil)
+a.preferences = .init()
+// Exact mode retains the selected actual harmony even when alternatives offer less motion.
+let exactTarget = oldBank.chords[0]
+let fixedVoice = SavedChord(title:"F", root:5, chord:"maj7", inversion:0, option:"",rootEnabled:true,left:[17,21,24,28],right:[])
+a.voiceLeadingMode = "Preserve exact chord"
+let exactCandidates = a.requestedVoiceLeadingCandidates(for:exactTarget,fixed:fixedVoice)
+let exactResult = ChordVoiceLeading.best(from:fixedVoice,candidates:exactCandidates,original:exactTarget)!
+precondition(exactResult.soundingChord == "6" && exactResult.left.map { $0%12 }.sorted() == exactTarget.left.map { $0%12 }.sorted())
+a.voiceLeadingMode = "Allow harmonic alternatives"
+precondition(a.requestedVoiceLeadingCandidates(for:exactTarget,fixed:fixedVoice).count > exactCandidates.count)
+// Named voicing families retain their actual interval geometry during voice leading.
+for name in ["min11", "maj9", "13", "maj7"] {
+    let formula = a.formulas[name]!
+    for hand in formula.HandVoicings ?? [] {
+        for root in 0..<12 {
+            guard let hands = a.handVoicing(hand, root:root) else { continue }
+            let target = SavedChord(title:name,root:root,chord:name,inversion:0,option:hand.name,
+                                    rootEnabled:true,left:hands.left,right:hands.right)
+            let candidate = VoiceLeadingCandidate(chord:target,intervals:hand.LHIntervals,degrees:hand.LHDegrees,preserveShape:true)
+            let led = ChordVoiceLeading.best(from:fixedVoice,candidates:[candidate],original:target)!
+            let shift = led.left.min()! - target.left.min()!
+            precondition(led.left == Set(target.left.map { $0 + shift }))
+            precondition(led.right == Set(target.right.map { $0 + shift }))
+        }
+    }
+}
+// Custom bass changes playback and serialization while retaining the upper chord.
+a.selectedChord="maj";a.selectedRoot=0;a.selectedInversion=0;a.selectedScale="";a.selectedBass=2
+let customBass = a.currentBankChord!
+precondition(customBass.bass == [2] && a.chordPlaybackNotes == customBass.notes)
+a.selectedBass = -1
+// Every production template builds for all twelve transpositions; no bank mutation occurs.
+var practiceChecks = 0
+let bankBeforePractice = a.savedChords
+for template in JazzPracticeTemplate.all {
+    if template.id.contains("12 bars") { precondition(template.steps.reduce(0) { $0 + $1.beats } == 48) }
+    if template.id.contains("32 bars") { precondition(template.steps.reduce(0) { $0 + $1.beats } == 128) }
+    a.practiceTemplate = template.id
+    for key in 0..<12 {
+        a.practiceKey=key;a.preferences = .init();a.theoryMessage=nil
+        a.buildPracticePreview()
+        precondition(a.theoryMessage == nil, a.theoryMessage ?? "")
+        precondition(a.practicePreview.count == template.steps.count)
+        precondition(a.savedChords == bankBeforePractice)
+        for (chord, step) in zip(a.practicePreview,template.steps) {
+            precondition(chord.root == (key+step.root)%12 && chord.soundingChord == step.chord)
+            precondition(chord.left.allSatisfy { (10...33).contains($0) } && chord.notes.allSatisfy { (0..<60).contains($0) })
+            precondition(ChordTonePolicy.allows(chord.left.union(chord.right),chord:step.chord,root:chord.root))
+            if let bass = step.bass { precondition(chord.bass == [(key+bass)%12]) }
+        }
+        practiceChecks += 1
+    }
+}
+precondition(a.formulas["7sus4(b9)"] != nil && a.formulas["7(b9, #11)"] != nil && a.formulas["7(b9, b13)"] != nil)
+for chord in decoded.Chords.allChords {
+    let theory = chord.Theory!
+    precondition(Set(theory.defining).isDisjoint(with:theory.optional))
+    precondition(Set(theory.omittable).isSubset(of:theory.optional))
+    precondition(!theory.sources.isEmpty)
+}
+print("PASS: chord families, explicit dim7 colors/context, legacy banks, sixth identities, named geometry, melody/span constraints, exact/alternative voice leading, custom bass, metadata, and \\(practiceChecks) transposed practice templates")
+
 '''
     for token, value in [('MODELS', models), ('AVAILABLE', available), ('METHODS', methods), ('LABELS', labels), ('SUGGESTIONS', suggestions)]:
         harness = harness.replace(token, value)

@@ -162,3 +162,8 @@ Added IV/I (F/C in C), minor ii/I (Dm/C in C), and Sus4(add9), with no seventh a
 The fixed Open RH option is available for Major, Minor, Add9, Minor Add9, sus2, sus4, Sus4(add9), 7sus4, 9sus4, and 13sus4. It retains the separate green bass, plays a fifth in blue, and distributes the remaining chord tones above it in purple. For C major this is low C | G | C–E; Cadd9 is low C | G | D–E–C. Root/third/seventh colors are preserved as appropriate; ordinary major/minor Open options do not introduce extra extensions. Open is a hand arrangement, not an automatic voice-leading feature, and uses the same fixed-voicing inversion control behavior as UST and So What. Playback includes the entire Open hand split plus bass.
 
 These are arrangements for BetterChords informed by [Worship Arts Conservatory's guide to added ninths, suspensions, and slash chords](https://worshiparts.net/resources/worship-training/ultimate-guide-to-understanding-worship-chords/) and [Jon Payne's WorshipGod piano workshop, register and fifth/octave/ninth patterns](https://sovereigngracemusic.s3.amazonaws.com/wp-content/uploads/20230821180853/advanced_piano_techniques-wg09-jpayne.pdf). Exact note distributions are not transcriptions from those sources.
+
+
+## October 27, 2026 — approved theory expansion
+
+The library now has 66 formulas, 200 chord–scale assignments and 32 unique scales. Scale entries carry usage, target-degree, caution and source metadata. Chord metadata distinguishes defining tones from optional colors, omissions and contextual tensions. See [JazzTheoryImplementation.md](JazzTheoryImplementation.md) for the complete approved implementation and compatibility notes.
