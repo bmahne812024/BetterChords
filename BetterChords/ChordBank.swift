@@ -235,21 +235,15 @@ nonisolated struct VoiceLeadingCandidate: Sendable {
 
 extension ChordVoiceLeading {
     nonisolated static func chordOptions(for chord: String) -> [String] {
-        let families = [
-            ["maj", "maj7", "maj9", "maj13", "maj7(#11)", "maj9(#11)"],
-            ["6", "6/9", "add9"],
-            ["min", "min7", "min9", "min11", "min13", "min(add9)"],
-            ["min6", "min6/9"], ["minmaj7", "minmaj9"],
-            ["7", "9", "13", "13(9)", "9(13)", "7(#11)", "9(#11)", "13(#11)", "7(b9)", "7(#9)", "7alt", "13(b9)", "7(b13)", "9(b13)"],
-            ["min7b5", "min9b5", "min11b5"],
-            ["sus4", "sus4(add9)", "7sus4", "9sus4", "13sus4"]
-        ]
-        return [chord] + (families.first { $0.contains(chord) } ?? []).filter { $0 != chord }
+        // Voice leading changes the arrangement, preserving the saved harmony.
+        return [chord]
     }
 
     nonisolated static func best(from fixed: SavedChord, candidates: [VoiceLeadingCandidate], original: SavedChord) -> SavedChord? {
         var best: (chord: SavedChord, score: Int, tie: Int)?
         for candidate in candidates {
+            guard candidate.chord.chord == original.chord,
+                  candidate.chord.root == original.root else { continue }
             guard let fitted = lead(from: fixed, to: candidate.chord, intervals: candidate.intervals, degrees: candidate.degrees) else { continue }
             let score = movement(from: fixed.left.sorted(), to: fitted.left.sorted()).score
                 + movement(from: fixed.right.sorted(), to: fitted.right.sorted()).score

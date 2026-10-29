@@ -57,6 +57,21 @@ import Foundation
     precondition(independent.left == result.left && independent.right == result.right)
    }
   }
+  precondition(ChordVoiceLeading.chordOptions(for: "maj9") == ["maj9"])
+  var majorNine = chord(0, [16, 23], [26, 31, 38])
+  majorNine.chord = "maj9"
+  var triad = majorNine
+  triad.chord = "maj"
+  triad.left = [16, 19, 24]; triad.right = [28, 31, 36]
+  let candidates = [
+   VoiceLeadingCandidate(chord: triad, intervals: [0,4,7], degrees: ["1","3","5"]),
+   VoiceLeadingCandidate(chord: majorNine, intervals: [0,4,7,11,14], degrees: ["1","3","5","7","9"])
+  ]
+  let preserved = ChordVoiceLeading.best(from: triad, candidates: candidates, original: majorNine)!
+  precondition(preserved.chord == "maj9" && preserved.root == 0)
+  precondition(pitches(preserved.left) == pitches(majorNine.left))
+  precondition(pitches(preserved.right) == pitches(majorNine.right))
+  print("PASS: voice leading preserves major-nine harmony even when a triad has zero movement")
   let unequal = ChordVoiceLeading.movement(from: [16,19,23], to: [16,19,23,26])
   precondition(unequal.distances == [0,0,0])
   print("PASS: persistence, identity recall, 144 two-hand transitions, pitch counts, hand separation, bass independence, unequal voice counts")
